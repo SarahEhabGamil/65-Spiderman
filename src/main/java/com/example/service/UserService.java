@@ -35,7 +35,7 @@ public class UserService {
         userRepository.addOrderToUser(userId, order); //lesa mehtag the logic
     }
     public void emptyCart(UUID userId) {
-        
+
     }
     public void removeOrderFromUser(UUID userId, UUID orderId){
         userRepository.removeOrderFromUser(userId, orderId);
