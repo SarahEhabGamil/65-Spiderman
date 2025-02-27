@@ -22,7 +22,7 @@ public class UserService {
     public User addUser(User user) {
         return userRepository.addUser(user);
     }
-    public User getUser(UUID id) {
+    public User getUserById(UUID id) {
         return userRepository.getUserById(id);
     }
     public ArrayList<User> getUsers() {
@@ -32,7 +32,10 @@ public class UserService {
         return userRepository.getOrdersByUserId(userId);
     }
     public void addOrderToUser(UUID userId, Order order) {
-        userRepository.addOrderToUser(userId, order);
+        userRepository.addOrderToUser(userId, order); //lesa mehtag the logic
+    }
+    public void emptyCart(UUID userId) {
+        
     }
     public void removeOrderFromUser(UUID userId, UUID orderId){
         userRepository.removeOrderFromUser(userId, orderId);
