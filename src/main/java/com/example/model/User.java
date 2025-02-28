@@ -13,6 +13,9 @@ public class User {
     private List<Order> orders = new ArrayList<>();
 
     public User() {
+        this.id = UUID.randomUUID();
+        Cart cart=new Cart();
+        cart.setUserId(this.id);
     }
 
     public User(UUID id, String name, List<Order> orders) {

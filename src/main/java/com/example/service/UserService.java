@@ -32,9 +32,11 @@ public class UserService {
         return userRepository.getOrdersByUserId(userId);
     }
     public void addOrderToUser(UUID userId, Order order) {
+
         userRepository.addOrderToUser(userId, order); //lesa mehtag the logic
     }
     public void emptyCart(UUID userId) {
+        //TODO
 
     }
     public void removeOrderFromUser(UUID userId, UUID orderId){

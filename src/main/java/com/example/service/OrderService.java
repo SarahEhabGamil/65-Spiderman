@@ -1,7 +1,9 @@
 package com.example.service;
 
 
+import com.example.model.Cart;
 import com.example.model.Order;
+import com.example.model.User;
 import com.example.repository.OrderRepository;
 import org.springframework.stereotype.Service;
 
@@ -11,12 +13,17 @@ import java.util.UUID;
 @Service
 public class OrderService {
 
+    private final CartService cartService;
+    private final UserService userService;
     private OrderRepository orderRepository;
 
 
-    public OrderService(OrderRepository orderRepository) {
+    public OrderService(OrderRepository orderRepository, CartService cartService, UserService userService) {
         this.orderRepository = orderRepository;
+        this.cartService = cartService;
+        this.userService = userService;
     }
+
     public void addOrder(Order order){
         orderRepository.addOrder(order);
     }
@@ -27,7 +34,7 @@ public class OrderService {
     public Order getOrderById(UUID orderId){
         return orderRepository.getOrderById(orderId);
     }
-    public void deleteOrderById(UUID orderId) throws IllegalArgumentException{
+    public void deleteOrderById(UUID orderId) throws RuntimeException{
         orderRepository.deleteOrderById(orderId);
     }
 }
