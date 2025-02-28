@@ -43,6 +43,12 @@ public class ProductController {
         return productService.updateProduct(productId, newName, newPrice);
     }
 
+    @PutMapping("/applyDiscount")
+    public String applyDiscount(@RequestParam double discount, @RequestBody ArrayList<UUID> productIds) {
+        productService.applyDiscount(discount, productIds);
+        return discount + " discount applied to products";
+    }
+
     @DeleteMapping("/delete/{productId}")
     public String deleteProductById(@PathVariable UUID productId) {
         productService.deleteProductById(productId);
