@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.UUID;
 
 @Service
-@SuppressWarnings("rawtypes")
 public class OrderService {
 
     private OrderRepository orderRepository;

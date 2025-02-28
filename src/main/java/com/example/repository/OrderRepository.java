@@ -8,9 +8,8 @@ import java.util.ArrayList;
 import java.util.UUID;
 
 @Repository
-@SuppressWarnings("rawtypes")
 public class OrderRepository extends MainRepository<Order>{
-    private static final String ORDER_PATH = "data/orders.json";
+    private static final String ORDER_PATH = "src/main/java/com/example/data/orders.json";
 
     public OrderRepository() {}
     @Override
@@ -63,7 +62,7 @@ public class OrderRepository extends MainRepository<Order>{
         }
 
         if (orderToDelete == null) {
-            throw new RuntimeException("Order not found with ID: " + orderId);
+            throw new RuntimeException("Order not found");
         }
         orders.remove(orderToDelete);
         saveAll(orders);

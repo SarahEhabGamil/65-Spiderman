@@ -55,25 +55,24 @@ public class Order {
 
     public void setProducts(List<Product> products) {
         this.products = products != null ? products : new ArrayList<>();
-        recalculateTotalPrice();
+//        recalculateTotalPrice();
     }
 
 
     public void addProduct(Product product) {
         if (product != null) {
             this.products.add(product);
-            recalculateTotalPrice();
+//            recalculateTotalPrice();
         }
     }
 
     public void removeProduct(Product product) {
         if (product != null && this.products.contains(product)) {
             this.products.remove(product);
-            recalculateTotalPrice();
+//            recalculateTotalPrice();
         }
     }
 
-    // Recalculate the total price based on the product list
     private void recalculateTotalPrice() {
         double total = 0;
         for (Product product : products) {

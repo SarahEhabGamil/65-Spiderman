@@ -10,9 +10,8 @@ import java.util.List;
 import java.util.UUID;
 
 @Repository
-@SuppressWarnings("rawtypes")
 public class CartRepository extends MainRepository<Cart> {
-    private static final String CART_PATH = "data/carts.json";
+    private static final String CART_PATH = "src/main/java/com/example/data/carts.json";
 
     public CartRepository(){}
 

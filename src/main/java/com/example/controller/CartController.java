@@ -44,7 +44,7 @@ public class CartController {
     @DeleteMapping("/delete/{cartId}")
     public String deleteCartById(@PathVariable UUID cartId){
         cartService.deleteCartById(cartId);
-        return "Cart " + cartId + " deleted";
+        return "Cart deleted successfully";
     }
 
 }
