@@ -699,7 +699,7 @@
 		 ArrayList<UUID> productIds = new ArrayList<>();
 		 productIds.add(testProduct.getId());
 
-		 //Attempt to apply an invalid discount (-10%)
+		 
 		 mockMvc.perform(MockMvcRequestBuilders.put("/product/applyDiscount")
 						 .contentType(MediaType.APPLICATION_JSON)
 						 .param("discount", "-10.0")
@@ -723,14 +723,13 @@
  	}
 	 @Test
 	 void testDeleteProductById_NonExistent() throws Exception {
-		 // Arrange: Generate a random product ID that doesn't exist
+
 		 UUID nonExistentId = UUID.randomUUID();
 
-		 // Mock behavior to throw an exception when deleting a non-existent product
+
 		 doThrow(new NoSuchElementException("Product not found"))
 				 .when(productService).deleteProductById(nonExistentId);
 
-		 // Act & Assert
 		 mockMvc.perform(MockMvcRequestBuilders.delete("/product/delete/{id}", nonExistentId))
 				 .andExpect(MockMvcResultMatchers.status().isNotFound()) // Should return 404
 				 .andExpect(MockMvcResultMatchers.content().string("Product not found"));
