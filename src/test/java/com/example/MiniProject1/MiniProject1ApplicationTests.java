@@ -394,11 +394,11 @@
 
  	@Test
  	void testAddProductToCartEndPoint() throws Exception {
- 		User testUser14 = new User();
+ 		User testUser14=new User();
  		testUser14.setId(UUID.randomUUID());
  		testUser14.setName("Test User14");
 
- 		Product testProduct = new Product(UUID.randomUUID(), "Test Product", 10.0);
+ 		Product testProduct=new Product(UUID.randomUUID(), "Test Product", 10.0);
  		addUser(testUser14);
  		addProduct(testProduct);
 
@@ -436,7 +436,8 @@
  		User testUser15=new User();
  		testUser15.setId(UUID.randomUUID());
  		testUser15.setName("Test User15");
-		 Product testProduct=new Product(UUID.randomUUID(), "Test Product", 10.0);
+
+ 		Product testProduct=new Product(UUID.randomUUID(), "Test Product", 10.0);
  		addUser(testUser15);
  		addProduct(testProduct);
  		 Cart cart = new Cart(UUID.randomUUID(), testUser15.getId(), new ArrayList<>(List.of(testProduct)));
@@ -705,7 +706,6 @@
  		List<Order> responseOrders = objectMapper.readValue(responseContent, new TypeReference<List<Order>>() {});
  		assertEquals(getOrders().size(), responseOrders.size(), "Orders should be returned correctly From Endpoint");
  	}
-
 
 
 

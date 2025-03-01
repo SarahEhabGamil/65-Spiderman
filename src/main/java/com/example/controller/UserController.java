@@ -88,12 +88,18 @@ public class UserController {
     }
 
     @PutMapping("/deleteProductFromCart")
-    public String deleteProductFromCart(@RequestParam UUID userId, @RequestParam UUID productId){
-        Cart cart = cartService.getCartByUserId(userId);
-        Product product = productService.getProductById(productId);
-        cartService.deleteProductFromCart(cart.getId(),product);
-        //TODO: testDeleteProductFromCartEndPoint2 wants "Cart is Empty"
-        return "Product deleted from cart";
+    public String deleteProductFromCart(@RequestParam UUID userId, @RequestParam UUID productId) {
+        try {
+            Cart cart = cartService.getCartByUserId(userId);
+            Product product = productService.getProductById(productId);
+            cartService.deleteProductFromCart(cart.getId(), product);
+            return "Product deleted from cart";
+        } catch (Exception e) {
+            if (e.getMessage().equals("Cart got empty")) {
+                return "Cart is empty";
+            }
+        }
+        return "";
     }
 
 

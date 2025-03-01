@@ -127,6 +127,10 @@ public class CartRepository extends MainRepository<Cart> {
             throw new RuntimeException("Product not found in cart with ID: " + product.getId());
         }
 
+        if (products.isEmpty()) {
+            throw new RuntimeException("Cart got empty");
+        }
+
         saveAll(carts);
     }
 
