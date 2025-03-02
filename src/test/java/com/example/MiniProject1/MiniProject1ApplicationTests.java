@@ -836,6 +836,30 @@
  		}
  		assertTrue(found,"Order should be added correctly from Endpoint");
  	}
+	 @Test
+	 void testAddOrder_EmptyProductList() throws Exception {
+
+		 Order order = new Order(UUID.randomUUID(), UUID.randomUUID(), 10.0, new ArrayList<>());
+
+
+		 mockMvc.perform(MockMvcRequestBuilders.post("/order/")
+						 .contentType(MediaType.APPLICATION_JSON)
+						 .content(objectMapper.writeValueAsString(order)))
+				 .andExpect(MockMvcResultMatchers.status().isOk())
+				 .andExpect(MockMvcResultMatchers.content().string("Order added successfully"));
+	 }
+	 @Test
+	 void testAddOrder_InvalidUserId() throws Exception {
+
+		 Order order = new Order(UUID.randomUUID(), null, 10.0, List.of(new Product(UUID.randomUUID(), "Test Product", 5.0)));
+
+
+		 mockMvc.perform(MockMvcRequestBuilders.post("/order/")
+						 .contentType(MediaType.APPLICATION_JSON)
+						 .content(objectMapper.writeValueAsString(order)))
+				 .andExpect(MockMvcResultMatchers.status().isBadRequest())
+				 .andExpect(MockMvcResultMatchers.content().string("User ID cannot be null"));
+	 }
 
 
 
@@ -855,6 +879,33 @@
  		assertEquals(getOrders().size(), responseOrders.size(), "Orders should be returned correctly From Endpoint");
  	}
 
+	 @Test
+	 void testGetOrders_NoOrders() throws Exception {
+
+		 when(orderService.getOrders()).thenReturn(new ArrayList<>());
+
+		 MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/order/")
+						 .contentType(MediaType.APPLICATION_JSON))
+				 .andExpect(MockMvcResultMatchers.status().isOk())
+				 .andReturn();
+
+		 String responseContent = result.getResponse().getContentAsString();
+		 List<Order> responseOrders = objectMapper.readValue(responseContent, new TypeReference<List<Order>>() {});
+
+
+		 assertTrue(responseOrders.isEmpty(), "If no orders exist, response should be an empty list.");
+	 }
+	 @Test
+	 void testGetOrders_ServiceFailure() throws Exception {
+
+		 when(orderService.getOrders()).thenThrow(new RuntimeException("Database error"));
+
+
+		 mockMvc.perform(MockMvcRequestBuilders.get("/order/")
+						 .contentType(MediaType.APPLICATION_JSON))
+				 .andExpect(MockMvcResultMatchers.status().isInternalServerError())
+				 .andExpect(MockMvcResultMatchers.content().string("Database error"));
+	 }
 
 
 
@@ -870,11 +921,30 @@
  		// Order responseOrder = objectMapper.readValue(responseContent, Order.class);
  		// assertEquals(order.getId(), responseOrder.getId(), "Order should be returned correctly From Endpoint");
  	}
+	 @Test
+	 void testGetOrderById_NonExistent() throws Exception {
+
+		 UUID nonExistentId = UUID.randomUUID();
+
+		 when(orderService.getOrderById(nonExistentId)).thenReturn(null);
+
+
+		 mockMvc.perform(MockMvcRequestBuilders.get("/order/{id}", nonExistentId))
+				 .andExpect(MockMvcResultMatchers.status().isNotFound())
+				 .andExpect(MockMvcResultMatchers.content().string("Order not found"));
+	 }
+	 @Test
+	 void testGetOrderById_InvalidId() throws Exception {
+		 mockMvc.perform(MockMvcRequestBuilders.get("/order/{id}", "invalid-id"))
+				 .andExpect(MockMvcResultMatchers.status().isBadRequest())
+				 .andExpect(MockMvcResultMatchers.content().string("Invalid order ID format"));
+	 }
 
 
 
 
- 	@Test
+
+	 @Test
  	void testDeleteOrderByIdEndPoint() throws Exception{
  		Order order = new Order(UUID.randomUUID(), UUID.randomUUID(), 10.0, new ArrayList<>());
  		addOrder(order);
@@ -891,6 +961,13 @@
  				.andExpect(MockMvcResultMatchers.content().string("Order not found"));
  	}
 
+	 @Test
+	 void testDeleteOrderById_InvalidId() throws Exception {
+
+		 mockMvc.perform(MockMvcRequestBuilders.delete("/order/delete/{id}", "invalid-id"))
+				 .andExpect(MockMvcResultMatchers.status().isBadRequest())
+				 .andExpect(MockMvcResultMatchers.content().string("Invalid order ID format"));
+	 }
 
 
 

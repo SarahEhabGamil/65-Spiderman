@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" version="3.0.2" name="com.example.MiniProject1.MiniProject1ApplicationTests" time="5.128" tests="39" errors="8" skipped="0" failures="4">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" version="3.0.2" name="com.example.MiniProject1.MiniProject1ApplicationTests" time="3.875" tests="46" errors="11" skipped="0" failures="8">
   <properties>
     <property name="java.specification.version" value="23"/>
     <property name="sun.cpu.isalist" value="amd64"/>
@@ -16,7 +16,7 @@
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="user.country" value="US"/>
     <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk-23\bin"/>
-    <property name="sun.java.command" value="C:\Users\absye\AppData\Local\Temp\surefire10649119183020725340\surefirebooter-20250301165042275_3.jar C:\Users\absye\AppData\Local\Temp\surefire10649119183020725340 2025-03-01T16-50-42_089-jvmRun1 surefire-20250301165042275_1tmp surefire_0-20250301165042275_2tmp"/>
+    <property name="sun.java.command" value="C:\Users\absye\AppData\Local\Temp\surefire703516459913802738\surefirebooter-20250302214752375_3.jar C:\Users\absye\AppData\Local\Temp\surefire703516459913802738 2025-03-02T21-47-52_222-jvmRun1 surefire-20250302214752375_1tmp surefire_0-20250302214752375_2tmp"/>
     <property name="jdk.debug" value="release"/>
     <property name="surefire.test.class.path" value="C:\Users\absye\OneDrive\Desktop\65-Spiderman\target\test-classes;C:\Users\absye\OneDrive\Desktop\65-Spiderman\target\classes;C:\Users\absye\.m2\repository\org\springframework\boot\spring-boot-starter-data-rest\3.4.2\spring-boot-starter-data-rest-3.4.2.jar;C:\Users\absye\.m2\repository\org\springframework\data\spring-data-rest-webmvc\4.4.2\spring-data-rest-webmvc-4.4.2.jar;C:\Users\absye\.m2\repository\org\springframework\data\spring-data-rest-core\4.4.2\spring-data-rest-core-4.4.2.jar;C:\Users\absye\.m2\repository\org\springframework\spring-tx\6.2.2\spring-tx-6.2.2.jar;C:\Users\absye\.m2\repository\org\springframework\hateoas\spring-hateoas\2.4.1\spring-hateoas-2.4.1.jar;C:\Users\absye\.m2\repository\org\springframework\data\spring-data-commons\3.4.2\spring-data-commons-3.4.2.jar;C:\Users\absye\.m2\repository\org\springframework\plugin\spring-plugin-core\3.0.0\spring-plugin-core-3.0.0.jar;C:\Users\absye\.m2\repository\org\atteo\evo-inflector\1.3\evo-inflector-1.3.jar;C:\Users\absye\.m2\repository\org\slf4j\slf4j-api\2.0.16\slf4j-api-2.0.16.jar;C:\Users\absye\.m2\repository\org\springframework\boot\spring-boot-starter-web\3.4.2\spring-boot-starter-web-3.4.2.jar;C:\Users\absye\.m2\repository\org\springframework\boot\spring-boot-starter\3.4.2\spring-boot-starter-3.4.2.jar;C:\Users\absye\.m2\repository\org\springframework\boot\spring-boot-starter-logging\3.4.2\spring-boot-starter-logging-3.4.2.jar;C:\Users\absye\.m2\repository\ch\qos\logback\logback-classic\1.5.16\logback-classic-1.5.16.jar;C:\Users\absye\.m2\repository\ch\qos\logback\logback-core\1.5.16\logback-core-1.5.16.jar;C:\Users\absye\.m2\repository\org\apache\logging\log4j\log4j-to-slf4j\2.24.3\log4j-to-slf4j-2.24.3.jar;C:\Users\absye\.m2\repository\org\apache\logging\log4j\log4j-api\2.24.3\log4j-api-2.24.3.jar;C:\Users\absye\.m2\repository\org\slf4j\jul-to-slf4j\2.0.16\jul-to-slf4j-2.0.16.jar;C:\Users\absye\.m2\repository\jakarta\annotation\jakarta.annotation-api\2.1.1\jakarta.annotation-api-2.1.1.jar;C:\Users\absye\.m2\repository\org\yaml\snakeyaml\2.3\snakeyaml-2.3.jar;C:\Users\absye\.m2\repository\org\springframework\boot\spring-boot-starter-json\3.4.2\spring-boot-starter-json-3.4.2.jar;C:\Users\absye\.m2\repository\com\fasterxml\jackson\datatype\jackson-datatype-jdk8\2.18.2\jackson-datatype-jdk8-2.18.2.jar;C:\Users\absye\.m2\repository\com\fasterxml\jackson\datatype\jackson-datatype-jsr310\2.18.2\jackson-datatype-jsr310-2.18.2.jar;C:\Users\absye\.m2\repository\com\fasterxml\jackson\module\jackson-module-parameter-names\2.18.2\jackson-module-parameter-names-2.18.2.jar;C:\Users\absye\.m2\repository\org\springframework\boot\spring-boot-starter-tomcat\3.4.2\spring-boot-starter-tomcat-3.4.2.jar;C:\Users\absye\.m2\repository\org\apache\tomcat\embed\tomcat-embed-core\10.1.34\tomcat-embed-core-10.1.34.jar;C:\Users\absye\.m2\repository\org\apache\tomcat\embed\tomcat-embed-el\10.1.34\tomcat-embed-el-10.1.34.jar;C:\Users\absye\.m2\repository\org\apache\tomcat\embed\tomcat-embed-websocket\10.1.34\tomcat-embed-websocket-10.1.34.jar;C:\Users\absye\.m2\repository\org\springframework\spring-web\6.2.2\spring-web-6.2.2.jar;C:\Users\absye\.m2\repository\org\springframework\spring-beans\6.2.2\spring-beans-6.2.2.jar;C:\Users\absye\.m2\repository\io\micrometer\micrometer-observation\1.14.3\micrometer-observation-1.14.3.jar;C:\Users\absye\.m2\repository\io\micrometer\micrometer-commons\1.14.3\micrometer-commons-1.14.3.jar;C:\Users\absye\.m2\repository\org\springframework\spring-webmvc\6.2.2\spring-webmvc-6.2.2.jar;C:\Users\absye\.m2\repository\org\springframework\spring-aop\6.2.2\spring-aop-6.2.2.jar;C:\Users\absye\.m2\repository\org\springframework\spring-context\6.2.2\spring-context-6.2.2.jar;C:\Users\absye\.m2\repository\org\springframework\spring-expression\6.2.2\spring-expression-6.2.2.jar;C:\Users\absye\.m2\repository\org\springframework\boot\spring-boot-devtools\3.4.2\spring-boot-devtools-3.4.2.jar;C:\Users\absye\.m2\repository\org\springframework\boot\spring-boot\3.4.2\spring-boot-3.4.2.jar;C:\Users\absye\.m2\repository\org\springframework\boot\spring-boot-autoconfigure\3.4.2\spring-boot-autoconfigure-3.4.2.jar;C:\Users\absye\.m2\repository\org\springframework\boot\spring-boot-starter-test\3.4.2\spring-boot-starter-test-3.4.2.jar;C:\Users\absye\.m2\repository\org\springframework\boot\spring-boot-test\3.4.2\spring-boot-test-3.4.2.jar;C:\Users\absye\.m2\repository\org\springframework\boot\spring-boot-test-autoconfigure\3.4.2\spring-boot-test-autoconfigure-3.4.2.jar;C:\Users\absye\.m2\repository\com\jayway\jsonpath\json-path\2.9.0\json-path-2.9.0.jar;C:\Users\absye\.m2\repository\jakarta\xml\bind\jakarta.xml.bind-api\4.0.2\jakarta.xml.bind-api-4.0.2.jar;C:\Users\absye\.m2\repository\jakarta\activation\jakarta.activation-api\2.1.3\jakarta.activation-api-2.1.3.jar;C:\Users\absye\.m2\repository\net\minidev\json-smart\2.5.1\json-smart-2.5.1.jar;C:\Users\absye\.m2\repository\net\minidev\accessors-smart\2.5.1\accessors-smart-2.5.1.jar;C:\Users\absye\.m2\repository\org\ow2\asm\asm\9.6\asm-9.6.jar;C:\Users\absye\.m2\repository\org\assertj\assertj-core\3.26.3\assertj-core-3.26.3.jar;C:\Users\absye\.m2\repository\net\bytebuddy\byte-buddy\1.15.11\byte-buddy-1.15.11.jar;C:\Users\absye\.m2\repository\org\awaitility\awaitility\4.2.2\awaitility-4.2.2.jar;C:\Users\absye\.m2\repository\org\hamcrest\hamcrest\2.2\hamcrest-2.2.jar;C:\Users\absye\.m2\repository\org\junit\jupiter\junit-jupiter\5.11.4\junit-jupiter-5.11.4.jar;C:\Users\absye\.m2\repository\org\junit\jupiter\junit-jupiter-api\5.11.4\junit-jupiter-api-5.11.4.jar;C:\Users\absye\.m2\repository\org\opentest4j\opentest4j\1.3.0\opentest4j-1.3.0.jar;C:\Users\absye\.m2\repository\org\junit\platform\junit-platform-commons\1.11.4\junit-platform-commons-1.11.4.jar;C:\Users\absye\.m2\repository\org\apiguardian\apiguardian-api\1.1.2\apiguardian-api-1.1.2.jar;C:\Users\absye\.m2\repository\org\junit\jupiter\junit-jupiter-params\5.11.4\junit-jupiter-params-5.11.4.jar;C:\Users\absye\.m2\repository\org\junit\jupiter\junit-jupiter-engine\5.11.4\junit-jupiter-engine-5.11.4.jar;C:\Users\absye\.m2\repository\org\junit\platform\junit-platform-engine\1.11.4\junit-platform-engine-1.11.4.jar;C:\Users\absye\.m2\repository\org\mockito\mockito-core\5.14.2\mockito-core-5.14.2.jar;C:\Users\absye\.m2\repository\net\bytebuddy\byte-buddy-agent\1.15.11\byte-buddy-agent-1.15.11.jar;C:\Users\absye\.m2\repository\org\objenesis\objenesis\3.3\objenesis-3.3.jar;C:\Users\absye\.m2\repository\org\mockito\mockito-junit-jupiter\5.14.2\mockito-junit-jupiter-5.14.2.jar;C:\Users\absye\.m2\repository\org\skyscreamer\jsonassert\1.5.3\jsonassert-1.5.3.jar;C:\Users\absye\.m2\repository\com\vaadin\external\google\android-json\0.0.20131108.vaadin1\android-json-0.0.20131108.vaadin1.jar;C:\Users\absye\.m2\repository\org\springframework\spring-core\6.2.2\spring-core-6.2.2.jar;C:\Users\absye\.m2\repository\org\springframework\spring-jcl\6.2.2\spring-jcl-6.2.2.jar;C:\Users\absye\.m2\repository\org\springframework\spring-test\6.2.2\spring-test-6.2.2.jar;C:\Users\absye\.m2\repository\org\xmlunit\xmlunit-core\2.10.0\xmlunit-core-2.10.0.jar;C:\Users\absye\.m2\repository\com\fasterxml\jackson\core\jackson-databind\2.18.2\jackson-databind-2.18.2.jar;C:\Users\absye\.m2\repository\com\fasterxml\jackson\core\jackson-annotations\2.18.2\jackson-annotations-2.18.2.jar;C:\Users\absye\.m2\repository\com\fasterxml\jackson\core\jackson-core\2.18.2\jackson-core-2.18.2.jar;"/>
     <property name="sun.cpu.endian" value="little"/>
@@ -33,7 +33,7 @@
     <property name="java.specification.name" value="Java Platform API Specification"/>
     <property name="FILE_LOG_CHARSET" value="UTF-8"/>
     <property name="java.awt.headless" value="true"/>
-    <property name="surefire.real.class.path" value="C:\Users\absye\AppData\Local\Temp\surefire10649119183020725340\surefirebooter-20250301165042275_3.jar"/>
+    <property name="surefire.real.class.path" value="C:\Users\absye\AppData\Local\Temp\surefire703516459913802738\surefirebooter-20250302214752375_3.jar"/>
     <property name="user.script" value=""/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="java.runtime.version" value="23.0.2+7-58"/>
@@ -51,7 +51,7 @@
     <property name="user.dir" value="C:\Users\absye\OneDrive\Desktop\65-Spiderman"/>
     <property name="os.arch" value="amd64"/>
     <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
-    <property name="PID" value="24724"/>
+    <property name="PID" value="8124"/>
     <property name="sun.os.patch.level" value=""/>
     <property name="CONSOLE_LOG_CHARSET" value="UTF-8"/>
     <property name="native.encoding" value="Cp1252"/>
@@ -64,10 +64,10 @@
     <property name="java.class.version" value="67.0"/>
     <property name="LOGGED_APPLICATION_NAME" value="[MiniProject1] "/>
   </properties>
-  <testcase name="testGetUsersEndPoint" classname="com.example.MiniProject1.MiniProject1ApplicationTests" time="1.118">
-    <system-out><![CDATA[16:50:43.697 [main] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.example.MiniProject1.MiniProject1ApplicationTests]: MiniProject1ApplicationTests does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
-16:50:43.988 [main] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.example.MiniProject1.MiniProject1Application for test class com.example.MiniProject1.MiniProject1ApplicationTests
-16:50:44.220 [main] INFO org.springframework.boot.devtools.restart.RestartApplicationListener -- Restart disabled due to context in which it is running
+  <testcase name="testGetUsersEndPoint" classname="com.example.MiniProject1.MiniProject1ApplicationTests" time="0.958">
+    <system-out><![CDATA[21:47:53.527 [main] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.example.MiniProject1.MiniProject1ApplicationTests]: MiniProject1ApplicationTests does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+21:47:53.712 [main] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.example.MiniProject1.MiniProject1Application for test class com.example.MiniProject1.MiniProject1ApplicationTests
+21:47:53.824 [main] INFO org.springframework.boot.devtools.restart.RestartApplicationListener -- Restart disabled due to context in which it is running
 
   .   ____          _            __ _ _
  /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
@@ -78,12 +78,12 @@
 
  :: Spring Boot ::                (v3.4.2)
 
-2025-03-01T16:50:45.109+02:00  INFO 24724 --- [MiniProject1] [           main] c.e.M.MiniProject1ApplicationTests       : Starting MiniProject1ApplicationTests using Java 23.0.2 with PID 24724 (started by absye in C:\Users\absye\OneDrive\Desktop\65-Spiderman)
-2025-03-01T16:50:45.112+02:00  INFO 24724 --- [MiniProject1] [           main] c.e.M.MiniProject1ApplicationTests       : No active profile set, falling back to 1 default profile: "default"
-2025-03-01T16:50:46.700+02:00  INFO 24724 --- [MiniProject1] [           main] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
-2025-03-01T16:50:46.700+02:00  INFO 24724 --- [MiniProject1] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
-2025-03-01T16:50:46.702+02:00  INFO 24724 --- [MiniProject1] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
-2025-03-01T16:50:46.737+02:00  INFO 24724 --- [MiniProject1] [           main] c.e.M.MiniProject1ApplicationTests       : Started MiniProject1ApplicationTests in 2.537 seconds (process running for 4.209)
+2025-03-02T21:47:54.266+02:00  INFO 8124 --- [MiniProject1] [           main] c.e.M.MiniProject1ApplicationTests       : Starting MiniProject1ApplicationTests using Java 23.0.2 with PID 8124 (started by absye in C:\Users\absye\OneDrive\Desktop\65-Spiderman)
+2025-03-02T21:47:54.268+02:00  INFO 8124 --- [MiniProject1] [           main] c.e.M.MiniProject1ApplicationTests       : No active profile set, falling back to 1 default profile: "default"
+2025-03-02T21:47:55.591+02:00  INFO 8124 --- [MiniProject1] [           main] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2025-03-02T21:47:55.591+02:00  INFO 8124 --- [MiniProject1] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2025-03-02T21:47:55.593+02:00  INFO 8124 --- [MiniProject1] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+2025-03-02T21:47:55.617+02:00  INFO 8124 --- [MiniProject1] [           main] c.e.M.MiniProject1ApplicationTests       : Started MiniProject1ApplicationTests in 1.808 seconds (process running for 3.109)
 ]]></system-out>
     <system-err><![CDATA[Mockito is currently self-attaching to enable the inline-mock-maker. This will no longer work in future releases of the JDK. Please add Mockito as an agent to your build what is described in Mockito's documentation: https://javadoc.io/doc/org.mockito/mockito-core/latest/org/mockito/Mockito.html#0.3
 WARNING: A Java agent has been loaded dynamically (C:\Users\absye\.m2\repository\net\bytebuddy\byte-buddy-agent\1.15.11\byte-buddy-agent-1.15.11.jar)
@@ -92,14 +92,115 @@ WARNING: If a serviceability tool is not in use, please run with -Djdk.instrumen
 WARNING: Dynamic loading of agents will be disallowed by default in a future release
 ]]></system-err>
   </testcase>
-  <testcase name="testGetCartByIdEndPoint" classname="com.example.MiniProject1.MiniProject1ApplicationTests" time="0.045"/>
-  <testcase name="testEmptyCartEndpoint" classname="com.example.MiniProject1.MiniProject1ApplicationTests" time="0.012"/>
-  <testcase name="testAddOrderEndPoint" classname="com.example.MiniProject1.MiniProject1ApplicationTests" time="0.023"/>
-  <testcase name="testApplyDiscountEndPoint" classname="com.example.MiniProject1.MiniProject1ApplicationTests" time="0.019"/>
-  <testcase name="testDeleteOrderByIdEndPoint" classname="com.example.MiniProject1.MiniProject1ApplicationTests" time="0.009"/>
-  <testcase name="testGetOrdersByUserIdEndPoint" classname="com.example.MiniProject1.MiniProject1ApplicationTests" time="0.016"/>
-  <testcase name="testDeleteProductByIdEndPoint1" classname="com.example.MiniProject1.MiniProject1ApplicationTests" time="0.01"/>
-  <testcase name="testApplyDiscount_InvalidValue" classname="com.example.MiniProject1.MiniProject1ApplicationTests" time="0.019">
+  <testcase name="testGetOrderById_InvalidId" classname="com.example.MiniProject1.MiniProject1ApplicationTests" time="0.034">
+    <failure message="Response content expected:&lt;Invalid order ID format&gt; but was:&lt;&gt;" type="java.lang.AssertionError"><![CDATA[java.lang.AssertionError: Response content expected:<Invalid order ID format> but was:<>
+	at org.springframework.test.util.AssertionErrors.fail(AssertionErrors.java:61)
+	at org.springframework.test.util.AssertionErrors.assertEquals(AssertionErrors.java:128)
+	at org.springframework.test.web.servlet.result.ContentResultMatchers.lambda$string$4(ContentResultMatchers.java:148)
+	at org.springframework.test.web.servlet.MockMvc$1.andExpect(MockMvc.java:214)
+	at com.example.MiniProject1.MiniProject1ApplicationTests.testGetOrderById_InvalidId(MiniProject1ApplicationTests.java:940)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
+]]></failure>
+    <system-out><![CDATA[2025-03-02T21:47:56.615+02:00  WARN 8124 --- [MiniProject1] [           main] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.method.annotation.MethodArgumentTypeMismatchException: Method parameter 'orderId': Failed to convert value of type 'java.lang.String' to required type 'java.util.UUID'; Invalid UUID string: invalid-id]
+
+MockHttpServletRequest:
+      HTTP Method = GET
+      Request URI = /order/invalid-id
+       Parameters = {}
+          Headers = []
+             Body = null
+    Session Attrs = {}
+
+Handler:
+             Type = com.example.controller.OrderController
+           Method = com.example.controller.OrderController#getOrderById(UUID)
+
+Async:
+    Async started = false
+     Async result = null
+
+Resolved Exception:
+             Type = org.springframework.web.method.annotation.MethodArgumentTypeMismatchException
+
+ModelAndView:
+        View name = null
+             View = null
+            Model = null
+
+FlashMap:
+       Attributes = null
+
+MockHttpServletResponse:
+           Status = 400
+    Error message = null
+          Headers = []
+     Content type = null
+             Body = 
+    Forwarded URL = null
+   Redirected URL = null
+          Cookies = []
+]]></system-out>
+  </testcase>
+  <testcase name="testGetCartByIdEndPoint" classname="com.example.MiniProject1.MiniProject1ApplicationTests" time="0.038"/>
+  <testcase name="testEmptyCartEndpoint" classname="com.example.MiniProject1.MiniProject1ApplicationTests" time="0.01"/>
+  <testcase name="testAddOrderEndPoint" classname="com.example.MiniProject1.MiniProject1ApplicationTests" time="0.021"/>
+  <testcase name="testApplyDiscountEndPoint" classname="com.example.MiniProject1.MiniProject1ApplicationTests" time="0.018"/>
+  <testcase name="testDeleteOrderByIdEndPoint" classname="com.example.MiniProject1.MiniProject1ApplicationTests" time="0.008"/>
+  <testcase name="testGetOrdersByUserIdEndPoint" classname="com.example.MiniProject1.MiniProject1ApplicationTests" time="0.014"/>
+  <testcase name="testAddOrder_InvalidUserId" classname="com.example.MiniProject1.MiniProject1ApplicationTests" time="0.009">
+    <failure message="Status expected:&lt;400&gt; but was:&lt;200&gt;" type="java.lang.AssertionError"><![CDATA[java.lang.AssertionError: Status expected:<400> but was:<200>
+	at org.springframework.test.util.AssertionErrors.fail(AssertionErrors.java:61)
+	at org.springframework.test.util.AssertionErrors.assertEquals(AssertionErrors.java:128)
+	at org.springframework.test.web.servlet.result.StatusResultMatchers.lambda$matcher$9(StatusResultMatchers.java:640)
+	at org.springframework.test.web.servlet.MockMvc$1.andExpect(MockMvc.java:214)
+	at com.example.MiniProject1.MiniProject1ApplicationTests.testAddOrder_InvalidUserId(MiniProject1ApplicationTests.java:860)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
+]]></failure>
+    <system-out><![CDATA[
+MockHttpServletRequest:
+      HTTP Method = POST
+      Request URI = /order/
+       Parameters = {}
+          Headers = [Content-Type:"application/json;charset=UTF-8", Content-Length:"170"]
+             Body = {"id":"fca75d88-2326-40ee-8091-58027de6b232","userId":null,"totalPrice":10.0,"products":[{"id":"862ec674-cfff-478c-aa4a-f9ba53a3018b","name":"Test Product","price":5.0}]}
+    Session Attrs = {}
+
+Handler:
+             Type = com.example.controller.OrderController
+           Method = com.example.controller.OrderController#addOrder(Order)
+
+Async:
+    Async started = false
+     Async result = null
+
+Resolved Exception:
+             Type = null
+
+ModelAndView:
+        View name = null
+             View = null
+            Model = null
+
+FlashMap:
+       Attributes = null
+
+MockHttpServletResponse:
+           Status = 200
+    Error message = null
+          Headers = []
+     Content type = null
+             Body = 
+    Forwarded URL = null
+   Redirected URL = null
+          Cookies = []
+]]></system-out>
+  </testcase>
+  <testcase name="testDeleteProductByIdEndPoint1" classname="com.example.MiniProject1.MiniProject1ApplicationTests" time="0.011"/>
+  <testcase name="testApplyDiscount_InvalidValue" classname="com.example.MiniProject1.MiniProject1ApplicationTests" time="0.007">
     <error message="Request processing failed: java.lang.IllegalArgumentException: Discount must be between 1 and 100." type="jakarta.servlet.ServletException"><![CDATA[jakarta.servlet.ServletException: Request processing failed: java.lang.IllegalArgumentException: Discount must be between 1 and 100.
 	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1022)
 	at org.springframework.web.servlet.FrameworkServlet.doPut(FrameworkServlet.java:925)
@@ -144,7 +245,7 @@ Caused by: java.lang.IllegalArgumentException: Discount must be between 1 and 10
 	... 24 more
 ]]></error>
   </testcase>
-  <testcase name="testGetProducts_NoProducts" classname="com.example.MiniProject1.MiniProject1ApplicationTests" time="0.022">
+  <testcase name="testGetProducts_NoProducts" classname="com.example.MiniProject1.MiniProject1ApplicationTests" time="0.02">
     <error message="&#10;when() requires an argument which has to be &apos;a method call on a mock&apos;.&#10;For example:&#10;    when(mock.getArticles()).thenReturn(articles);&#10;&#10;Also, this error might show up because:&#10;1. you stub either of: final/private/native/equals()/hashCode() methods.&#10;   Those methods *cannot* be stubbed/verified.&#10;   Mocking methods declared on non-public parent classes is not supported.&#10;2. inside when() you don&apos;t call method on mock but on some other object.&#10;" type="org.mockito.exceptions.misusing.MissingMethodInvocationException"><![CDATA[org.mockito.exceptions.misusing.MissingMethodInvocationException: 
 
 when() requires an argument which has to be 'a method call on a mock'.
@@ -163,12 +264,12 @@ Also, this error might show up because:
 	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
 ]]></error>
   </testcase>
-  <testcase name="testAddUserEndPoint" classname="com.example.MiniProject1.MiniProject1ApplicationTests" time="0.014"/>
-  <testcase name="testGetCartsEndPoint" classname="com.example.MiniProject1.MiniProject1ApplicationTests" time="0.012"/>
-  <testcase name="testAddOrderToUserEndPoint" classname="com.example.MiniProject1.MiniProject1ApplicationTests" time="0.018"/>
-  <testcase name="testUpdateProductEndPoint" classname="com.example.MiniProject1.MiniProject1ApplicationTests" time="0.023"/>
-  <testcase name="testRemoveOrderOfUserEndPoint" classname="com.example.MiniProject1.MiniProject1ApplicationTests" time="0.012"/>
-  <testcase name="testGetProductById_NonExistent" classname="com.example.MiniProject1.MiniProject1ApplicationTests" time="0.008">
+  <testcase name="testAddUserEndPoint" classname="com.example.MiniProject1.MiniProject1ApplicationTests" time="0.011"/>
+  <testcase name="testGetCartsEndPoint" classname="com.example.MiniProject1.MiniProject1ApplicationTests" time="0.008"/>
+  <testcase name="testAddOrderToUserEndPoint" classname="com.example.MiniProject1.MiniProject1ApplicationTests" time="0.011"/>
+  <testcase name="testUpdateProductEndPoint" classname="com.example.MiniProject1.MiniProject1ApplicationTests" time="0.017"/>
+  <testcase name="testRemoveOrderOfUserEndPoint" classname="com.example.MiniProject1.MiniProject1ApplicationTests" time="0.01"/>
+  <testcase name="testGetProductById_NonExistent" classname="com.example.MiniProject1.MiniProject1ApplicationTests" time="0.005">
     <error message="&#10;when() requires an argument which has to be &apos;a method call on a mock&apos;.&#10;For example:&#10;    when(mock.getArticles()).thenReturn(articles);&#10;&#10;Also, this error might show up because:&#10;1. you stub either of: final/private/native/equals()/hashCode() methods.&#10;   Those methods *cannot* be stubbed/verified.&#10;   Mocking methods declared on non-public parent classes is not supported.&#10;2. inside when() you don&apos;t call method on mock but on some other object.&#10;" type="org.mockito.exceptions.misusing.MissingMethodInvocationException"><![CDATA[org.mockito.exceptions.misusing.MissingMethodInvocationException: 
 
 when() requires an argument which has to be 'a method call on a mock'.
@@ -187,8 +288,59 @@ Also, this error might show up because:
 	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
 ]]></error>
   </testcase>
+  <testcase name="testDeleteOrderById_InvalidId" classname="com.example.MiniProject1.MiniProject1ApplicationTests" time="0.007">
+    <failure message="Response content expected:&lt;Invalid order ID format&gt; but was:&lt;&gt;" type="java.lang.AssertionError"><![CDATA[java.lang.AssertionError: Response content expected:<Invalid order ID format> but was:<>
+	at org.springframework.test.util.AssertionErrors.fail(AssertionErrors.java:61)
+	at org.springframework.test.util.AssertionErrors.assertEquals(AssertionErrors.java:128)
+	at org.springframework.test.web.servlet.result.ContentResultMatchers.lambda$string$4(ContentResultMatchers.java:148)
+	at org.springframework.test.web.servlet.MockMvc$1.andExpect(MockMvc.java:214)
+	at com.example.MiniProject1.MiniProject1ApplicationTests.testDeleteOrderById_InvalidId(MiniProject1ApplicationTests.java:969)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
+]]></failure>
+    <system-out><![CDATA[2025-03-02T21:47:56.889+02:00  WARN 8124 --- [MiniProject1] [           main] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.method.annotation.MethodArgumentTypeMismatchException: Method parameter 'orderId': Failed to convert value of type 'java.lang.String' to required type 'java.util.UUID'; Invalid UUID string: invalid-id]
+
+MockHttpServletRequest:
+      HTTP Method = DELETE
+      Request URI = /order/delete/invalid-id
+       Parameters = {}
+          Headers = []
+             Body = null
+    Session Attrs = {}
+
+Handler:
+             Type = com.example.controller.OrderController
+           Method = com.example.controller.OrderController#deleteOrderById(UUID)
+
+Async:
+    Async started = false
+     Async result = null
+
+Resolved Exception:
+             Type = org.springframework.web.method.annotation.MethodArgumentTypeMismatchException
+
+ModelAndView:
+        View name = null
+             View = null
+            Model = null
+
+FlashMap:
+       Attributes = null
+
+MockHttpServletResponse:
+           Status = 400
+    Error message = null
+          Headers = []
+     Content type = null
+             Body = 
+    Forwarded URL = null
+   Redirected URL = null
+          Cookies = []
+]]></system-out>
+  </testcase>
   <testcase name="testGetProductByIdEndPoint" classname="com.example.MiniProject1.MiniProject1ApplicationTests" time="0.013"/>
-  <testcase name="testDeleteProductById_NonExistent" classname="com.example.MiniProject1.MiniProject1ApplicationTests" time="0.009">
+  <testcase name="testDeleteProductById_NonExistent" classname="com.example.MiniProject1.MiniProject1ApplicationTests" time="0.007">
     <error message="&#10;Argument passed to when() is not a mock!&#10;Example of correct stubbing:&#10;    doThrow(new RuntimeException()).when(mock).someMethod();" type="org.mockito.exceptions.misusing.NotAMockException"><![CDATA[org.mockito.exceptions.misusing.NotAMockException: 
 
 Argument passed to when() is not a mock!
@@ -200,8 +352,8 @@ Example of correct stubbing:
 	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
 ]]></error>
   </testcase>
-  <testcase name="testGetProductsEndPoint" classname="com.example.MiniProject1.MiniProject1ApplicationTests" time="0.011"/>
-  <testcase name="testAddProductEndPoint" classname="com.example.MiniProject1.MiniProject1ApplicationTests" time="0.01"/>
+  <testcase name="testGetProductsEndPoint" classname="com.example.MiniProject1.MiniProject1ApplicationTests" time="0.01"/>
+  <testcase name="testAddProductEndPoint" classname="com.example.MiniProject1.MiniProject1ApplicationTests" time="0.008"/>
   <testcase name="testGetProducts_ServiceFailure" classname="com.example.MiniProject1.MiniProject1ApplicationTests" time="0.006">
     <error message="&#10;when() requires an argument which has to be &apos;a method call on a mock&apos;.&#10;For example:&#10;    when(mock.getArticles()).thenReturn(articles);&#10;&#10;Also, this error might show up because:&#10;1. you stub either of: final/private/native/equals()/hashCode() methods.&#10;   Those methods *cannot* be stubbed/verified.&#10;   Mocking methods declared on non-public parent classes is not supported.&#10;2. inside when() you don&apos;t call method on mock but on some other object.&#10;" type="org.mockito.exceptions.misusing.MissingMethodInvocationException"><![CDATA[org.mockito.exceptions.misusing.MissingMethodInvocationException: 
 
@@ -221,7 +373,7 @@ Also, this error might show up because:
 	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
 ]]></error>
   </testcase>
-  <testcase name="testDeleteProductFromCartEndPoint1" classname="com.example.MiniProject1.MiniProject1ApplicationTests" time="0.014">
+  <testcase name="testDeleteProductFromCartEndPoint1" classname="com.example.MiniProject1.MiniProject1ApplicationTests" time="0.009">
     <failure message="Response content expected:&lt;Product deleted from cart&gt; but was:&lt;Cart is empty&gt;" type="java.lang.AssertionError"><![CDATA[java.lang.AssertionError: Response content expected:<Product deleted from cart> but was:<Cart is empty>
 	at org.springframework.test.util.AssertionErrors.fail(AssertionErrors.java:61)
 	at org.springframework.test.util.AssertionErrors.assertEquals(AssertionErrors.java:128)
@@ -236,7 +388,7 @@ Also, this error might show up because:
 MockHttpServletRequest:
       HTTP Method = PUT
       Request URI = /user/deleteProductFromCart
-       Parameters = {userId=[9465a37c-6e72-40d4-81e1-2749f4363156], productId=[eee50135-a670-44b1-926e-636fcabeb1ae]}
+       Parameters = {userId=[e2b1f1dd-46b2-4e25-a561-f0e733cf7986], productId=[84183d0b-b856-4652-a7d4-8d53a2dce038]}
           Headers = []
              Body = null
     Session Attrs = {}
@@ -271,9 +423,28 @@ MockHttpServletResponse:
           Cookies = []
 ]]></system-out>
   </testcase>
-  <testcase name="testDeleteProductFromCartEndPoint2" classname="com.example.MiniProject1.MiniProject1ApplicationTests" time="0.012"/>
-  <testcase name="testDeleteOrderByIdEndPoint2" classname="com.example.MiniProject1.MiniProject1ApplicationTests" time="0.014"/>
-  <testcase name="testDeleteProductById_InvalidId" classname="com.example.MiniProject1.MiniProject1ApplicationTests" time="0.019">
+  <testcase name="testDeleteProductFromCartEndPoint2" classname="com.example.MiniProject1.MiniProject1ApplicationTests" time="0.014"/>
+  <testcase name="testGetOrderById_NonExistent" classname="com.example.MiniProject1.MiniProject1ApplicationTests" time="0.006">
+    <error message="&#10;when() requires an argument which has to be &apos;a method call on a mock&apos;.&#10;For example:&#10;    when(mock.getArticles()).thenReturn(articles);&#10;&#10;Also, this error might show up because:&#10;1. you stub either of: final/private/native/equals()/hashCode() methods.&#10;   Those methods *cannot* be stubbed/verified.&#10;   Mocking methods declared on non-public parent classes is not supported.&#10;2. inside when() you don&apos;t call method on mock but on some other object.&#10;" type="org.mockito.exceptions.misusing.MissingMethodInvocationException"><![CDATA[org.mockito.exceptions.misusing.MissingMethodInvocationException: 
+
+when() requires an argument which has to be 'a method call on a mock'.
+For example:
+    when(mock.getArticles()).thenReturn(articles);
+
+Also, this error might show up because:
+1. you stub either of: final/private/native/equals()/hashCode() methods.
+   Those methods *cannot* be stubbed/verified.
+   Mocking methods declared on non-public parent classes is not supported.
+2. inside when() you don't call method on mock but on some other object.
+
+	at com.example.MiniProject1.MiniProject1ApplicationTests.testGetOrderById_NonExistent(MiniProject1ApplicationTests.java:929)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
+]]></error>
+  </testcase>
+  <testcase name="testDeleteOrderByIdEndPoint2" classname="com.example.MiniProject1.MiniProject1ApplicationTests" time="0.007"/>
+  <testcase name="testDeleteProductById_InvalidId" classname="com.example.MiniProject1.MiniProject1ApplicationTests" time="0.007">
     <failure message="Response content expected:&lt;Invalid product ID&gt; but was:&lt;&gt;" type="java.lang.AssertionError"><![CDATA[java.lang.AssertionError: Response content expected:<Invalid product ID> but was:<>
 	at org.springframework.test.util.AssertionErrors.fail(AssertionErrors.java:61)
 	at org.springframework.test.util.AssertionErrors.assertEquals(AssertionErrors.java:128)
@@ -284,7 +455,7 @@ MockHttpServletResponse:
 	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
 	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
 ]]></failure>
-    <system-out><![CDATA[2025-03-01T16:50:48.294+02:00  WARN 24724 --- [MiniProject1] [           main] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.method.annotation.MethodArgumentTypeMismatchException: Method parameter 'productId': Failed to convert value of type 'java.lang.String' to required type 'java.util.UUID'; Invalid UUID string: invalid-id]
+    <system-out><![CDATA[2025-03-02T21:47:56.993+02:00  WARN 8124 --- [MiniProject1] [           main] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.method.annotation.MethodArgumentTypeMismatchException: Method parameter 'productId': Failed to convert value of type 'java.lang.String' to required type 'java.util.UUID'; Invalid UUID string: invalid-id]
 
 MockHttpServletRequest:
       HTTP Method = DELETE
@@ -324,8 +495,77 @@ MockHttpServletResponse:
           Cookies = []
 ]]></system-out>
   </testcase>
-  <testcase name="testGetOrdersEndPoint" classname="com.example.MiniProject1.MiniProject1ApplicationTests" time="0.013"/>
-  <testcase name="testGetOrderByIdEndPoint" classname="com.example.MiniProject1.MiniProject1ApplicationTests" time="0.014">
+  <testcase name="testGetOrdersEndPoint" classname="com.example.MiniProject1.MiniProject1ApplicationTests" time="0.014"/>
+  <testcase name="testAddOrder_EmptyProductList" classname="com.example.MiniProject1.MiniProject1ApplicationTests" time="0.008">
+    <failure message="Response content expected:&lt;Order added successfully&gt; but was:&lt;&gt;" type="java.lang.AssertionError"><![CDATA[java.lang.AssertionError: Response content expected:<Order added successfully> but was:<>
+	at org.springframework.test.util.AssertionErrors.fail(AssertionErrors.java:61)
+	at org.springframework.test.util.AssertionErrors.assertEquals(AssertionErrors.java:128)
+	at org.springframework.test.web.servlet.result.ContentResultMatchers.lambda$string$4(ContentResultMatchers.java:148)
+	at org.springframework.test.web.servlet.MockMvc$1.andExpect(MockMvc.java:214)
+	at com.example.MiniProject1.MiniProject1ApplicationTests.testAddOrder_EmptyProductList(MiniProject1ApplicationTests.java:849)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
+]]></failure>
+    <system-out><![CDATA[
+MockHttpServletRequest:
+      HTTP Method = POST
+      Request URI = /order/
+       Parameters = {}
+          Headers = [Content-Type:"application/json;charset=UTF-8", Content-Length:"125"]
+             Body = {"id":"8015c37d-5bc7-42c7-a041-91dcd114bfe7","userId":"b2b60f7d-400c-4e81-bfae-40f68dd8edb8","totalPrice":10.0,"products":[]}
+    Session Attrs = {}
+
+Handler:
+             Type = com.example.controller.OrderController
+           Method = com.example.controller.OrderController#addOrder(Order)
+
+Async:
+    Async started = false
+     Async result = null
+
+Resolved Exception:
+             Type = null
+
+ModelAndView:
+        View name = null
+             View = null
+            Model = null
+
+FlashMap:
+       Attributes = null
+
+MockHttpServletResponse:
+           Status = 200
+    Error message = null
+          Headers = []
+     Content type = null
+             Body = 
+    Forwarded URL = null
+   Redirected URL = null
+          Cookies = []
+]]></system-out>
+  </testcase>
+  <testcase name="testGetOrders_ServiceFailure" classname="com.example.MiniProject1.MiniProject1ApplicationTests" time="0.013">
+    <error message="&#10;when() requires an argument which has to be &apos;a method call on a mock&apos;.&#10;For example:&#10;    when(mock.getArticles()).thenReturn(articles);&#10;&#10;Also, this error might show up because:&#10;1. you stub either of: final/private/native/equals()/hashCode() methods.&#10;   Those methods *cannot* be stubbed/verified.&#10;   Mocking methods declared on non-public parent classes is not supported.&#10;2. inside when() you don&apos;t call method on mock but on some other object.&#10;" type="org.mockito.exceptions.misusing.MissingMethodInvocationException"><![CDATA[org.mockito.exceptions.misusing.MissingMethodInvocationException: 
+
+when() requires an argument which has to be 'a method call on a mock'.
+For example:
+    when(mock.getArticles()).thenReturn(articles);
+
+Also, this error might show up because:
+1. you stub either of: final/private/native/equals()/hashCode() methods.
+   Those methods *cannot* be stubbed/verified.
+   Mocking methods declared on non-public parent classes is not supported.
+2. inside when() you don't call method on mock but on some other object.
+
+	at com.example.MiniProject1.MiniProject1ApplicationTests.testGetOrders_ServiceFailure(MiniProject1ApplicationTests.java:901)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
+]]></error>
+  </testcase>
+  <testcase name="testGetOrderByIdEndPoint" classname="com.example.MiniProject1.MiniProject1ApplicationTests" time="0.012">
     <failure message="totalPrice&#10;Expected: 10.0&#10;     got: 0.0&#10;" type="java.lang.AssertionError"><![CDATA[java.lang.AssertionError: 
 totalPrice
 Expected: 10.0
@@ -334,7 +574,7 @@ Expected: 10.0
 	at org.springframework.test.json.JsonComparator.assertIsMatch(JsonComparator.java:50)
 	at org.springframework.test.web.servlet.result.ContentResultMatchers.lambda$json$9(ContentResultMatchers.java:261)
 	at org.springframework.test.web.servlet.MockMvc$1.andExpect(MockMvc.java:214)
-	at com.example.MiniProject1.MiniProject1ApplicationTests.testGetOrderByIdEndPoint(MiniProject1ApplicationTests.java:867)
+	at com.example.MiniProject1.MiniProject1ApplicationTests.testGetOrderByIdEndPoint(MiniProject1ApplicationTests.java:918)
 	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
 	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
 	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
@@ -342,7 +582,7 @@ Expected: 10.0
     <system-out><![CDATA[
 MockHttpServletRequest:
       HTTP Method = GET
-      Request URI = /order/5a356745-7e80-490d-9910-1d20b8444fe1
+      Request URI = /order/40414040-77f0-415a-af59-382c0c5c2b29
        Parameters = {}
           Headers = []
              Body = null
@@ -372,16 +612,16 @@ MockHttpServletResponse:
     Error message = null
           Headers = [Content-Type:"application/json"]
      Content type = application/json
-             Body = {"id":"5a356745-7e80-490d-9910-1d20b8444fe1","userId":"a40dcaeb-56b6-4624-8223-1284370a6bfc","totalPrice":0.0,"products":[]}
+             Body = {"id":"40414040-77f0-415a-af59-382c0c5c2b29","userId":"730b6e75-9e39-4680-9407-6be5fc857629","totalPrice":0.0,"products":[]}
     Forwarded URL = null
    Redirected URL = null
           Cookies = []
 ]]></system-out>
   </testcase>
-  <testcase name="testAddProductToCartEndPoint" classname="com.example.MiniProject1.MiniProject1ApplicationTests" time="0.017"/>
+  <testcase name="testAddProductToCartEndPoint" classname="com.example.MiniProject1.MiniProject1ApplicationTests" time="0.021"/>
   <testcase name="testAddCartEndPoint" classname="com.example.MiniProject1.MiniProject1ApplicationTests" time="0.011"/>
-  <testcase name="testUpdateProduct_NonExistentId" classname="com.example.MiniProject1.MiniProject1ApplicationTests" time="0.006">
-    <error message="Product not found with ID: 77143bc7-c9d1-4cf8-9491-c4fbcbd644f9" type="java.lang.RuntimeException"><![CDATA[java.lang.RuntimeException: Product not found with ID: 77143bc7-c9d1-4cf8-9491-c4fbcbd644f9
+  <testcase name="testUpdateProduct_NonExistentId" classname="com.example.MiniProject1.MiniProject1ApplicationTests" time="0.008">
+    <error message="Product not found with ID: 9dc69c0d-5aa9-42ee-ac62-914db1b047b2" type="java.lang.RuntimeException"><![CDATA[java.lang.RuntimeException: Product not found with ID: 9dc69c0d-5aa9-42ee-ac62-914db1b047b2
 	at com.example.repository.ProductRepository.updateProduct(ProductRepository.java:73)
 	at com.example.service.ProductService.updateProduct(ProductService.java:34)
 	at com.example.MiniProject1.MiniProject1ApplicationTests.testUpdateProduct_NonExistentId(MiniProject1ApplicationTests.java:628)
@@ -390,7 +630,7 @@ MockHttpServletResponse:
 	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
 ]]></error>
   </testcase>
-  <testcase name="testApplyDiscount_NonExistentProduct" classname="com.example.MiniProject1.MiniProject1ApplicationTests" time="0.005">
+  <testcase name="testApplyDiscount_NonExistentProduct" classname="com.example.MiniProject1.MiniProject1ApplicationTests" time="0.006">
     <error message="&#10;Argument passed to when() is not a mock!&#10;Example of correct stubbing:&#10;    doThrow(new RuntimeException()).when(mock).someMethod();" type="org.mockito.exceptions.misusing.NotAMockException"><![CDATA[org.mockito.exceptions.misusing.NotAMockException: 
 
 Argument passed to when() is not a mock!
@@ -419,7 +659,7 @@ MockHttpServletRequest:
       Request URI = /product/
        Parameters = {}
           Headers = [Content-Type:"application/json;charset=UTF-8", Content-Length:"70"]
-             Body = {"id":"4514d9b9-ad3c-427e-8279-14bb0d72e0e3","name":null,"price":10.0}
+             Body = {"id":"cbcd23e7-2045-43b4-a814-3f86c001abf5","name":null,"price":10.0}
     Session Attrs = {}
 
 Handler:
@@ -446,25 +686,44 @@ MockHttpServletResponse:
     Error message = null
           Headers = [Content-Type:"application/json"]
      Content type = application/json
-             Body = {"id":"4514d9b9-ad3c-427e-8279-14bb0d72e0e3","name":null,"price":10.0}
+             Body = {"id":"cbcd23e7-2045-43b4-a814-3f86c001abf5","name":null,"price":10.0}
     Forwarded URL = null
    Redirected URL = null
           Cookies = []
 ]]></system-out>
   </testcase>
-  <testcase name="testAddProduct_NullProduct" classname="com.example.MiniProject1.MiniProject1ApplicationTests" time="0.011">
-    <system-out><![CDATA[2025-03-01T16:50:48.399+02:00  WARN 24724 --- [MiniProject1] [           main] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.http.converter.HttpMessageNotReadableException: Required request body is missing: public com.example.model.Product com.example.controller.ProductController.addProduct(com.example.model.Product)]
+  <testcase name="testAddProduct_NullProduct" classname="com.example.MiniProject1.MiniProject1ApplicationTests" time="0.007">
+    <system-out><![CDATA[2025-03-02T21:47:57.124+02:00  WARN 8124 --- [MiniProject1] [           main] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.http.converter.HttpMessageNotReadableException: Required request body is missing: public com.example.model.Product com.example.controller.ProductController.addProduct(com.example.model.Product)]
 ]]></system-out>
   </testcase>
-  <testcase name="testDeleteCartByIdEndPoint" classname="com.example.MiniProject1.MiniProject1ApplicationTests" time="0.01"/>
-  <testcase name="testGetProductById_InvalidId" classname="com.example.MiniProject1.MiniProject1ApplicationTests" time="0.01">
-    <system-out><![CDATA[2025-03-01T16:50:48.424+02:00  WARN 24724 --- [MiniProject1] [           main] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.method.annotation.MethodArgumentTypeMismatchException: Method parameter 'productId': Failed to convert value of type 'java.lang.String' to required type 'java.util.UUID'; Invalid UUID string: invalid-id]
+  <testcase name="testDeleteCartByIdEndPoint" classname="com.example.MiniProject1.MiniProject1ApplicationTests" time="0.009"/>
+  <testcase name="testGetProductById_InvalidId" classname="com.example.MiniProject1.MiniProject1ApplicationTests" time="0.006">
+    <system-out><![CDATA[2025-03-02T21:47:57.141+02:00  WARN 8124 --- [MiniProject1] [           main] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.method.annotation.MethodArgumentTypeMismatchException: Method parameter 'productId': Failed to convert value of type 'java.lang.String' to required type 'java.util.UUID'; Invalid UUID string: invalid-id]
 ]]></system-out>
   </testcase>
-  <testcase name="testGetUserByIdEndPoint" classname="com.example.MiniProject1.MiniProject1ApplicationTests" time="0.012"/>
-  <testcase name="testDeleteUserByIdEndPoint1" classname="com.example.MiniProject1.MiniProject1ApplicationTests" time="0.012"/>
-  <testcase name="testDeleteUserByIdEndPoint2" classname="com.example.MiniProject1.MiniProject1ApplicationTests" time="0.011"/>
-  <testcase name="testUpdateProduct_MissingFields" classname="com.example.MiniProject1.MiniProject1ApplicationTests" time="0.008">
+  <testcase name="testGetUserByIdEndPoint" classname="com.example.MiniProject1.MiniProject1ApplicationTests" time="0.008"/>
+  <testcase name="testGetOrders_NoOrders" classname="com.example.MiniProject1.MiniProject1ApplicationTests" time="0.005">
+    <error message="&#10;when() requires an argument which has to be &apos;a method call on a mock&apos;.&#10;For example:&#10;    when(mock.getArticles()).thenReturn(articles);&#10;&#10;Also, this error might show up because:&#10;1. you stub either of: final/private/native/equals()/hashCode() methods.&#10;   Those methods *cannot* be stubbed/verified.&#10;   Mocking methods declared on non-public parent classes is not supported.&#10;2. inside when() you don&apos;t call method on mock but on some other object.&#10;" type="org.mockito.exceptions.misusing.MissingMethodInvocationException"><![CDATA[org.mockito.exceptions.misusing.MissingMethodInvocationException: 
+
+when() requires an argument which has to be 'a method call on a mock'.
+For example:
+    when(mock.getArticles()).thenReturn(articles);
+
+Also, this error might show up because:
+1. you stub either of: final/private/native/equals()/hashCode() methods.
+   Those methods *cannot* be stubbed/verified.
+   Mocking methods declared on non-public parent classes is not supported.
+2. inside when() you don't call method on mock but on some other object.
+
+	at com.example.MiniProject1.MiniProject1ApplicationTests.testGetOrders_NoOrders(MiniProject1ApplicationTests.java:885)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
+]]></error>
+  </testcase>
+  <testcase name="testDeleteUserByIdEndPoint1" classname="com.example.MiniProject1.MiniProject1ApplicationTests" time="0.007"/>
+  <testcase name="testDeleteUserByIdEndPoint2" classname="com.example.MiniProject1.MiniProject1ApplicationTests" time="0.006"/>
+  <testcase name="testUpdateProduct_MissingFields" classname="com.example.MiniProject1.MiniProject1ApplicationTests" time="0.006">
     <error message="Request processing failed: java.lang.NullPointerException: Cannot invoke &quot;java.lang.Double.doubleValue()&quot; because the return value of &quot;java.util.Map.get(Object)&quot; is null" type="jakarta.servlet.ServletException"><![CDATA[jakarta.servlet.ServletException: Request processing failed: java.lang.NullPointerException: Cannot invoke "java.lang.Double.doubleValue()" because the return value of "java.util.Map.get(Object)" is null
 	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1022)
 	at org.springframework.web.servlet.FrameworkServlet.doPut(FrameworkServlet.java:925)
