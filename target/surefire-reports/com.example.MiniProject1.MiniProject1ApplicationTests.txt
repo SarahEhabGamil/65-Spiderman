@@ -1,7 +1,7 @@
 -------------------------------------------------------------------------------
 Test set: com.example.MiniProject1.MiniProject1ApplicationTests
 -------------------------------------------------------------------------------
-Tests run: 39, Failures: 4, Errors: 8, Skipped: 0, Time elapsed: 4.179 s <<< FAILURE! -- in com.example.MiniProject1.MiniProject1ApplicationTests
+Tests run: 39, Failures: 4, Errors: 8, Skipped: 0, Time elapsed: 5.128 s <<< FAILURE! -- in com.example.MiniProject1.MiniProject1ApplicationTests
 com.example.MiniProject1.MiniProject1ApplicationTests.testApplyDiscount_InvalidValue -- Time elapsed: 0.019 s <<< ERROR!
 jakarta.servlet.ServletException: Request processing failed: java.lang.IllegalArgumentException: Discount must be between 1 and 100.
 	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1022)
@@ -46,7 +46,7 @@ Caused by: java.lang.IllegalArgumentException: Discount must be between 1 and 10
 	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014)
 	... 24 more
 
-com.example.MiniProject1.MiniProject1ApplicationTests.testGetProducts_NoProducts -- Time elapsed: 0.021 s <<< ERROR!
+com.example.MiniProject1.MiniProject1ApplicationTests.testGetProducts_NoProducts -- Time elapsed: 0.022 s <<< ERROR!
 org.mockito.exceptions.misusing.MissingMethodInvocationException: 
 
 when() requires an argument which has to be 'a method call on a mock'.
@@ -64,7 +64,7 @@ Also, this error might show up because:
 	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
 	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
 
-com.example.MiniProject1.MiniProject1ApplicationTests.testGetProductById_NonExistent -- Time elapsed: 0.006 s <<< ERROR!
+com.example.MiniProject1.MiniProject1ApplicationTests.testGetProductById_NonExistent -- Time elapsed: 0.008 s <<< ERROR!
 org.mockito.exceptions.misusing.MissingMethodInvocationException: 
 
 when() requires an argument which has to be 'a method call on a mock'.
@@ -82,7 +82,7 @@ Also, this error might show up because:
 	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
 	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
 
-com.example.MiniProject1.MiniProject1ApplicationTests.testDeleteProductById_NonExistent -- Time elapsed: 0.010 s <<< ERROR!
+com.example.MiniProject1.MiniProject1ApplicationTests.testDeleteProductById_NonExistent -- Time elapsed: 0.009 s <<< ERROR!
 org.mockito.exceptions.misusing.NotAMockException: 
 
 Argument passed to when() is not a mock!
@@ -122,13 +122,13 @@ java.lang.AssertionError: Response content expected:<Product deleted from cart> 
 	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
 	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
 
-com.example.MiniProject1.MiniProject1ApplicationTests.testDeleteProductById_InvalidId -- Time elapsed: 0.016 s <<< FAILURE!
+com.example.MiniProject1.MiniProject1ApplicationTests.testDeleteProductById_InvalidId -- Time elapsed: 0.019 s <<< FAILURE!
 java.lang.AssertionError: Response content expected:<Invalid product ID> but was:<>
 	at org.springframework.test.util.AssertionErrors.fail(AssertionErrors.java:61)
 	at org.springframework.test.util.AssertionErrors.assertEquals(AssertionErrors.java:128)
 	at org.springframework.test.web.servlet.result.ContentResultMatchers.lambda$string$4(ContentResultMatchers.java:148)
 	at org.springframework.test.web.servlet.MockMvc$1.andExpect(MockMvc.java:214)
-	at com.example.MiniProject1.MiniProject1ApplicationTests.testDeleteProductById_InvalidId(MiniProject1ApplicationTests.java:743)
+	at com.example.MiniProject1.MiniProject1ApplicationTests.testDeleteProductById_InvalidId(MiniProject1ApplicationTests.java:742)
 	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
 	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
 	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
@@ -142,13 +142,13 @@ Expected: 10.0
 	at org.springframework.test.json.JsonComparator.assertIsMatch(JsonComparator.java:50)
 	at org.springframework.test.web.servlet.result.ContentResultMatchers.lambda$json$9(ContentResultMatchers.java:261)
 	at org.springframework.test.web.servlet.MockMvc$1.andExpect(MockMvc.java:214)
-	at com.example.MiniProject1.MiniProject1ApplicationTests.testGetOrderByIdEndPoint(MiniProject1ApplicationTests.java:868)
+	at com.example.MiniProject1.MiniProject1ApplicationTests.testGetOrderByIdEndPoint(MiniProject1ApplicationTests.java:867)
 	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
 	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
 	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
 
-com.example.MiniProject1.MiniProject1ApplicationTests.testUpdateProduct_NonExistentId -- Time elapsed: 0.005 s <<< ERROR!
-java.lang.RuntimeException: Product not found with ID: 3366f254-ba1e-4c5c-a826-fa96e7a97a86
+com.example.MiniProject1.MiniProject1ApplicationTests.testUpdateProduct_NonExistentId -- Time elapsed: 0.006 s <<< ERROR!
+java.lang.RuntimeException: Product not found with ID: 77143bc7-c9d1-4cf8-9491-c4fbcbd644f9
 	at com.example.repository.ProductRepository.updateProduct(ProductRepository.java:73)
 	at com.example.service.ProductService.updateProduct(ProductService.java:34)
 	at com.example.MiniProject1.MiniProject1ApplicationTests.testUpdateProduct_NonExistentId(MiniProject1ApplicationTests.java:628)
@@ -156,7 +156,7 @@ java.lang.RuntimeException: Product not found with ID: 3366f254-ba1e-4c5c-a826-f
 	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
 	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
 
-com.example.MiniProject1.MiniProject1ApplicationTests.testApplyDiscount_NonExistentProduct -- Time elapsed: 0.004 s <<< ERROR!
+com.example.MiniProject1.MiniProject1ApplicationTests.testApplyDiscount_NonExistentProduct -- Time elapsed: 0.005 s <<< ERROR!
 org.mockito.exceptions.misusing.NotAMockException: 
 
 Argument passed to when() is not a mock!
@@ -167,7 +167,7 @@ Example of correct stubbing:
 	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
 	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
 
-com.example.MiniProject1.MiniProject1ApplicationTests.testAddProduct_MissingName -- Time elapsed: 0.009 s <<< FAILURE!
+com.example.MiniProject1.MiniProject1ApplicationTests.testAddProduct_MissingName -- Time elapsed: 0.008 s <<< FAILURE!
 java.lang.AssertionError: Status expected:<400> but was:<200>
 	at org.springframework.test.util.AssertionErrors.fail(AssertionErrors.java:61)
 	at org.springframework.test.util.AssertionErrors.assertEquals(AssertionErrors.java:128)
@@ -178,7 +178,7 @@ java.lang.AssertionError: Status expected:<400> but was:<200>
 	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
 	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
 
-com.example.MiniProject1.MiniProject1ApplicationTests.testUpdateProduct_MissingFields -- Time elapsed: 0.009 s <<< ERROR!
+com.example.MiniProject1.MiniProject1ApplicationTests.testUpdateProduct_MissingFields -- Time elapsed: 0.008 s <<< ERROR!
 jakarta.servlet.ServletException: Request processing failed: java.lang.NullPointerException: Cannot invoke "java.lang.Double.doubleValue()" because the return value of "java.util.Map.get(Object)" is null
 	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1022)
 	at org.springframework.web.servlet.FrameworkServlet.doPut(FrameworkServlet.java:925)

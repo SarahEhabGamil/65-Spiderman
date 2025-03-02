@@ -699,7 +699,7 @@
 		 ArrayList<UUID> productIds = new ArrayList<>();
 		 productIds.add(testProduct.getId());
 
-		 
+
 		 mockMvc.perform(MockMvcRequestBuilders.put("/product/applyDiscount")
 						 .contentType(MediaType.APPLICATION_JSON)
 						 .param("discount", "-10.0")
