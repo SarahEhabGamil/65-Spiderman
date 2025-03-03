@@ -51,7 +51,7 @@ public class UserController {
     }
 
     @PostMapping("/{userId}/checkout")
-    public  String  addOrderToUser(@PathVariable  UUID  userId){
+    public  String  addOrderToUser(@PathVariable  UUID  userId) throws Exception {
         Cart cart = cartService.getCartByUserId(userId);
         Order order = new Order();
         order.setUserId(userId);
@@ -68,7 +68,7 @@ public class UserController {
     }
 
     @DeleteMapping("/{userId}/emptyCart")
-    public String emptyCart(@PathVariable UUID userId){
+    public String emptyCart(@PathVariable UUID userId) throws Exception {
         userService.emptyCart(userId);
         return "Cart emptied successfully";
     }
