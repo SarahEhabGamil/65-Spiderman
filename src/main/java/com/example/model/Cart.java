@@ -11,6 +11,7 @@ public class Cart {
     private UUID id;
     private UUID userId;
     private List<Product> products = new ArrayList<>();
+    private double totalPrice;
 
 
     //Constructors
@@ -22,6 +23,14 @@ public class Cart {
         this.userId = userId;
         this.products = products != null ? products : new ArrayList<>();
     }
+
+    public Cart(UUID id, UUID userId, List<Product> products,double totalPrice) {
+        this.id = id;
+        this.userId = userId;
+        this.products = products != null ? products : new ArrayList<>();
+        this.totalPrice = totalPrice;
+    }
+
 
     // Getters
     public UUID getId() {
@@ -66,11 +75,15 @@ public class Cart {
         this.products.clear();
     }
 
-    public double getTotalPrice() {
-        double total = 0;
-        for (Product product : products) {
-            total += product.getPrice();
-        }
-        return total;
+//    public double getTotalPrice() {
+//        double total = 0;
+//        for (Product product : products) {
+//            total += product.getPrice();
+//        }
+//        return total;
+//    }
+
+    public double getTotalPrice(){
+        return totalPrice;
     }
 }

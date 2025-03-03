@@ -7,9 +7,8 @@ import java.util.ArrayList;
 import java.util.UUID;
 
 @Repository
-@SuppressWarnings("rawtypes")
 public class ProductRepository extends MainRepository<Product>{
-    private static final String PRODUCT_PATH = "data/products.json";
+    private static final String PRODUCT_PATH = "src/main/java/com/example/data/products.json";
 
     public ProductRepository() {}
 

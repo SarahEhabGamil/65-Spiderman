@@ -1,5 +1,6 @@
 package com.example.service;
 
+import com.example.model.Cart;
 import com.example.model.Order;
 import com.example.model.User;
 import com.example.repository.UserRepository;
@@ -13,10 +14,12 @@ import java.util.UUID;
 @SuppressWarnings("rawtypes")
 public class UserService {
 
+    private final CartService cartService;
     private UserRepository userRepository;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, CartService cartService) {
         this.userRepository = userRepository;
+        this.cartService = cartService;
     }
 
     public User addUser(User user) {
@@ -31,11 +34,18 @@ public class UserService {
     public List<Order> getOrdersByUserId(UUID userId) {
         return userRepository.getOrdersByUserId(userId);
     }
-    public void addOrderToUser(UUID userId, Order order) {
-        userRepository.addOrderToUser(userId, order); //lesa mehtag the logic
-    }
-    public void emptyCart(UUID userId) {
+    public void addOrderToUser(UUID userId, Order order) throws Exception {
 
+        userRepository.addOrderToUser(userId, order);
+        this.emptyCart(userId);
+    }
+    public void emptyCart(UUID userId) throws Exception {
+        Cart cart = cartService.getCartByUserId(userId);
+        UUID cartId = cart.getId();
+        while(!cart.getProducts().isEmpty()){
+            cartService.deleteProductFromCart(cartId, cart.getProducts().getFirst());
+            cart = cartService.getCartByUserId(userId);
+        }
     }
     public void removeOrderFromUser(UUID userId, UUID orderId){
         userRepository.removeOrderFromUser(userId, orderId);

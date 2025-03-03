@@ -10,9 +10,8 @@ import java.util.List;
 import java.util.UUID;
 
 @Repository
-@SuppressWarnings("rawtypes")
 public class CartRepository extends MainRepository<Cart> {
-    private static final String CART_PATH = "data/carts.json";
+    private static final String CART_PATH = "src/main/java/com/example/data/carts.json";
 
     public CartRepository(){}
 
@@ -126,6 +125,10 @@ public class CartRepository extends MainRepository<Cart> {
         }
         if (!removed) {
             throw new RuntimeException("Product not found in cart with ID: " + product.getId());
+        }
+
+        if (products.isEmpty()) {
+            throw new RuntimeException("Cart got empty");
         }
 
         saveAll(carts);

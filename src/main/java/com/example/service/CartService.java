@@ -33,7 +33,7 @@ public class CartService {
     public void addProductToCart(UUID cartId, Product product){
         cartRepository.addProductToCart(cartId, product);
     }
-    public void deleteProductFromCart(UUID cartId, Product product){
+    public void deleteProductFromCart(UUID cartId, Product product) throws Exception{
         cartRepository.deleteProductFromCart(cartId, product);
     }
     public void deleteCartById(UUID cartId){

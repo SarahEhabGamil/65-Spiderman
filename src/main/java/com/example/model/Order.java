@@ -14,12 +14,18 @@ public class Order {
     private List<Product> products = new ArrayList<>();
 
     public Order() {
+        this.id =  UUID.randomUUID();
     }
 
     public Order(UUID id, UUID userId, double totalPrice, List<Product> products) {
         this.id = id;
         this.userId = userId;
         this.totalPrice = totalPrice;
+        this.products = products != null ? products : new ArrayList<>();
+    }
+    public Order(UUID userId, List<Product> products) {
+        this.id =  UUID.randomUUID();
+        this.userId = userId;
         this.products = products != null ? products : new ArrayList<>();
     }
 
@@ -73,7 +79,6 @@ public class Order {
         }
     }
 
-    // Recalculate the total price based on the product list
     private void recalculateTotalPrice() {
         double total = 0;
         for (Product product : products) {
