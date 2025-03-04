@@ -25,7 +25,7 @@ public class OrderService {
         this.userService = userService;
     }
 
-    public void addOrder(Order order){
+    public void addOrder(Order order)  {
         orderRepository.addOrder(order);
     }
 

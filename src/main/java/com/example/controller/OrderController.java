@@ -3,7 +3,9 @@ package com.example.controller;
 import com.example.model.Order;
 import com.example.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -23,10 +25,13 @@ public class OrderController {
     public void addOrder(@RequestBody Order order) {
         orderService.addOrder(order);
     }
-
     @GetMapping("/{orderId}")
     public Order getOrderById(@PathVariable UUID orderId) {
-        return orderService.getOrderById(orderId);
+        Order order = orderService.getOrderById(orderId);
+        if (order == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Order not found");
+        }
+        return order;
     }
 
     @GetMapping("/")

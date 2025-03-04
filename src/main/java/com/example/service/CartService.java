@@ -39,4 +39,7 @@ public class CartService {
     public void deleteCartById(UUID cartId){
         cartRepository.deleteCartById(cartId);
     }
+    public void clearCartAfterCheckout(UUID cartId){
+        cartRepository.clearCartAfterCheckout(cartId);
+    }
 }

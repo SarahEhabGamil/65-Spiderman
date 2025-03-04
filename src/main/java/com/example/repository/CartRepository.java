@@ -6,6 +6,7 @@ import com.example.model.Product;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
@@ -133,6 +134,33 @@ public class CartRepository extends MainRepository<Cart> {
 
         saveAll(carts);
     }
+
+    public void clearCartAfterCheckout(UUID cartId) {
+        ArrayList<Cart> carts = findAll();
+        Cart cartToUpdate = null;
+
+        for (Cart cart : carts) {
+            if (cart.getId().equals(cartId)) {
+                cartToUpdate = cart;
+                break;
+            }
+        }
+
+        if (cartToUpdate == null) {
+            throw new RuntimeException("Cart not found with ID: " + cartId);
+        }
+
+        List<Product> products = cartToUpdate.getProducts();
+        Iterator<Product> iterator = products.iterator();
+
+        while (iterator.hasNext()) {
+            iterator.next();
+            iterator.remove();
+        }
+
+        saveAll(carts);
+    }
+
 
     public void deleteCartById(UUID cartId) {
         ArrayList<Cart> carts = findAll();

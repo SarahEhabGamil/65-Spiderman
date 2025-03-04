@@ -57,7 +57,6 @@ public class UserController {
         order.setUserId(userId);
         order.setProducts(cart.getProducts());
         userService.addOrderToUser(userId ,order);
-        //TODO:check tests for string
         return "Order added successfully";
     }
 
@@ -99,7 +98,7 @@ public class UserController {
                 return "Cart is empty";
             }
         }
-        return "";
+        return "An unexpected error occurred";
     }
 
 

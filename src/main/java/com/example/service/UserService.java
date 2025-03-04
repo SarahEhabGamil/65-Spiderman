@@ -35,17 +35,13 @@ public class UserService {
         return userRepository.getOrdersByUserId(userId);
     }
     public void addOrderToUser(UUID userId, Order order) throws Exception {
-
         userRepository.addOrderToUser(userId, order);
         this.emptyCart(userId);
     }
     public void emptyCart(UUID userId) throws Exception {
         Cart cart = cartService.getCartByUserId(userId);
         UUID cartId = cart.getId();
-        while(!cart.getProducts().isEmpty()){
-            cartService.deleteProductFromCart(cartId, cart.getProducts().getFirst());
-            cart = cartService.getCartByUserId(userId);
-        }
+        cartService.clearCartAfterCheckout(cartId);
     }
     public void removeOrderFromUser(UUID userId, UUID orderId){
         userRepository.removeOrderFromUser(userId, orderId);
