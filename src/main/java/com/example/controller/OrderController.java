@@ -4,6 +4,7 @@ import com.example.model.Order;
 import com.example.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -40,13 +41,16 @@ public class OrderController {
     }
 
     @DeleteMapping("/delete/{orderId}")
-    public String deleteOrderById(@PathVariable UUID orderId) {
+    public ResponseEntity<String> deleteOrderById(@PathVariable UUID orderId) {
         try {
             orderService.deleteOrderById(orderId);
-        }catch (RuntimeException e){
-            return "Order not found";
+            return ResponseEntity.ok("Order deleted successfully");
+        } catch (RuntimeException e) {
+            if ("Order not found".equals(e.getMessage())) {
+                return ResponseEntity.ok("Order not found");
+            }
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An unexpected error occurred");
         }
-        return "Order deleted successfully";
     }
 
 }

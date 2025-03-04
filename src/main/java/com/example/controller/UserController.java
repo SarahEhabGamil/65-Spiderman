@@ -42,7 +42,11 @@ public class UserController {
 
     @GetMapping("/{userId}")
     public User getUserById(@PathVariable UUID userId){
-        return userService.getUserById(userId);
+        try {
+            return userService.getUserById(userId);
+        }catch (Exception e){
+            return null;
+        }
     }
 
     @GetMapping("/{userId}/orders")

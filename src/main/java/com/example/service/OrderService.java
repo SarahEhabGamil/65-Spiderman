@@ -36,6 +36,7 @@ public class OrderService {
         return orderRepository.getOrderById(orderId);
     }
     public void deleteOrderById(UUID orderId) throws RuntimeException{
+
         orderRepository.deleteOrderById(orderId);
     }
 }

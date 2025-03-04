@@ -70,14 +70,16 @@ public class ProductRepository extends MainRepository<Product>{
         }
 
         if (productToUpdate == null) {
-            throw new RuntimeException("Product not found with ID: " + productId);
+            throw new RuntimeException("Product not found");
+        }else{
+            productToUpdate.setName(newName);
+            productToUpdate.setPrice(newPrice);
+
+            saveAll(products);
+            return productToUpdate;
         }
 
-        productToUpdate.setName(newName);
-        productToUpdate.setPrice(newPrice);
 
-        saveAll(products);
-        return productToUpdate;
     }
 
     public void applyDiscount(double discount, ArrayList<UUID> productIds) throws Exception {
