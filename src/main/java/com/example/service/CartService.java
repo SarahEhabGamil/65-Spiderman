@@ -18,9 +18,43 @@ public class CartService extends MainService{
         this.cartRepository = cartRepository;
     }
 
-    public Cart addCart(Cart cart){
-        return cartRepository.addCart(cart);
+    private boolean userExists(UUID userId) {
+        return cartRepository.getCarts().stream().anyMatch(user -> user.getId().equals(userId));
     }
+    // Service Layer
+    public Cart addCart(Cart cart) {
+        if (cart == null) {
+            throw new IllegalArgumentException("Cart cannot be null");
+        }
+
+        if (cart.getUserId() == null) {
+            throw new IllegalArgumentException("User ID cannot be null");
+        }
+
+        // Check if user exists before adding a cart
+        if (!userExists(cart.getUserId())) {
+            throw new RuntimeException("User does not exist: " + cart.getUserId());
+        }
+
+        ArrayList<Cart> carts = cartRepository.findAll();
+
+        // Prevent adding multiple carts for the same user
+        for (Cart existingCart : carts) {
+            if (existingCart.getUserId().equals(cart.getUserId())) {
+                throw new RuntimeException("Cart already exists for user with ID: " + cart.getUserId());
+            }
+        }
+
+        if (cart.getId() == null) {
+            cart.setId(UUID.randomUUID());
+        }
+
+        carts.add(cart);
+        cartRepository.saveAll(carts);
+
+        return cart;
+    }
+
     public ArrayList<Cart> getCarts(){
         return cartRepository.getCarts();
     }

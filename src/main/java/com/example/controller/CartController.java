@@ -4,6 +4,8 @@ import com.example.model.Cart;
 import com.example.model.Product;
 import com.example.service.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -20,10 +22,20 @@ public class CartController {
         this.cartService = cartService;
     }
 
-    @PostMapping("/")
-    public Cart addCart(@RequestBody Cart cart){
-        return cartService.addCart(cart);
+//    @PostMapping("/")
+//    public Cart addCart(@RequestBody Cart cart){
+//        return cartService.addCart(cart);
+//    }
+@PostMapping("/")
+public ResponseEntity<?> addCart(@RequestBody Cart cart) {
+    try {
+        Cart addedCart = cartService.addCart(cart);
+        return ResponseEntity.ok(addedCart);
+    } catch (Exception e) {
+        return ResponseEntity.badRequest().body(e.getMessage());
     }
+}
+
 
     @GetMapping("/")
     public ArrayList<Cart> getCarts(){
@@ -36,15 +48,23 @@ public class CartController {
     }
 
     @PutMapping("/addProduct/{cartId}")
-    public String addProductToCart(@PathVariable UUID cartId, @RequestBody Product product){
-        cartService.addProductToCart(cartId, product);
-        return product.getName() + " added to cart";
+    public ResponseEntity<String> addProductToCart(@PathVariable UUID cartId, @RequestBody Product product) {
+        try {
+            cartService.addProductToCart(cartId, product);
+            return ResponseEntity.ok(product.getName() + " added to cart");
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
     }
 
     @DeleteMapping("/delete/{cartId}")
-    public String deleteCartById(@PathVariable UUID cartId){
-        cartService.deleteCartById(cartId);
-        return "Cart deleted successfully";
+    public ResponseEntity<String> deleteCartById(@PathVariable UUID cartId) {
+        try {
+            cartService.deleteCartById(cartId);
+            return ResponseEntity.ok("Cart deleted successfully");
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
     }
 
 }

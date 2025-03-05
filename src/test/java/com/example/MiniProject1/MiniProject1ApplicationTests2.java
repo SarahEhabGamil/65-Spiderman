@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import org.hamcrest.Matchers;
 import org.springframework.http.MediaType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -258,6 +259,38 @@ class MiniProject1ApplicationTests2 {
             }
         } catch (IOException e) {
             throw new RuntimeException("Failed to clear user data", e);
+        }
+    }
+
+    public void clearCarts() {
+        try {
+            File file = new File("src/main/java/com/example/data/carts.json");
+            if (file.exists()) {
+                objectMapper.writeValue(file, new ArrayList<Cart>());
+            }
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to clear cart data", e);
+        }
+    }
+
+    public void removeCart(UUID cartId) {
+        try {
+            File file = new File("src/main/java/com/example/data/carts.json");
+            if (!file.exists()) {
+                throw new RuntimeException("Cart data file not found.");
+            }
+
+            ArrayList<Cart> carts = objectMapper.readValue(file, new TypeReference<ArrayList<Cart>>() {});
+
+            boolean removed = carts.removeIf(cart -> cart.getId().equals(cartId));
+
+            if (!removed) {
+                throw new RuntimeException("Cart with ID " + cartId + " not found.");
+            }
+
+            objectMapper.writeValue(file, carts);
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to remove cart", e);
         }
     }
 
@@ -855,8 +888,212 @@ class MiniProject1ApplicationTests2 {
     }
 
     // --------------------------------- Cart Tests -------------------------
+    //1.1 Add cart to non existing user - PASSED
+    @Test
+    void testAddCartForNonExistentUser() throws Exception {
+        UUID nonExistentUserId = UUID.randomUUID();
 
+        Cart newCart = new Cart(UUID.randomUUID(), nonExistentUserId, new ArrayList<>());
 
+        mockMvc.perform(MockMvcRequestBuilders.post("/cart/")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(newCart)))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest());
+
+        boolean found = getCarts().stream().anyMatch(cart -> cart.getUserId().equals(nonExistentUserId));
+        assertFalse(found, "A cart should not be added for a non-existent user.");
+    }
+    //1.2 add cart with invalid cart object - PASSED
+    @Test
+    void testAddCartWithInvalidPayload() throws Exception {
+        String invalidCartJson = "{}";
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/cart/")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(invalidCartJson))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest());
+    }
+    //1.3 add cart without user id - PASSED
+    @Test
+    void testAddCartWithoutUserId() throws Exception {
+        Cart newCart = new Cart(UUID.randomUUID(), null, new ArrayList<>());
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/cart/")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(newCart)))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.content().string(Matchers.containsString("User ID cannot be null")));
+    }
+    //2.1 get carts empty list - PASSED
+    @Test
+    void testGetCartsWhenEmpty() throws Exception {
+
+        clearCarts();
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/cart/")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andReturn();
+
+        String responseContent = result.getResponse().getContentAsString();
+        List<Cart> responseCarts = objectMapper.readValue(responseContent, new TypeReference<List<Cart>>() {});
+
+        assertTrue(responseCarts.isEmpty(), "Response should be an empty list when no carts exist.");
+    }
+    //2.2 get multiple carts - PASSED
+    @Test
+    void testGetMultipleCarts() throws Exception {
+        clearCarts();
+        Cart cart1 = new Cart(UUID.randomUUID(), UUID.randomUUID(), new ArrayList<>());
+        Cart cart2 = new Cart(UUID.randomUUID(), UUID.randomUUID(), new ArrayList<>());
+
+        addCart(cart1);
+        addCart(cart2);
+
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/cart/")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andReturn();
+
+        String responseContent = result.getResponse().getContentAsString();
+        List<Cart> responseCarts = objectMapper.readValue(responseContent, new TypeReference<List<Cart>>() {});
+
+        assertEquals(2, responseCarts.size(), "Should return exactly 2 carts.");
+    }
+    //2.3 get 1 cart - PASSED
+    @Test
+    void testGetCartsAfterDeletion() throws Exception {
+        clearCarts();
+        Cart cart1 = new Cart(UUID.randomUUID(), UUID.randomUUID(), new ArrayList<>());
+        Cart cart2 = new Cart(UUID.randomUUID(), UUID.randomUUID(), new ArrayList<>());
+
+        addCart(cart1);
+        addCart(cart2);
+        removeCart(cart1.getId());
+
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/cart/")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andReturn();
+
+        String responseContent = result.getResponse().getContentAsString();
+        List<Cart> responseCarts = objectMapper.readValue(responseContent, new TypeReference<List<Cart>>() {});
+
+        assertEquals(1, responseCarts.size(), "Only one cart should remain after deletion.");
+    }
+    //3.1 get cart by random uuid - PASSED
+    @Test
+    void testGetCartByIdNotFound() throws Exception {
+        UUID nonExistentCartId = UUID.randomUUID();
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/cart/{id}", nonExistentCartId))
+                .andExpect(MockMvcResultMatchers.status().isNotFound());
+    }
+    //3.2 get cart by id after deleting - PASSED
+    @Test
+    void testGetCartByIdAfterDeletion() throws Exception {
+        Cart cart = new Cart(UUID.randomUUID(), UUID.randomUUID(), new ArrayList<>());
+        addCart(cart);
+        removeCart(cart.getId());
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/cart/{id}", cart.getId()))
+                .andExpect(MockMvcResultMatchers.status().isNotFound());
+    }
+    //3.1 get cart by id after clearing carts - PASSED
+    @Test
+    void testGetCartByIdAfterClearingCarts() throws Exception {
+        Cart cart = new Cart(UUID.randomUUID(), UUID.randomUUID(), new ArrayList<>());
+        addCart(cart);
+
+        clearCarts();
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/cart/{id}", cart.getId()))
+                .andExpect(MockMvcResultMatchers.status().isNotFound());
+    }
+
+    //4.1 add product to cart success - PASSED
+    @Test
+    void testAddProductToCartSuccess() throws Exception {
+        Cart cart = new Cart(UUID.randomUUID(), UUID.randomUUID(), new ArrayList<>());
+        addCart(cart);
+
+        Product product = new Product(UUID.randomUUID(), "Test Product", 10.99);
+
+        mockMvc.perform(MockMvcRequestBuilders.put("/cart/addProduct/{cartId}", cart.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(product)))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().string(product.getName() + " added to cart"));
+
+        boolean productExists = getCarts().stream()
+                .filter(c -> c.getId().equals(cart.getId()))
+                .flatMap(c -> c.getProducts().stream())
+                .anyMatch(p -> p.getId().equals(product.getId()));
+
+        assertTrue(productExists, "Product should be added to the cart.");
+    }
+
+    //4.2 add product to non existing cart - PASSED
+    @Test
+    void testAddProductToNonExistentCart() throws Exception {
+        UUID nonExistentCartId = UUID.randomUUID();
+        Product product = new Product(UUID.randomUUID(), "Test Product", 10.99);
+
+        mockMvc.perform(MockMvcRequestBuilders.put("/cart/addProduct/{cartId}", nonExistentCartId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(product)))
+                .andExpect(MockMvcResultMatchers.status().isNotFound());
+    }
+
+    //4.3 test add null products to cart - PASSED
+    @Test
+    void testAddNullProductToCart() throws Exception {
+        Cart cart = new Cart(UUID.randomUUID(), UUID.randomUUID(), new ArrayList<>());
+        addCart(cart);
+
+        String nullProductJson = "null";
+
+        mockMvc.perform(MockMvcRequestBuilders.put("/cart/addProduct/{cartId}", cart.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(nullProductJson))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest());
+    }
+
+    //5.1 delete non-existing cart - PASSED
+    @Test
+    void testDeleteNonExistentCart() throws Exception {
+        UUID nonExistentCartId = UUID.randomUUID();
+        mockMvc.perform(MockMvcRequestBuilders.delete("/cart/delete/{id}", nonExistentCartId))
+                .andExpect(MockMvcResultMatchers.status().isNotFound())
+                .andExpect(MockMvcResultMatchers.content().string("Cart not found with ID: " + nonExistentCartId));
+    }
+
+    //5.2 delete cart twice - PASSED
+    @Test
+    void testDeleteCartTwice() throws Exception {
+        Cart cart = new Cart(UUID.randomUUID(), UUID.randomUUID(), new ArrayList<>());
+        addCart(cart);
+        //first delete
+        mockMvc.perform(MockMvcRequestBuilders.delete("/cart/delete/{id}", cart.getId()))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().string("Cart deleted successfully"));
+        //second delete
+        mockMvc.perform(MockMvcRequestBuilders.delete("/cart/delete/{id}", cart.getId()))
+                .andExpect(MockMvcResultMatchers.status().isNotFound())
+                .andExpect(MockMvcResultMatchers.content().string("Cart not found with ID: " + cart.getId()));
+    }
+
+    //delete cart after clearing - PASSED
+    @Test
+    void testDeleteCartAfterClearingCarts() throws Exception {
+        Cart cart = new Cart(UUID.randomUUID(), UUID.randomUUID(), new ArrayList<>());
+        addCart(cart);
+
+        clearCarts();
+
+        mockMvc.perform(MockMvcRequestBuilders.delete("/cart/delete/{id}", cart.getId()))
+                .andExpect(MockMvcResultMatchers.status().isNotFound())
+                .andExpect(MockMvcResultMatchers.content().string("Cart not found with ID: " + cart.getId()));
+    }
 
 
     // --------------------------------- Order Tests -------------------------

@@ -3,7 +3,9 @@ package com.example.repository;
 
 import com.example.model.Cart;
 import com.example.model.Product;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -54,12 +56,10 @@ public class CartRepository extends MainRepository<Cart> {
     }
 
     public Cart getCartById(UUID cartId) {
-        for (Cart cart : findAll()) {
-            if (cart.getId().equals(cartId)) {
-                return cart;
-            }
-        }
-        return null;
+        return findAll().stream()
+                .filter(cart -> cart.getId().equals(cartId))
+                .findFirst()
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cart not found"));
     }
 
     public Cart getCartByUserId(UUID userId) {
