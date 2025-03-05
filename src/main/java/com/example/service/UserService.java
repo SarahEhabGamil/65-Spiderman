@@ -12,10 +12,10 @@ import java.util.UUID;
 
 @Service
 @SuppressWarnings("rawtypes")
-public class UserService {
+public class UserService extends MainService{
 
     private final CartService cartService;
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     public UserService(UserRepository userRepository, CartService cartService) {
         this.userRepository = userRepository;
@@ -31,8 +31,12 @@ public class UserService {
     public ArrayList<User> getUsers() {
         return userRepository.getUsers();
     }
-    public List<Order> getOrdersByUserId(UUID userId) {
-        return userRepository.getOrdersByUserId(userId);
+    public List<Order> getOrdersByUserId(UUID userId) throws Exception {
+        List<Order> orders = userRepository.getOrdersByUserId(userId);
+        if (orders == null) {
+            throw new Exception("User not found");
+        }
+        return orders;
     }
     public void addOrderToUser(UUID userId, Order order) throws Exception {
         userRepository.addOrderToUser(userId, order);

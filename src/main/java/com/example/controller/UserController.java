@@ -7,7 +7,9 @@ import com.example.model.User;
 import com.example.service.CartService;
 import com.example.service.ProductService;
 import com.example.service.UserService;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,16 +32,27 @@ public class UserController {
         this.productService = productService;
     }
 
+    //1
     @PostMapping("/")
     public User addUser(@RequestBody User user){
-       return userService.addUser(user);
+        try {
+            return userService.addUser(user);
+        } catch (RuntimeException e) {
+            if(e.getMessage().contains("already exists")) {
+                //  throws 409
+                throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
+            }
+            throw e;
+        }
     }
 
+    //2
     @GetMapping("/")
     public ArrayList<User> getUsers(){
         return userService.getUsers();
     }
 
+    //3
     @GetMapping("/{userId}")
     public User getUserById(@PathVariable UUID userId){
         try {
@@ -48,34 +61,64 @@ public class UserController {
             return null;
         }
     }
-
+    //4
     @GetMapping("/{userId}/orders")
-    public List<Order> getOrdersByUserId(@PathVariable UUID userId){
-        return userService.getOrdersByUserId(userId);
+    public String getOrdersByUserId(@PathVariable UUID userId) {
+        try {
+            List<Order> orders = userService.getOrdersByUserId(userId);
+            if (orders == null || orders.isEmpty()) {
+                return "User has no orders";
+            }
+            return "User orders retrieved successfully";
+        } catch (Exception e) {
+            return "User not found";
+        }
     }
-
+    //5
     @PostMapping("/{userId}/checkout")
     public  String  addOrderToUser(@PathVariable  UUID  userId) throws Exception {
+        User user = userService.getUserById(userId);
+        if (user == null) {
+            return "User not found";
+        }
+
         Cart cart = cartService.getCartByUserId(userId);
+        if (cart == null || cart.getProducts().isEmpty()) {
+            return "User has no cart";
+        }
+
         Order order = new Order();
         order.setUserId(userId);
         order.setProducts(cart.getProducts());
-        userService.addOrderToUser(userId ,order);
+        userService.addOrderToUser(userId, order);
+
         return "Order added successfully";
     }
 
+    //6
     @PostMapping("/{userId}/removeOrder")
     public String removeOrderFromUser(@PathVariable UUID userId, @RequestParam UUID orderId){
-        userService.removeOrderFromUser(userId, orderId);
-        return "Order removed successfully";
+        try {
+            userService.removeOrderFromUser(userId, orderId);
+            return "Order removed successfully";
+        } catch (RuntimeException e) {
+            if (e.getMessage().contains("User not found")) {
+                return "User not found with ID: " + userId;
+            } else if (e.getMessage().contains("Order not found")) {
+                return "Order not found with ID: " + orderId;
+            }
+            return "An unexpected error occurred";
+        }
     }
 
+    //7
     @DeleteMapping("/{userId}/emptyCart")
     public String emptyCart(@PathVariable UUID userId) throws Exception {
         userService.emptyCart(userId);
         return "Cart emptied successfully";
     }
 
+    //8
     @PutMapping("/addProductToCart")
     public String addProductToCart(@RequestParam UUID userId, @RequestParam UUID productId){
         Cart cart = cartService.getCartByUserId(userId);
@@ -90,6 +133,7 @@ public class UserController {
         return "Product added to cart";
     }
 
+    //9
     @PutMapping("/deleteProductFromCart")
     public String deleteProductFromCart(@RequestParam UUID userId, @RequestParam UUID productId) {
         try {
@@ -106,6 +150,7 @@ public class UserController {
     }
 
 
+    //10
     @DeleteMapping("/delete/{userId}")
     public String deleteUserById(@PathVariable UUID userId){
         try {
