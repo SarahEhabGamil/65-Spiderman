@@ -716,9 +716,133 @@ class MiniProject1ApplicationTests2 {
         assertEquals(2, updatedCart.getProducts().size(), "Cart should have 2 products after adding the second product");
     }
 
+//9.2 deleteProductFromCart non existent user - PASSED
+@Test
+void testDeleteProductFromCart_NonExistentUser() throws Exception {
+
+    Product testProduct = new Product(UUID.randomUUID(), "Test Product", 10.0);
+    addProduct(testProduct);
 
 
+    UUID nonExistentUserId = UUID.randomUUID();
 
+    mockMvc.perform(MockMvcRequestBuilders.put("/user/deleteProductFromCart")
+                    .param("userId", nonExistentUserId.toString())
+                    .param("productId", testProduct.getId().toString()))
+            .andExpect(MockMvcResultMatchers.status().isOk())
+            .andExpect(MockMvcResultMatchers.content().string("User not found"));
+}
+
+//9.3 deleteProductFromCart non existent product - PASSED
+@Test
+void testDeleteProductFromCart_NonExistentProduct() throws Exception {
+    // Create and add a user.
+    User testUser = new User();
+    testUser.setId(UUID.randomUUID());
+    testUser.setName("Test User");
+    addUser(testUser);
+    
+    Product validProduct = new Product(UUID.randomUUID(), "Valid Product", 10.0);
+    addProduct(validProduct);
+
+    Cart cart = new Cart(UUID.randomUUID(), testUser.getId(), new ArrayList<>(List.of(validProduct)));
+    addCart(cart);
+
+    UUID nonExistentProductId = UUID.randomUUID();
+
+    mockMvc.perform(MockMvcRequestBuilders.put("/user/deleteProductFromCart")
+                    .param("userId", testUser.getId().toString())
+                    .param("productId", nonExistentProductId.toString()))
+            .andExpect(MockMvcResultMatchers.status().isOk())
+            .andExpect(MockMvcResultMatchers.content().string("Product not found"));
+}
+//9.4 deleteProductFromCart product not in cart - PASSED
+@Test
+void testDeleteProductFromCart_ProductNotInCart() throws Exception {
+    // Create and add a user.
+    User testUser = new User();
+    testUser.setId(UUID.randomUUID());
+    testUser.setName("Test User");
+    addUser(testUser);
+
+    Product productInCart = new Product(UUID.randomUUID(), "Product In Cart", 10.0);
+    Product productNotInCart = new Product(UUID.randomUUID(), "Product Not In Cart", 15.0);
+    addProduct(productInCart);
+    addProduct(productNotInCart);
+
+
+    Cart cart = new Cart(UUID.randomUUID(), testUser.getId(), new ArrayList<>(List.of(productInCart)));
+    addCart(cart);
+
+    mockMvc.perform(MockMvcRequestBuilders.put("/user/deleteProductFromCart")
+                    .param("userId", testUser.getId().toString())
+                    .param("productId", productNotInCart.getId().toString()))
+            .andExpect(MockMvcResultMatchers.status().isOk())
+            .andExpect(MockMvcResultMatchers.content().string("Product not in cart"));
+}
+
+//10.2 deleteUserById delete twice - PASSED
+@Test
+void testDeleteUserById_DoubleDeletion() throws Exception {
+    User testUser = new User();
+    testUser.setId(UUID.randomUUID());
+    testUser.setName("Test User19");
+    addUser(testUser);
+
+    mockMvc.perform(MockMvcRequestBuilders.delete("/user/delete/{userId}", testUser.getId()))
+            .andExpect(MockMvcResultMatchers.status().isOk())
+            .andExpect(MockMvcResultMatchers.content().string("User deleted successfully"));
+
+    mockMvc.perform(MockMvcRequestBuilders.delete("/user/delete/{userId}", testUser.getId()))
+            .andExpect(MockMvcResultMatchers.status().isOk())
+            .andExpect(MockMvcResultMatchers.content().string("User not found"));
+}
+
+//10.3 deleteUserById user has cart and orders - PASSED
+@Test
+void testDeleteUserById_WithDependencies() throws Exception {
+    User testUser = new User();
+    testUser.setId(UUID.randomUUID());
+    testUser.setName("Test User20");
+    // Create dependencies for the user.
+    Cart cart = new Cart(UUID.randomUUID(), testUser.getId(), new ArrayList<>());
+    addCart(cart);
+    Order order = new Order(UUID.randomUUID(), testUser.getId(), 100.0, new ArrayList<>());
+    testUser.getOrders().add(order);
+
+    addUser(testUser);
+
+    mockMvc.perform(MockMvcRequestBuilders.delete("/user/delete/{userId}", testUser.getId()))
+            .andExpect(MockMvcResultMatchers.status().isOk())
+            .andExpect(MockMvcResultMatchers.content().string("User deleted successfully"));
+}
+//10.4 deleteUserById check user list after deletion - PASSED
+@Test
+void testDeleteUserById_RemovesUserFromList() throws Exception {
+    User testUser1 = new User();
+    testUser1.setId(UUID.randomUUID());
+    testUser1.setName("Test User21");
+    addUser(testUser1);
+
+    User testUser2 = new User();
+    testUser2.setId(UUID.randomUUID());
+    testUser2.setName("Test User22");
+    addUser(testUser2);
+
+    mockMvc.perform(MockMvcRequestBuilders.delete("/user/delete/{userId}", testUser1.getId()))
+            .andExpect(MockMvcResultMatchers.status().isOk())
+            .andExpect(MockMvcResultMatchers.content().string("User deleted successfully"));
+
+    MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/user/"))
+            .andExpect(MockMvcResultMatchers.status().isOk())
+            .andReturn();
+
+    String responseContent = result.getResponse().getContentAsString();
+    List<User> users = objectMapper.readValue(responseContent, new TypeReference<List<User>>() {});
+
+    boolean userFound = users.stream().anyMatch(user -> user.getId().equals(testUser1.getId()));
+    assertFalse(userFound, "Deleted user should not be present in the user list");
+}
 
     // ------------------------ Product Tests -------------------------
 
