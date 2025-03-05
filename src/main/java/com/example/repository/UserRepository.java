@@ -1,5 +1,6 @@
 package com.example.repository;
 
+import com.example.model.Cart;
 import com.example.model.Order;
 import com.example.model.User;
 import org.springframework.stereotype.Repository;
@@ -67,7 +68,10 @@ public class UserRepository extends MainRepository<User>{
 
     public List<Order> getOrdersByUserId(UUID userId) {
         User user = getUserById(userId);
-        return (user != null) ? user.getOrders() : new ArrayList<>();
+        if (user == null) {
+            return null;
+        }
+        return user.getOrders();
     }
 
 
@@ -81,15 +85,25 @@ public class UserRepository extends MainRepository<User>{
             throw new RuntimeException("User not found with ID: " + userId);
         }
 
+
         user.addOrder(order);
 
         ArrayList<User> users = findAll();
+
+        boolean userUpdated = false;
+
         for (int i = 0; i < users.size(); i++) {
             if (users.get(i).getId().equals(userId)) {
                 users.set(i, user);
+                userUpdated = true;
                 break;
             }
         }
+
+        if (!userUpdated) {
+            throw new RuntimeException("Failed to update user data");
+        }
+
         saveAll(users);
     }
 

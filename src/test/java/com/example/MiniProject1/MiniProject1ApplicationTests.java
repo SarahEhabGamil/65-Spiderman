@@ -268,7 +268,7 @@
  	// ------------------------ User Tests -------------------------
 
 
-
+//1.0
  	@Test
  	void testAddUserEndPoint() throws Exception {
  		User testUser3 = new User();
@@ -291,7 +291,7 @@
  		assertTrue(found,"User should be added correctly");
  	}
 
-
+//2.0
  	@Test
  	void testGetUsersEndPoint() throws Exception {
 
@@ -308,7 +308,7 @@
  		assertEquals(responseUsers.size(), getUsers().size(), "Users should be returned correctly From Endpoint");
  	}
 
-
+//3.0
  	@Test
  	void testGetUserByIdEndPoint() throws Exception {
  		User testUser8=new User();
@@ -322,7 +322,7 @@
  	}
 
 
-
+//4.0
  	@Test
  	void testGetOrdersByUserIdEndPoint() throws Exception {
  		User testUser10=new User();
@@ -337,7 +337,7 @@
  	}
 
 
-
+	//5.0
  	@Test
  	void testAddOrderToUserEndPoint() throws Exception {
  		User testUser11=new User();
@@ -358,6 +358,7 @@
  	}
 
 
+	 //6.0
  	@Test
  	void testRemoveOrderOfUserEndPoint() throws Exception{
  		User testUser12=new User();

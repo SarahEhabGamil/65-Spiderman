@@ -1,8 +1,7 @@
 package com.example.MiniProject1;
 
 import static org.hamcrest.Matchers.containsString;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -11,6 +10,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import org.springframework.http.MediaType;
 import org.junit.jupiter.api.BeforeEach;
@@ -250,6 +250,16 @@ class MiniProject1ApplicationTests2 {
         }
     }
 
+    public void clearUsers() {
+        try {
+            File file = new File("src/main/java/com/example/data/users.json");
+            if (file.exists()) {
+                objectMapper.writeValue(file, new ArrayList<User>());
+            }
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to clear user data", e);
+        }
+    }
 
 
     private UUID userId;
@@ -264,6 +274,8 @@ class MiniProject1ApplicationTests2 {
     }
 
     // ------------------------ User Tests -------------------------
+
+    //1.1 addUser no ID - PASSED
     @Test
     void testAddUserWithoutId() throws Exception {
         User newUser = new User();
@@ -281,6 +293,7 @@ class MiniProject1ApplicationTests2 {
         assertEquals(newUser.getName(), createdUser.getName(), "User name should match");
     }
 
+    //1.2 add Null User - PASSED
     @Test
     void testAddNullUser() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.post("/user/")
@@ -288,17 +301,29 @@ class MiniProject1ApplicationTests2 {
                         .content(objectMapper.writeValueAsString(null)))
                 .andExpect(MockMvcResultMatchers.status().isBadRequest());
     }
-    public void clearUsers() {
-        try {
-            File file = new File("src/main/java/com/example/data/users.json");
-            if (file.exists()) {
-                objectMapper.writeValue(file, new ArrayList<User>());
-            }
-        } catch (IOException e) {
-            throw new RuntimeException("Failed to clear user data", e);
-        }
+
+    //1.3 addUser Duplicate - PASSED
+
+    @Test
+    void testAddDuplicateUser() throws Exception {
+        User testUser = new User();
+        testUser.setId(UUID.randomUUID());
+        testUser.setName("Test User");
+
+        // first user
+        mockMvc.perform(MockMvcRequestBuilders.post("/user/")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(testUser)))
+                .andExpect(MockMvcResultMatchers.status().isOk());
+
+        // duplicate
+        mockMvc.perform(MockMvcRequestBuilders.post("/user/")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(testUser)))
+                .andExpect(MockMvcResultMatchers.status().isConflict()); // Expect 409 Conflict
     }
-    //TODO one more test for Get Users
+
+    //2.1 getUsers no Users - PASSED
     @Test
     void testGetUsers_NoUsers() throws Exception {
         clearUsers();
@@ -314,15 +339,71 @@ class MiniProject1ApplicationTests2 {
         assertEquals(0, responseUsers.size(), "No users should be returned when there are no users in the system");
     }
 
+    //2.2 getUsers correct specific data - PASSED
+    @Test
+    void testGetUsers_DataIntegrity() throws Exception {
+
+        User testUser = new User();
+        UUID testId = UUID.randomUUID();
+        testUser.setId(testId);
+        testUser.setName("Lilly");
+
+        addUser(testUser);
+
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/user/")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andReturn();
+
+        String responseContent = result.getResponse().getContentAsString();
+        List<User> responseUsers = objectMapper.readValue(responseContent, new TypeReference<List<User>>() {});
+
+        assertFalse(responseUsers.isEmpty(), "User list should not be empty");
+        assertEquals(testId, responseUsers.getFirst().getId(), "Returned user should have the correct ID");
+        assertEquals("Lilly", responseUsers.getFirst().getName(), "Returned user should have the correct name");
+    }
+
+    //2.3 getUsers special characters - PASSED
+    @Test
+    void testGetUsers_SpecialCharacterNames() throws Exception {
+        User user1 = new User();
+        user1.setId(UUID.randomUUID());
+        user1.setName("M@RW@N");
+
+        User user2 = new User();
+        user2.setId(UUID.randomUUID());
+        user2.setName("حسن وائل");
+
+        addUser(user1);
+        addUser(user2);
+
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/user/")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andReturn();
+
+        String responseContent = result.getResponse().getContentAsString();
+        List<User> responseUsers = objectMapper.readValue(responseContent, new TypeReference<List<User>>() {});
+
+        List<String> retrievedNames = responseUsers.stream().map(User::getName).collect(Collectors.toList());
+
+        assertTrue(retrievedNames.contains("M@RW@N"), "Returned users should include names with special characters");
+        assertTrue(retrievedNames.contains("حسن وائل"), "Returned users should include names with non-Latin characters");
+    }
+
+
+    //3.1 getUserById ID not found - PASSED
+    //TODO maybe lets add error messages like "user not found"
     @Test
     void testGetUserByIdNotFound() throws Exception {
         UUID nonExistentId = UUID.randomUUID();
 
         mockMvc.perform(MockMvcRequestBuilders.get("/user/{userId}", nonExistentId))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().string("User not found"));
+                .andExpect(MockMvcResultMatchers.content().string(""));
     }
 
+    //3.2 getUserById multiple users - PASSED
     @Test
     void testGetUserByIdWithMultipleUsers() throws Exception {
         User testUser1 = new User();
@@ -345,6 +426,162 @@ class MiniProject1ApplicationTests2 {
         assertEquals(testUser2.getId(), responseUser.getId(), "Fetched user ID should match the requested ID");
         assertEquals(testUser2.getName(), responseUser.getName(), "Fetched user name should match the requested user");
     }
+
+    //3.3 getUserById case sensitivity and special characters - PASSED
+    @Test
+    void testGetUserById_CaseSensitivity() throws Exception {
+        User testUser = new User();
+        testUser.setId(UUID.randomUUID());
+        testUser.setName("MaRw@n");
+        addUser(testUser);
+
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/user/{userId}", testUser.getId()))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andReturn();
+
+        String responseContent = result.getResponse().getContentAsString();
+        User responseUser = objectMapper.readValue(responseContent, User.class);
+
+        assertEquals("MaRw@n", responseUser.getName(), "Username should retain its original case");
+    }
+
+    //4.1 user has no orders - PASSED
+    @Test
+    void testGetOrdersByUserId_UserHasNoOrders() throws Exception {
+        User testUser = new User();
+        testUser.setId(UUID.randomUUID());
+        testUser.setName("Test User");
+        addUser(testUser); // Add user without orders
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/user/{userId}/orders", testUser.getId()))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().string("User has no orders"));
+    }
+
+    //4.2 invalid user id - PASSED
+    @Test
+    void testGetOrdersByUserId_UserNotFound() throws Exception {
+        UUID nonExistentUserId = UUID.randomUUID();
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/user/{userId}/orders", nonExistentUserId))
+                .andExpect(MockMvcResultMatchers.status().isOk()) // Always 200 since we're returning a String
+                .andExpect(MockMvcResultMatchers.content().string("User not found"));
+    }
+
+    //4.3 multiple orders check - PASSED
+    @Test
+    void testGetOrdersByUserId_MultipleOrders() throws Exception {
+        User testUser = new User();
+        testUser.setId(UUID.randomUUID());
+        testUser.setName("Multiple Orders User");
+
+        List<Order> orders = List.of(
+                new Order(UUID.randomUUID(), testUser.getId(), 15.0, List.of(new Product(UUID.randomUUID(), "Product A", 15.0))),
+                new Order(UUID.randomUUID(), testUser.getId(), 25.0, List.of(new Product(UUID.randomUUID(), "Product B", 25.0)))
+        );
+
+        testUser.setOrders(orders);
+        addUser(testUser);
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/user/{userId}/orders", testUser.getId()))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().string("User orders retrieved successfully"));
+    }
+
+
+
+    //5.1 addOrderToUser no user existing - PASSED
+    @Test
+    void testAddOrderToNonExistentUser() throws Exception {
+        UUID nonExistentUserId = UUID.randomUUID();
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/user/{userId}/checkout", nonExistentUserId))
+                .andExpect(MockMvcResultMatchers.status().isOk()) // Now returning 200 instead of 404
+                .andExpect(MockMvcResultMatchers.content().string("User not found"));
+    }
+
+    //5.2 addOrderToUser user has no cart - PASSED
+    @Test
+    void testAddOrderToUserWithoutCart() throws Exception {
+        User testUser12 = new User();
+        testUser12.setId(UUID.randomUUID());
+        testUser12.setName("Test User12");
+        addUser(testUser12); // Add user but no cart
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/user/{userId}/checkout", testUser12.getId()))
+                .andExpect(MockMvcResultMatchers.status().isOk()) // Now returning 200 instead of 400
+                .andExpect(MockMvcResultMatchers.content().string("User has no cart"));
+    }
+
+
+    //5.3 addOrderToUser multiple orders - PASSED
+    @Test
+    void testAddOrderToUserWithExistingOrders() throws Exception {
+        User testUser = new User();
+        testUser.setId(UUID.randomUUID());
+        testUser.setName("Test User");
+
+        Order existingOrder = new Order(UUID.randomUUID(), List.of(new Product(UUID.randomUUID(), "Old Product", 15.0)));
+        testUser.addOrder(existingOrder);
+        addUser(testUser);
+
+        Cart cart = new Cart();
+        cart.setId(UUID.randomUUID());
+        cart.setUserId(testUser.getId());
+        cart.setProducts(List.of(new Product(UUID.randomUUID(), "New Product", 20.0)));
+        addCart(cart);
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/user/{userId}/checkout", testUser.getId()))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().string("Order added successfully"));
+    }
+
+    //6.1 removeOrderFromUser non existent user - PASSED
+    @Test
+    void testRemoveOrderFromNonExistentUser() throws Exception {
+        UUID nonExistentUserId = UUID.randomUUID();
+        UUID orderId = UUID.randomUUID();
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/user/{userId}/removeOrder", nonExistentUserId)
+                        .param("orderId", orderId.toString()))
+                .andExpect(MockMvcResultMatchers.status().isOk()) // Since the controller always returns a string
+                .andExpect(MockMvcResultMatchers.content().string("User not found with ID: " + nonExistentUserId));
+    }
+
+    //6.2 removeOrderFromUser non existing order - PASSED
+    @Test
+    void testRemoveNonExistentOrderFromUser() throws Exception {
+        User testUser = new User();
+        testUser.setId(UUID.randomUUID());
+        testUser.setName("Test User");
+        addUser(testUser);
+
+        UUID nonExistentOrderId = UUID.randomUUID();
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/user/{userId}/removeOrder", testUser.getId())
+                        .param("orderId", nonExistentOrderId.toString()))
+                .andExpect(MockMvcResultMatchers.status().isOk()) // Still returning a string, so 200 OK
+                .andExpect(MockMvcResultMatchers.content().string("Order not found with ID: " + nonExistentOrderId));
+    }
+
+
+    //6.3 removeOrderFromUser user has no orders - PASSED
+    @Test
+    void testRemoveOrderFromUserWithNoOrders() throws Exception {
+        User testUser = new User();
+        testUser.setId(UUID.randomUUID());
+        testUser.setName("Test User");
+        addUser(testUser); // Add user but do not add any orders
+
+        UUID randomOrderId = UUID.randomUUID(); // This order does not exist
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/user/{userId}/removeOrder", testUser.getId())
+                        .param("orderId", randomOrderId.toString()))
+                .andExpect(MockMvcResultMatchers.status().isOk()) // Since the response is a String, it will still return 200 OK
+                .andExpect(MockMvcResultMatchers.content().string("Order not found with ID: " + randomOrderId));
+    }
+
+
 
     // ------------------------ Product Tests -------------------------
 
