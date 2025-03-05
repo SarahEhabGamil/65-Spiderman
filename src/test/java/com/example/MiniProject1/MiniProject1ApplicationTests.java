@@ -376,6 +376,7 @@
  	}
 
 
+	 //7.0
  	@Test
  	void testEmptyCartEndpoint() throws Exception{
  		User testUser13=new User();
@@ -392,6 +393,7 @@
  	}
 
 
+	 //8.0
  	@Test
  	void testAddProductToCartEndPoint() throws Exception {
  		User testUser14=new User();
@@ -431,6 +433,8 @@
 // 				.andExpect(MockMvcResultMatchers.status().isOk())
 // 				.andExpect(MockMvcResultMatchers.content().string("Product deleted from cart"));
 // 	}
+
+	 //9.0
 	 @Test
 	 void testDeleteProductFromCartEndPoint1() throws Exception {
 		 User testUser15 = new User();

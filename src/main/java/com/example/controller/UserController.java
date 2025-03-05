@@ -114,22 +114,38 @@ public class UserController {
     //7
     @DeleteMapping("/{userId}/emptyCart")
     public String emptyCart(@PathVariable UUID userId) throws Exception {
-        userService.emptyCart(userId);
-        return "Cart emptied successfully";
+        try {
+            userService.emptyCart(userId);
+            return "Cart emptied successfully";
+        } catch (RuntimeException e) {
+            return e.getMessage();
+        }
     }
 
     //8
     @PutMapping("/addProductToCart")
     public String addProductToCart(@RequestParam UUID userId, @RequestParam UUID productId){
-        Cart cart = cartService.getCartByUserId(userId);
+        User user = userService.getUserById(userId);
+        if (user == null) {
+            return "User not found";
+        }
 
-        if(cart == null){
+        // Check if the product exists
+        Product product = productService.getProductById(productId);
+        if (product == null) {
+            return "Product not found";
+        }
+
+        // Get the cart for the user, or create one if it doesn't exist
+        Cart cart = cartService.getCartByUserId(userId);
+        if (cart == null) {
             cart = new Cart();
             cart.setUserId(userId);
             cartService.addCart(cart);
         }
-        Product product = productService.getProductById(productId);
-        cartService.addProductToCart(cart.getId(),product);
+
+        // Add the product to the cart
+        cartService.addProductToCart(cart.getId(), product);
         return "Product added to cart";
     }
 

@@ -464,7 +464,7 @@ class MiniProject1ApplicationTests2 {
         UUID nonExistentUserId = UUID.randomUUID();
 
         mockMvc.perform(MockMvcRequestBuilders.get("/user/{userId}/orders", nonExistentUserId))
-                .andExpect(MockMvcResultMatchers.status().isOk()) // Always 200 since we're returning a String
+                .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().string("User not found"));
     }
 
@@ -496,7 +496,7 @@ class MiniProject1ApplicationTests2 {
         UUID nonExistentUserId = UUID.randomUUID();
 
         mockMvc.perform(MockMvcRequestBuilders.post("/user/{userId}/checkout", nonExistentUserId))
-                .andExpect(MockMvcResultMatchers.status().isOk()) // Now returning 200 instead of 404
+                .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().string("User not found"));
     }
 
@@ -506,10 +506,10 @@ class MiniProject1ApplicationTests2 {
         User testUser12 = new User();
         testUser12.setId(UUID.randomUUID());
         testUser12.setName("Test User12");
-        addUser(testUser12); // Add user but no cart
+        addUser(testUser12);
 
         mockMvc.perform(MockMvcRequestBuilders.post("/user/{userId}/checkout", testUser12.getId()))
-                .andExpect(MockMvcResultMatchers.status().isOk()) // Now returning 200 instead of 400
+                .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().string("User has no cart"));
     }
 
@@ -544,7 +544,7 @@ class MiniProject1ApplicationTests2 {
 
         mockMvc.perform(MockMvcRequestBuilders.post("/user/{userId}/removeOrder", nonExistentUserId)
                         .param("orderId", orderId.toString()))
-                .andExpect(MockMvcResultMatchers.status().isOk()) // Since the controller always returns a string
+                .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().string("User not found with ID: " + nonExistentUserId));
     }
 
@@ -560,7 +560,7 @@ class MiniProject1ApplicationTests2 {
 
         mockMvc.perform(MockMvcRequestBuilders.post("/user/{userId}/removeOrder", testUser.getId())
                         .param("orderId", nonExistentOrderId.toString()))
-                .andExpect(MockMvcResultMatchers.status().isOk()) // Still returning a string, so 200 OK
+                .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().string("Order not found with ID: " + nonExistentOrderId));
     }
 
@@ -571,15 +571,119 @@ class MiniProject1ApplicationTests2 {
         User testUser = new User();
         testUser.setId(UUID.randomUUID());
         testUser.setName("Test User");
-        addUser(testUser); // Add user but do not add any orders
+        addUser(testUser);
 
-        UUID randomOrderId = UUID.randomUUID(); // This order does not exist
+        UUID randomOrderId = UUID.randomUUID();
 
         mockMvc.perform(MockMvcRequestBuilders.post("/user/{userId}/removeOrder", testUser.getId())
                         .param("orderId", randomOrderId.toString()))
                 .andExpect(MockMvcResultMatchers.status().isOk()) // Since the response is a String, it will still return 200 OK
                 .andExpect(MockMvcResultMatchers.content().string("Order not found with ID: " + randomOrderId));
     }
+
+
+    //7.1 emptyCart no user - PASSED
+    @Test
+    void testEmptyCartNonExistentUser() throws Exception {
+        UUID nonExistentUserId = UUID.randomUUID();
+        mockMvc.perform(MockMvcRequestBuilders.delete("/user/{userId}/emptyCart", nonExistentUserId))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().string("User not found"));
+    }
+
+    //7.2 emptyCart user has no cart - PASSED
+    @Test
+    void testEmptyCartUserWithoutCart() throws Exception {
+        User testUser = new User();
+        testUser.setId(UUID.randomUUID());
+        testUser.setName("Test User Without Cart");
+        addUser(testUser);
+
+        mockMvc.perform(MockMvcRequestBuilders.delete("/user/{userId}/emptyCart", testUser.getId()))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().string("Cart not found"));
+    }
+
+    //7.3 emptyCart cart is already empty - PASSED
+    @Test
+    void testEmptyCartWhenAlreadyEmpty() throws Exception {
+        User testUser = new User();
+        testUser.setId(UUID.randomUUID());
+        testUser.setName("Test User with Empty Cart");
+        addUser(testUser);
+
+        Cart emptyCart = new Cart(UUID.randomUUID(), testUser.getId(), new ArrayList<>());
+        addCart(emptyCart);
+
+        mockMvc.perform(MockMvcRequestBuilders.delete("/user/{userId}/emptyCart", testUser.getId()))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().string("Cart is already empty"));
+    }
+
+
+    //8.1 addProductToCart user doesnt exist - PASSED
+    @Test
+    void testAddProductToCart_UserNotFound() throws Exception {
+
+        Product testProduct = new Product(UUID.randomUUID(), "Test Product", 10.0);
+        addProduct(testProduct);
+
+        UUID nonExistentUserId = UUID.randomUUID();
+
+        mockMvc.perform(MockMvcRequestBuilders.put("/user/addProductToCart")
+                        .param("userId", nonExistentUserId.toString())
+                        .param("productId", testProduct.getId().toString()))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().string("User not found"));
+    }
+
+    //8.2 addProductToCart product doesn't exist - PASSED
+    @Test
+    void testAddProductToCart_ProductNotFound() throws Exception {
+
+        User testUser = new User();
+        testUser.setId(UUID.randomUUID());
+        testUser.setName("Test User15");
+        addUser(testUser);
+
+
+        UUID nonExistentProductId = UUID.randomUUID();
+
+        mockMvc.perform(MockMvcRequestBuilders.put("/user/addProductToCart")
+                        .param("userId", testUser.getId().toString())
+                        .param("productId", nonExistentProductId.toString()))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().string("Product not found"));
+    }
+
+    //8.3 addProductToCart adding a second product to cart with product - PASSED
+    @Test
+    void testAddProductToCart_ExistingCart_AddSecondProduct() throws Exception {
+        User testUser = new User();
+        testUser.setId(UUID.randomUUID());
+        testUser.setName("Test User16");
+        addUser(testUser);
+
+        Product firstProduct = new Product(UUID.randomUUID(), "First Product", 15.0);
+        addProduct(firstProduct);
+
+        Cart cart = new Cart(UUID.randomUUID(), testUser.getId(), new ArrayList<>(List.of(firstProduct)));
+        addCart(cart);
+
+        Product secondProduct = new Product(UUID.randomUUID(), "Second Product", 20.0);
+        addProduct(secondProduct);
+
+        mockMvc.perform(MockMvcRequestBuilders.put("/user/addProductToCart")
+                        .param("userId", testUser.getId().toString())
+                        .param("productId", secondProduct.getId().toString()))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().string("Product added to cart"));
+
+        Cart updatedCart = cartService.getCartByUserId(testUser.getId());
+        assertEquals(2, updatedCart.getProducts().size(), "Cart should have 2 products after adding the second product");
+    }
+
+
 
 
 
