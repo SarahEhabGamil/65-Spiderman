@@ -629,10 +629,6 @@
  	// --------------------------------- Cart Tests -------------------------
 
 
-
-
-
-
  	@Test
  	void testAddCartEndPoint() throws Exception{
  		User testUser21=new User();
@@ -688,14 +684,14 @@
 
 
 
- 	@Test
- 	void testDeleteCartByIdEndPoint() throws Exception{
- 		Cart cart = new Cart(UUID.randomUUID(), UUID.randomUUID(), new ArrayList<>());
- 		addCart(cart);
- 		mockMvc.perform(MockMvcRequestBuilders.delete("/cart/delete/{id}", cart.getId()))
- 				.andExpect(MockMvcResultMatchers.status().isOk())
- 				.andExpect(MockMvcResultMatchers.content().string("Cart deleted successfully"));
- 	}
+		@Test
+		void testDeleteCartByIdEndPoint() throws Exception{
+			Cart cart = new Cart(UUID.randomUUID(), UUID.randomUUID(), new ArrayList<>());
+			addCart(cart);
+			mockMvc.perform(MockMvcRequestBuilders.delete("/cart/delete/{id}", cart.getId()))
+					.andExpect(MockMvcResultMatchers.status().isOk())
+					.andExpect(MockMvcResultMatchers.content().string("Cart deleted successfully"));
+		}
 
 
  	// --------------------------------- Order Tests -------------------------
@@ -765,16 +761,4 @@
  				.andExpect(MockMvcResultMatchers.status().isOk())
  				.andExpect(MockMvcResultMatchers.content().string("Order not found"));
  	}
-
-
-
-
-
-
-
-
-
-
-
-
  }
