@@ -153,13 +153,27 @@ public class UserController {
     @PutMapping("/deleteProductFromCart")
     public String deleteProductFromCart(@RequestParam UUID userId, @RequestParam UUID productId) {
         try {
+            // Check if the user has a cart. If not, assume user is not found.
             Cart cart = cartService.getCartByUserId(userId);
+            if (cart == null) {
+                return "User not found";
+            }
+
+            // Check if the product exists.
             Product product = productService.getProductById(productId);
+            if (product == null) {
+                return "Product not found";
+            }
+
+            // Attempt to delete the product from the cart.
             cartService.deleteProductFromCart(cart.getId(), product);
             return "Product deleted from cart";
         } catch (Exception e) {
-            if (e.getMessage().equals("Cart got empty")) {
+            String msg = e.getMessage();
+            if (msg.equals("Cart got empty")) {
                 return "Cart is empty";
+            } else if (msg.startsWith("Product not found in cart")) {
+                return "Product not in cart";
             }
         }
         return "An unexpected error occurred";
