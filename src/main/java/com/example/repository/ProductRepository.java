@@ -24,7 +24,7 @@ public class ProductRepository extends MainRepository<Product>{
 
 
     public Product addProduct(Product product) {
-        if (product == null) {
+        if (product == null || product.getName() == null || product.getPrice()==0) {
             throw new IllegalArgumentException("Product cannot be null");
         }
 
@@ -70,20 +70,21 @@ public class ProductRepository extends MainRepository<Product>{
         }
 
         if (productToUpdate == null) {
-            throw new RuntimeException("Product not found with ID: " + productId);
+            throw new RuntimeException("Product not found");
+        }else{
+            productToUpdate.setName(newName);
+            productToUpdate.setPrice(newPrice);
+
+            saveAll(products);
+            return productToUpdate;
         }
 
-        productToUpdate.setName(newName);
-        productToUpdate.setPrice(newPrice);
 
-        saveAll(products);
-
-        return productToUpdate;
     }
 
-    public void applyDiscount(double discount, ArrayList<UUID> productIds) {
+    public void applyDiscount(double discount, ArrayList<UUID> productIds) throws Exception {
         if (discount <= 0 || discount > 100) {
-            throw new IllegalArgumentException("Discount must be between 1 and 100.");
+            throw new IllegalArgumentException("Discount must be between 1 and 100");
         }
 
         ArrayList<Product> products = findAll();
@@ -97,14 +98,14 @@ public class ProductRepository extends MainRepository<Product>{
             }
         }
         if (!updated) {
-            throw new RuntimeException("No matching products found for the given IDs.");
+            throw new RuntimeException("No matching products found for the given IDs");
         }
 
         saveAll(products);
     }
 
 
-    public void deleteProductById(UUID productId) {
+    public void deleteProductById(UUID productId)throws Exception {
         ArrayList<Product> products = findAll();
 
         Product productToDelete = null;
@@ -116,7 +117,7 @@ public class ProductRepository extends MainRepository<Product>{
         }
 
         if (productToDelete == null) {
-            throw new RuntimeException("Product not found with ID: " + productId);
+            throw new RuntimeException("Product not found");
         }
 
         products.remove(productToDelete);

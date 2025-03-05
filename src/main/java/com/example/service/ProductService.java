@@ -18,7 +18,7 @@ public class ProductService {
         this.productRepository = productRepository;
     }
 
-    public Product addProduct(Product product){
+    public Product addProduct(Product product)  {
 
         return productRepository.addProduct(product);
     }
@@ -30,14 +30,12 @@ public class ProductService {
         return productRepository.getProductById(productId);
     }
     public Product updateProduct(UUID productId, String newName, double newPrice){
-
         return productRepository.updateProduct(productId, newName, newPrice);
     }
-    public void applyDiscount(double discount, ArrayList<UUID> productIds){
+    public void applyDiscount(double discount, ArrayList<UUID> productIds)throws Exception {
         productRepository.applyDiscount(discount, productIds);
     }
-    public void deleteProductById(UUID productId){
-
+    public void deleteProductById(UUID productId) throws Exception {
         productRepository.deleteProductById(productId);
     }
 

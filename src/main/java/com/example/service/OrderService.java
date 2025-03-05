@@ -25,7 +25,7 @@ public class OrderService {
         this.userService = userService;
     }
 
-    public void addOrder(Order order){
+    public void addOrder(Order order)  {
         orderRepository.addOrder(order);
     }
 
@@ -36,6 +36,7 @@ public class OrderService {
         return orderRepository.getOrderById(orderId);
     }
     public void deleteOrderById(UUID orderId) throws RuntimeException{
+
         orderRepository.deleteOrderById(orderId);
     }
 }

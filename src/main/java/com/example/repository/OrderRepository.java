@@ -2,9 +2,12 @@ package com.example.repository;
 
 
 import com.example.model.Order;
+import com.example.model.Product;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import java.util.UUID;
 
 @Repository
@@ -66,5 +69,14 @@ public class OrderRepository extends MainRepository<Order>{
         }
         orders.remove(orderToDelete);
         saveAll(orders);
+    }
+
+    public void clearOrders() {
+        ArrayList<Order> orders = findAll();
+        Iterator<Order> iterator = orders.iterator();
+        while (iterator.hasNext()) {
+            iterator.next();
+            iterator.remove();
+        }
     }
 }

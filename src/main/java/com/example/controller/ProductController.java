@@ -3,7 +3,10 @@ package com.example.controller;
 import com.example.model.Product;
 import com.example.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -22,7 +25,7 @@ public class ProductController {
 
     @PostMapping("/")
     public Product addProduct(@RequestBody Product product) {
-        return productService.addProduct(product);
+            return productService.addProduct(product);
     }
 
     @GetMapping("/")
@@ -36,22 +39,49 @@ public class ProductController {
     }
 
     @PutMapping("/update/{productId}")
-    public Product updateProduct(@PathVariable UUID productId, @RequestBody Map<String, Object> body) {
+    public ResponseEntity<Object> updateProduct(@PathVariable UUID productId, @RequestBody Map<String, Object> body) {
         String newName = body.get("newName").toString();
         double newPrice = (double) body.get("newPrice");
 
-        return productService.updateProduct(productId, newName, newPrice);
+        try {
+            Product updatedProduct = productService.updateProduct(productId, newName, newPrice);
+            return ResponseEntity.ok(updatedProduct);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("Product not found");
+        }
     }
 
     @PutMapping("/applyDiscount")
     public String applyDiscount(@RequestParam double discount, @RequestBody ArrayList<UUID> productIds) {
-        productService.applyDiscount(discount, productIds);
-        return "Discount applied successfully";
+        try {
+            productService.applyDiscount(discount, productIds);
+            return "Discount applied successfully";
+        } catch (Exception e) {
+            String errorMessage = e.getMessage();
+            if ("Discount must be between 1 and 100".equals(errorMessage)) {
+                return "Discount must be between 1 and 100";
+            } else if ("No matching products found for the given IDs".equals(errorMessage)) {
+                return "No matching products found for the given ID";
+            }
+        }
+        return "An unexpected error occurred";
     }
 
+
     @DeleteMapping("/delete/{productId}")
-    public String deleteProductById(@PathVariable UUID productId) {
-        productService.deleteProductById(productId);
-        return "Product deleted successfully";
+    public String deleteProductById(@PathVariable UUID productId) throws Exception{
+        try{
+            productService.deleteProductById(productId);
+            return "Product deleted successfully";
+        }
+        catch(Exception e){
+            String errorMessage = e.getMessage();
+            if ("Product not found".equals(errorMessage)) {
+                return "Product not found";
+            }
+        }
+        return "An unexpected error occurred";
+
     }
 }
