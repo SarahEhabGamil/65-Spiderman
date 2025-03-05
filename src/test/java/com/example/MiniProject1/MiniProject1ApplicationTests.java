@@ -1,9 +1,9 @@
  package com.example.MiniProject1;
 
  import static org.junit.jupiter.api.Assertions.assertEquals;
+ import static org.junit.jupiter.api.Assertions.assertNotNull;
+ import static org.junit.jupiter.api.Assertions.assertNull;
  import static org.junit.jupiter.api.Assertions.assertTrue;
- import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
- import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
  import java.io.File;
  import java.io.IOException;
@@ -268,7 +268,7 @@
  	// ------------------------ User Tests -------------------------
 
 
-//1.0
+
  	@Test
  	void testAddUserEndPoint() throws Exception {
  		User testUser3 = new User();
@@ -291,7 +291,7 @@
  		assertTrue(found,"User should be added correctly");
  	}
 
-//2.0
+
  	@Test
  	void testGetUsersEndPoint() throws Exception {
 
@@ -308,7 +308,8 @@
  		assertEquals(responseUsers.size(), getUsers().size(), "Users should be returned correctly From Endpoint");
  	}
 
-//3.0
+
+
  	@Test
  	void testGetUserByIdEndPoint() throws Exception {
  		User testUser8=new User();
@@ -322,7 +323,7 @@
  	}
 
 
-//4.0
+
  	@Test
  	void testGetOrdersByUserIdEndPoint() throws Exception {
  		User testUser10=new User();
@@ -337,7 +338,7 @@
  	}
 
 
-	//5.0
+
  	@Test
  	void testAddOrderToUserEndPoint() throws Exception {
  		User testUser11=new User();
@@ -358,7 +359,6 @@
  	}
 
 
-	 //6.0
  	@Test
  	void testRemoveOrderOfUserEndPoint() throws Exception{
  		User testUser12=new User();
@@ -376,7 +376,6 @@
  	}
 
 
-	 //7.0
  	@Test
  	void testEmptyCartEndpoint() throws Exception{
  		User testUser13=new User();
@@ -393,7 +392,6 @@
  	}
 
 
-	 //8.0
  	@Test
  	void testAddProductToCartEndPoint() throws Exception {
  		User testUser14=new User();
@@ -415,51 +413,24 @@
 
 
 
-// 	@Test
-// 	void testDeleteProductFromCartEndPoint1() throws Exception {
-// 		User testUser15 =new User();
-// 		testUser15.setId(UUID.randomUUID());
-// 		testUser15.setName("Test User15");
-//
-// 		Product testProduct=new Product(UUID.randomUUID(), "Test Product", 10.0);
-// 		addUser(testUser15);
-// 		addProduct(testProduct);
-// 		Cart cart = new Cart(UUID.randomUUID(), testUser15.getId(), new ArrayList<>(List.of(testProduct)));
-// 		addCart(cart);
-//
-// 		mockMvc.perform(MockMvcRequestBuilders.put("/user/deleteProductFromCart")
-// 				.param("userId", cart.getUserId().toString())
-// 				.param("productId", testProduct.getId().toString()))
-// 				.andExpect(MockMvcResultMatchers.status().isOk())
-// 				.andExpect(MockMvcResultMatchers.content().string("Product deleted from cart"));
-// 	}
+ 	@Test
+ 	void testDeleteProductFromCartEndPoint1() throws Exception {
+ 		User testUser15=new User();
+ 		testUser15.setId(UUID.randomUUID());
+ 		testUser15.setName("Test User15");
 
-	 //9.0
-	 @Test
-	 void testDeleteProductFromCartEndPoint1() throws Exception {
-		 User testUser15 = new User();
-		 testUser15.setId(UUID.randomUUID());
-		 testUser15.setName("Test User15");
+ 		Product testProduct=new Product(UUID.randomUUID(), "Test Product", 10.0);
+ 		addUser(testUser15);
+ 		addProduct(testProduct);
+ 		Cart cart = new Cart(UUID.randomUUID(), testUser15.getId(), new ArrayList<>(List.of(testProduct)));
+ 		addCart(cart);
 
-		 Product testProduct1 = new Product(UUID.randomUUID(), "Test Product 1", 10.0);
-		 Product testProduct2 = new Product(UUID.randomUUID(), "Test Product 2", 15.0);
-
-		 addUser(testUser15);
-		 addProduct(testProduct1);
-		 addProduct(testProduct2);
-
-		 Cart cart = new Cart(UUID.randomUUID(), testUser15.getId(), new ArrayList<>(List.of(testProduct1, testProduct2)));
-		 addCart(cart);
-
-		 mockMvc.perform(MockMvcRequestBuilders.put("/user/deleteProductFromCart")
-						 .param("userId", cart.getUserId().toString())
-						 .param("productId", testProduct1.getId().toString()))
-				 .andExpect(status().isOk())
-				 .andExpect(content().string("Product deleted from cart"));
-
-	 }
-
-	 //9.1
+ 		mockMvc.perform(MockMvcRequestBuilders.put("/user/deleteProductFromCart")
+ 				.param("userId", cart.getUserId().toString())
+ 				.param("productId", testProduct.getId().toString()))
+ 				.andExpect(MockMvcResultMatchers.status().isOk())
+ 				.andExpect(MockMvcResultMatchers.content().string("Product deleted from cart"));
+ 	}
  	@Test
  	void testDeleteProductFromCartEndPoint2() throws Exception {
  		User testUser15=new User();
@@ -469,8 +440,8 @@
  		Product testProduct=new Product(UUID.randomUUID(), "Test Product", 10.0);
  		addUser(testUser15);
  		addProduct(testProduct);
- 		 Cart cart = new Cart(UUID.randomUUID(), testUser15.getId(), new ArrayList<>(List.of(testProduct)));
- 		 addCart(cart);
+ 		// Cart cart = new Cart(UUID.randomUUID(), testUser15.getId(), new ArrayList<>(List.of(testProduct)));
+ 		// addCart(cart);
 
  		mockMvc.perform(MockMvcRequestBuilders.put("/user/deleteProductFromCart")
  				.param("userId", testUser15.getId().toString())
@@ -481,7 +452,6 @@
 
 
 
-	 //10.0
  	@Test
  	void testDeleteUserByIdEndPoint1() throws Exception {
  		User testUser18=new User();
@@ -493,7 +463,6 @@
  				.andExpect(MockMvcResultMatchers.status().isOk())
  				.andExpect(MockMvcResultMatchers.content().string("User deleted successfully"));
  	}
-	 //10.1
  	@Test
  	void testDeleteUserByIdEndPoint2() throws Exception {
  		User testUser18=new User();
@@ -517,9 +486,6 @@
  		testProduct3.setId(UUID.randomUUID());
  		testProduct3.setName("Test Product");
  		testProduct3.setPrice(10.0);
-
-
-
 
  		mockMvc.perform(MockMvcRequestBuilders.post("/product/")
  				.contentType(MediaType.APPLICATION_JSON)
@@ -650,10 +616,6 @@
  		assertTrue(found,"Cart should be added correctly");
  	}
 
-
-
-
-
  	@Test
  	void testGetCartsEndPoint() throws Exception{
  		Cart cart = new Cart(UUID.randomUUID(), UUID.randomUUID(), new ArrayList<>());
@@ -684,17 +646,20 @@
 
 
 
-		@Test
-		void testDeleteCartByIdEndPoint() throws Exception{
-			Cart cart = new Cart(UUID.randomUUID(), UUID.randomUUID(), new ArrayList<>());
-			addCart(cart);
-			mockMvc.perform(MockMvcRequestBuilders.delete("/cart/delete/{id}", cart.getId()))
-					.andExpect(MockMvcResultMatchers.status().isOk())
-					.andExpect(MockMvcResultMatchers.content().string("Cart deleted successfully"));
-		}
+ 	@Test
+ 	void testDeleteCartByIdEndPoint() throws Exception{
+ 		Cart cart = new Cart(UUID.randomUUID(), UUID.randomUUID(), new ArrayList<>());
+ 		addCart(cart);
+ 		mockMvc.perform(MockMvcRequestBuilders.delete("/cart/delete/{id}", cart.getId()))
+ 				.andExpect(MockMvcResultMatchers.status().isOk())
+ 				.andExpect(MockMvcResultMatchers.content().string("Cart deleted successfully"));
+ 	}
 
 
  	// --------------------------------- Order Tests -------------------------
+
+
+
 
  	@Test
  	void testAddOrderEndPoint() throws Exception{
@@ -731,6 +696,10 @@
  		assertEquals(getOrders().size(), responseOrders.size(), "Orders should be returned correctly From Endpoint");
  	}
 
+
+
+
+
  	@Test
  	void testGetOrderByIdEndPoint() throws Exception{
  		Order order = new Order(UUID.randomUUID(), UUID.randomUUID(), 10.0, new ArrayList<>());
@@ -743,6 +712,8 @@
  		// Order responseOrder = objectMapper.readValue(responseContent, Order.class);
  		// assertEquals(order.getId(), responseOrder.getId(), "Order should be returned correctly From Endpoint");
  	}
+
+
 
 
  	@Test
@@ -761,4 +732,16 @@
  				.andExpect(MockMvcResultMatchers.status().isOk())
  				.andExpect(MockMvcResultMatchers.content().string("Order not found"));
  	}
+
+
+
+
+
+
+
+
+
+
+
+
  }

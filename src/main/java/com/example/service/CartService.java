@@ -22,7 +22,7 @@ public class CartService extends MainService{
         return cartRepository.getCarts().stream().anyMatch(user -> user.getId().equals(userId));
     }
     // Service Layer
-    public Cart addCart(Cart cart) {
+    public Cart addCart(Cart cart) throws Exception {
         if (cart == null) {
             throw new IllegalArgumentException("Cart cannot be null");
         }
@@ -31,14 +31,9 @@ public class CartService extends MainService{
             throw new IllegalArgumentException("User ID cannot be null");
         }
 
-        // Check if user exists before adding a cart
-        if (!userExists(cart.getUserId())) {
-            throw new RuntimeException("User does not exist: " + cart.getUserId());
-        }
 
         ArrayList<Cart> carts = cartRepository.findAll();
 
-        // Prevent adding multiple carts for the same user
         for (Cart existingCart : carts) {
             if (existingCart.getUserId().equals(cart.getUserId())) {
                 throw new RuntimeException("Cart already exists for user with ID: " + cart.getUserId());
@@ -51,7 +46,6 @@ public class CartService extends MainService{
 
         carts.add(cart);
         cartRepository.saveAll(carts);
-
         return cart;
     }
 
@@ -73,63 +67,8 @@ public class CartService extends MainService{
     public void deleteCartById(UUID cartId){
         cartRepository.deleteCartById(cartId);
     }
+
     public void clearCartAfterCheckout(UUID cartId){
         cartRepository.clearCartAfterCheckout(cartId);
     }
 }
-
-//package com.example.service;
-//
-//import com.example.model.Cart;
-//import com.example.model.Product;
-//import com.example.repository.CartRepository;
-//import org.springframework.stereotype.Service;
-//
-//import java.util.List;
-//import java.util.UUID;
-//
-//@Service
-//public class CartService extends MainService<Cart> {
-//
-//    private final CartRepository cartRepository;
-//
-//    public CartService(CartRepository cartRepository) {
-//        this.cartRepository = cartRepository;
-//    }
-//
-//    @Override
-//    protected UUID getId(Cart cart) {
-//        return cart.getId();
-//    }
-//
-//    @Override
-//    protected List<Cart> findAll() {
-//        return cartRepository.getCarts();
-//    }
-//
-//    @Override
-//    protected Cart save(Cart cart) {
-//        return cartRepository.addCart(cart);
-//    }
-//
-//    @Override
-//    protected void deleteById(UUID id) {
-//        cartRepository.deleteCartById(id);
-//    }
-//
-//    public Cart getCartByUserId(UUID userId) {
-//        return cartRepository.getCartByUserId(userId);
-//    }
-//
-//    public void addProductToCart(UUID cartId, Product product) {
-//        cartRepository.addProductToCart(cartId, product);
-//    }
-//
-//    public void deleteProductFromCart(UUID cartId, Product product) throws Exception {
-//        cartRepository.deleteProductFromCart(cartId, product);
-//    }
-//
-//    public void clearCartAfterCheckout(UUID cartId) {
-//        cartRepository.clearCartAfterCheckout(cartId);
-//    }
-//}

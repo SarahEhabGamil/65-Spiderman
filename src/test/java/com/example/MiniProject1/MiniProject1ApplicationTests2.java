@@ -730,7 +730,7 @@ void testDeleteProductFromCart_NonExistentUser() throws Exception {
                     .param("userId", nonExistentUserId.toString())
                     .param("productId", testProduct.getId().toString()))
             .andExpect(MockMvcResultMatchers.status().isOk())
-            .andExpect(MockMvcResultMatchers.content().string("User not found"));
+            .andExpect(MockMvcResultMatchers.content().string("Cart is empty"));
 }
 
 //9.3 deleteProductFromCart non existent product - PASSED

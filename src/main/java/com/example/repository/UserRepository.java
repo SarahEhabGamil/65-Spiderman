@@ -44,9 +44,7 @@ public class UserRepository extends MainRepository<User>{
         if (user == null) {
             throw new IllegalArgumentException("User cannot be null");
         }
-
         ArrayList<User> users = findAll();
-
         for (User existingUser : users) {
             if (existingUser.getId().equals(user.getId())) {
                 throw new RuntimeException("User with ID '" + user.getId() + "' already exists.");
@@ -55,11 +53,9 @@ public class UserRepository extends MainRepository<User>{
                 throw new RuntimeException("User with name '" + user.getName() + "' already exists.");
             }
         }
-
         if (user.getId() == null) {
             user.setId(UUID.randomUUID());
         }
-
         users.add(user);
         saveAll(users);
         return user;
@@ -84,14 +80,9 @@ public class UserRepository extends MainRepository<User>{
         if (user == null) {
             throw new RuntimeException("User not found with ID: " + userId);
         }
-
-
         user.addOrder(order);
-
         ArrayList<User> users = findAll();
-
         boolean userUpdated = false;
-
         for (int i = 0; i < users.size(); i++) {
             if (users.get(i).getId().equals(userId)) {
                 users.set(i, user);
@@ -158,6 +149,5 @@ public class UserRepository extends MainRepository<User>{
 
         saveAll(users);
     }
-
 
 }

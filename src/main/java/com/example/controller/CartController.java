@@ -22,19 +22,25 @@ public class CartController {
         this.cartService = cartService;
     }
 
-//    @PostMapping("/")
-//    public Cart addCart(@RequestBody Cart cart){
-//        return cartService.addCart(cart);
-//    }
-@PostMapping("/")
-public ResponseEntity<?> addCart(@RequestBody Cart cart) {
-    try {
-        Cart addedCart = cartService.addCart(cart);
-        return ResponseEntity.ok(addedCart);
-    } catch (Exception e) {
-        return ResponseEntity.badRequest().body(e.getMessage());
+    @PostMapping("/")
+    public Cart addCart(@RequestBody Cart cart)throws Exception{
+        try{
+            return cartService.addCart(cart);
+        }
+        catch(Exception e){
+            return null;
+        }
+
     }
-}
+//    @PostMapping("/")
+//    public ResponseEntity<?> addCart(@RequestBody Cart cart) throws Exception {
+//        try {
+//            Cart addedCart = cartService.addCart(cart);
+//            return ResponseEntity.ok(addedCart);
+//        } catch (Exception e) {
+//            return ResponseEntity.badRequest().body(e.getMessage());
+//        }
+//    }
 
 
     @GetMapping("/")

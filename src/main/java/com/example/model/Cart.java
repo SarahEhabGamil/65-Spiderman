@@ -74,6 +74,9 @@ public class Cart {
     public void clearCart() {
         this.products.clear();
     }
+    public void setTotalPrice(double totalPrice) {
+        this.totalPrice = totalPrice;
+    }
 
 //    public double getTotalPrice() {
 //        double total = 0;

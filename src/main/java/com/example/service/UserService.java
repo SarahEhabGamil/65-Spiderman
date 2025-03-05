@@ -31,7 +31,7 @@ public class UserService extends MainService{
     public ArrayList<User> getUsers() {
         return userRepository.getUsers();
     }
-    public List<Order> getOrdersByUserId(UUID userId) throws Exception {
+    public List<Order> getOrdersByUserId(UUID userId)throws Exception  {
         List<Order> orders = userRepository.getOrdersByUserId(userId);
         if (orders == null) {
             throw new Exception("User not found");

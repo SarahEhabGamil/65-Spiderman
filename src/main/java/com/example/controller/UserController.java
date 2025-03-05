@@ -63,15 +63,12 @@ public class UserController {
     }
     //4
     @GetMapping("/{userId}/orders")
-    public String getOrdersByUserId(@PathVariable UUID userId) {
-        try {
-            List<Order> orders = userService.getOrdersByUserId(userId);
-            if (orders == null || orders.isEmpty()) {
-                return "User has no orders";
-            }
-            return "User orders retrieved successfully";
-        } catch (Exception e) {
-            return "User not found";
+    public List<Order> getOrdersByUserId(@PathVariable UUID userId)throws Exception {
+        try{
+            return  userService.getOrdersByUserId(userId);
+        }
+        catch (Exception e){
+            return null;
         }
     }
     //5
@@ -91,7 +88,6 @@ public class UserController {
         order.setUserId(userId);
         order.setProducts(cart.getProducts());
         userService.addOrderToUser(userId, order);
-
         return "Order added successfully";
     }
 
@@ -124,7 +120,7 @@ public class UserController {
 
     //8
     @PutMapping("/addProductToCart")
-    public String addProductToCart(@RequestParam UUID userId, @RequestParam UUID productId){
+    public String addProductToCart(@RequestParam UUID userId, @RequestParam UUID productId) throws Exception {
         User user = userService.getUserById(userId);
         if (user == null) {
             return "User not found";
@@ -155,8 +151,9 @@ public class UserController {
         try {
             // Check if the user has a cart. If not, assume user is not found.
             Cart cart = cartService.getCartByUserId(userId);
+
             if (cart == null) {
-                return "User not found";
+                return "Cart is empty";
             }
 
             // Check if the product exists.
@@ -164,7 +161,6 @@ public class UserController {
             if (product == null) {
                 return "Product not found";
             }
-
             // Attempt to delete the product from the cart.
             cartService.deleteProductFromCart(cart.getId(), product);
             return "Product deleted from cart";

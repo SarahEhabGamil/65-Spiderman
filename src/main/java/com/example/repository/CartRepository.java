@@ -109,10 +109,9 @@ public class CartRepository extends MainRepository<Cart> {
                 break;
             }
         }
-
-        if (cartToUpdate == null) {
-            throw new RuntimeException("Cart not found with ID: " + cartId);
-        }
+//        if (cartToUpdate == null) {
+//            throw new RuntimeException("Cart is empty");
+//        }
 
         boolean removed = false;
         List<Product> products = cartToUpdate.getProducts();
@@ -128,9 +127,9 @@ public class CartRepository extends MainRepository<Cart> {
             throw new RuntimeException("Product not found in cart with ID: " + product.getId());
         }
 
-        if (products.isEmpty()) {
-            throw new RuntimeException("Cart got empty");
-        }
+//        if (products.isEmpty()) {
+//            throw new RuntimeException("Cart got empty");
+//        }
 
         saveAll(carts);
     }
@@ -145,7 +144,6 @@ public class CartRepository extends MainRepository<Cart> {
                 break;
             }
         }
-
         if (cartToUpdate == null) {
             throw new RuntimeException("Cart not found with ID: " + cartId);
         }
@@ -157,6 +155,7 @@ public class CartRepository extends MainRepository<Cart> {
             iterator.next();
             iterator.remove();
         }
+        cartToUpdate.setTotalPrice(0);
 
         saveAll(carts);
     }
@@ -164,7 +163,6 @@ public class CartRepository extends MainRepository<Cart> {
 
     public void deleteCartById(UUID cartId) {
         ArrayList<Cart> carts = findAll();
-
         Cart cartToDelete = null;
         for (Cart cart : carts) {
             if (cart.getId().equals(cartId)) {
@@ -172,7 +170,6 @@ public class CartRepository extends MainRepository<Cart> {
                 break;
             }
         }
-
         if (cartToDelete == null) {
             throw new RuntimeException("Cart not found with ID: " + cartId);
         }
