@@ -43,7 +43,17 @@ public class UserService extends MainService{
         this.emptyCart(userId);
     }
     public void emptyCart(UUID userId) throws Exception {
+        User user = getUserById(userId);
+        if (user == null) {
+            throw new RuntimeException("User not found");
+        }
         Cart cart = cartService.getCartByUserId(userId);
+        if (cart == null) {
+            throw new RuntimeException("Cart not found");
+        }
+        if (cart.getProducts() == null || cart.getProducts().isEmpty()) {
+            throw new RuntimeException("Cart is already empty");
+        }
         UUID cartId = cart.getId();
         cartService.clearCartAfterCheckout(cartId);
     }
