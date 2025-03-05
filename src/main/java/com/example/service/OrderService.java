@@ -12,17 +12,13 @@ import java.util.UUID;
 
 @Service
 @SuppressWarnings("rawtypes")
-public class OrderService {
+public class OrderService extends MainService {
 
-    private final CartService cartService;
-    private final UserService userService;
-    private OrderRepository orderRepository;
+    private final OrderRepository orderRepository;
 
 
     public OrderService(OrderRepository orderRepository, CartService cartService, UserService userService) {
         this.orderRepository = orderRepository;
-        this.cartService = cartService;
-        this.userService = userService;
     }
 
     public void addOrder(Order order)  {
@@ -35,7 +31,7 @@ public class OrderService {
     public Order getOrderById(UUID orderId){
         return orderRepository.getOrderById(orderId);
     }
-    public void deleteOrderById(UUID orderId) throws RuntimeException{
+    public void deleteOrderById(UUID orderId) throws IllegalArgumentException {
 
         orderRepository.deleteOrderById(orderId);
     }

@@ -12,10 +12,10 @@ import java.util.UUID;
 
 @Service
 @SuppressWarnings("rawtypes")
-public class UserService {
+public class UserService extends MainService{
 
     private final CartService cartService;
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     public UserService(UserRepository userRepository, CartService cartService) {
         this.userRepository = userRepository;

@@ -9,9 +9,10 @@ import java.util.ArrayList;
 import java.util.UUID;
 
 @Service
-public class ProductService {
+@SuppressWarnings("rawtypes")
+public class ProductService extends MainService {
 
-    private ProductRepository productRepository;
+    private final ProductRepository productRepository;
 
     public ProductService(ProductRepository productRepository) {
 

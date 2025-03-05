@@ -10,9 +10,9 @@ import java.util.UUID;
 
 @Service
 @SuppressWarnings("rawtypes")
-public class CartService {
+public class CartService extends MainService{
 
-    private CartRepository cartRepository;
+    private final CartRepository cartRepository;
 
     public CartService(CartRepository cartRepository) {
         this.cartRepository = cartRepository;
