@@ -1,5 +1,21 @@
 package com.example.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
+
 import com.example.model.Cart;
 import com.example.model.Order;
 import com.example.model.Product;
@@ -7,13 +23,6 @@ import com.example.model.User;
 import com.example.service.CartService;
 import com.example.service.ProductService;
 import com.example.service.UserService;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/user")
@@ -35,11 +44,14 @@ public class UserController {
     //1
     @PostMapping("/")
     public User addUser(@RequestBody User user){
+
+        if (user.getName() == null || user.getName().trim().isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Name cannot be null");
+        }
         try {
             return userService.addUser(user);
         } catch (RuntimeException e) {
             if(e.getMessage().contains("already exists")) {
-                //  throws 409
                 throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
             }
             throw e;
@@ -55,11 +67,13 @@ public class UserController {
     //3
     @GetMapping("/{userId}")
     public User getUserById(@PathVariable UUID userId){
-        try {
-            return userService.getUserById(userId);
-        }catch (Exception e){
-            return null;
+
+        User user =  userService.getUserById(userId);
+        if(user == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
         }
+
+        return user;
     }
     //4
     @GetMapping("/{userId}/orders")

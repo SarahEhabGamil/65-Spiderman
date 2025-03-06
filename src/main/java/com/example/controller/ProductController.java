@@ -1,16 +1,25 @@
 package com.example.controller;
 
-import com.example.model.Product;
-import com.example.service.ProductService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
-
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.UUID;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
+
+import com.example.model.Product;
+import com.example.service.ProductService;
 
 @RestController
 @RequestMapping("/product")
@@ -38,17 +47,35 @@ public class ProductController {
         return productService.getProductById(productId);
     }
 
+
     @PutMapping("/update/{productId}")
-    public ResponseEntity<Object> updateProduct(@PathVariable UUID productId, @RequestBody Map<String, Object> body) {
+    public Product updateProduct(@PathVariable UUID productId, @RequestBody Map<String, Object> body) {
+        if (!body.containsKey("newName") && !body.containsKey("newPrice")) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Missing required fields: newName and newPrice");
+        }
+
         String newName = body.get("newName").toString();
-        double newPrice = (double) body.get("newPrice");
+        double newPrice;
 
         try {
-            Product updatedProduct = productService.updateProduct(productId, newName, newPrice);
-            return ResponseEntity.ok(updatedProduct);
+            newPrice = Double.parseDouble(body.get("newPrice").toString());
+        } catch (NumberFormatException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid value for newPrice");
+        }
+
+        if (newName == null || newName.trim().isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "newName cannot be null or empty");
+        }
+
+        if (newPrice <= 0) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "newPrice must be greater than 0");
+        }
+
+        try {
+            return productService.updateProduct(productId, newName, newPrice);
+
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body("Product not found");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "product not found");
         }
     }
 

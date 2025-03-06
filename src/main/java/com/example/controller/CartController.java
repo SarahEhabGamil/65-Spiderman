@@ -2,11 +2,14 @@ package com.example.controller;
 
 import com.example.model.Cart;
 import com.example.model.Product;
+import com.example.model.User;
 import com.example.service.CartService;
+import com.example.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -14,7 +17,10 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/cart")
 public class CartController {
+    @Autowired
     private CartService cartService;
+    @Autowired
+    private UserService userService;
     @Autowired
     public CartController(CartService cartService) {
         this.cartService = cartService;
@@ -22,11 +28,19 @@ public class CartController {
 
     @PostMapping("/")
     public Cart addCart(@RequestBody Cart cart)throws Exception{
+            UUID userId = cart.getUserId();
+            if(userId == null) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "userId is null");
+            }
+            User user = userService.getUserById(cart.getUserId());
+            if(user == null) {
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
+            }
         try{
             return cartService.addCart(cart);
         }
         catch(Exception e){
-            return null;
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to add cart`");
         }
 
     }
@@ -51,23 +65,33 @@ public class CartController {
         return cartService.getCartById(cartId);
     }
 
+
     @PutMapping("/addProduct/{cartId}")
-    public ResponseEntity<String> addProductToCart(@PathVariable UUID cartId, @RequestBody Product product) {
+    public String addProductToCart(@PathVariable UUID cartId, @RequestBody Product product) {
+        String productName = product.getName();
+        Double productPrice = product.getPrice();
+        if(productPrice == null || productName == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "productPrice or productName is null");
+        }
+        if(productPrice < 0) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "productPrice is negative");
+        }
         try {
             cartService.addProductToCart(cartId, product);
-            return ResponseEntity.ok(product.getName() + " added to cart");
+            return product.getName() + " added to cart";
         } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Failed to add cart`");
         }
     }
 
+    //TODO change signature
     @DeleteMapping("/delete/{cartId}")
-    public ResponseEntity<String> deleteCartById(@PathVariable UUID cartId) {
+    public String deleteCartById(@PathVariable UUID cartId) {
         try {
             cartService.deleteCartById(cartId);
-            return ResponseEntity.ok("Cart deleted successfully");
+            return"Cart deleted successfully";
         } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Cart not found`");
         }
     }
 

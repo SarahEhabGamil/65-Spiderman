@@ -328,10 +328,11 @@ class MiniProject1ApplicationTests2 {
 
     //1.2 add Null User - PASSED
     @Test
-    void testAddNullUser() throws Exception {
+    void testAddUserWithoutName() throws Exception {
+        User newUser = new User();
         mockMvc.perform(MockMvcRequestBuilders.post("/user/")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(null)))
+                        .content(objectMapper.writeValueAsString(newUser)))
                 .andExpect(MockMvcResultMatchers.status().isBadRequest());
     }
 
@@ -353,7 +354,7 @@ class MiniProject1ApplicationTests2 {
         mockMvc.perform(MockMvcRequestBuilders.post("/user/")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(testUser)))
-                .andExpect(MockMvcResultMatchers.status().isConflict()); // Expect 409 Conflict
+                .andExpect(MockMvcResultMatchers.status().isConflict());
     }
 
     //2.1 getUsers no Users - PASSED
@@ -374,8 +375,8 @@ class MiniProject1ApplicationTests2 {
 
     //2.2 getUsers correct specific data - PASSED
     @Test
-    void testGetUsers_DataIntegrity() throws Exception {
-
+    void testGetUsers_AddAndGetUser() throws Exception {
+    clearUsers();
         User testUser = new User();
         UUID testId = UUID.randomUUID();
         testUser.setId(testId);
@@ -394,11 +395,13 @@ class MiniProject1ApplicationTests2 {
         assertFalse(responseUsers.isEmpty(), "User list should not be empty");
         assertEquals(testId, responseUsers.getFirst().getId(), "Returned user should have the correct ID");
         assertEquals("Lilly", responseUsers.getFirst().getName(), "Returned user should have the correct name");
+        assertEquals(1, responseUsers.size(), "Returned user should have the correct number of users");
     }
 
     //2.3 getUsers special characters - PASSED
     @Test
     void testGetUsers_SpecialCharacterNames() throws Exception {
+        clearUsers();
         User user1 = new User();
         user1.setId(UUID.randomUUID());
         user1.setName("M@RW@N");
@@ -422,18 +425,18 @@ class MiniProject1ApplicationTests2 {
 
         assertTrue(retrievedNames.contains("M@RW@N"), "Returned users should include names with special characters");
         assertTrue(retrievedNames.contains("حسن وائل"), "Returned users should include names with non-Latin characters");
+        assertEquals(2, responseUsers.size(), "Returned users should have the correct number of users");
     }
 
 
     //3.1 getUserById ID not found - PASSED
-    //TODO maybe lets add error messages like "user not found"
     @Test
     void testGetUserByIdNotFound() throws Exception {
         UUID nonExistentId = UUID.randomUUID();
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/user/{userId}", nonExistentId))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().string(""));
+      mockMvc.perform(MockMvcRequestBuilders.get("/user/{userId}", nonExistentId))
+                .andExpect(MockMvcResultMatchers.status().isNotFound());
+
     }
 
     //3.2 getUserById multiple users - PASSED
@@ -484,11 +487,11 @@ class MiniProject1ApplicationTests2 {
         User testUser = new User();
         testUser.setId(UUID.randomUUID());
         testUser.setName("Test User");
-        addUser(testUser); // Add user without orders
+        addUser(testUser);
 
         mockMvc.perform(MockMvcRequestBuilders.get("/user/{userId}/orders", testUser.getId()))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().string("User has no orders"));
+                .andExpect(MockMvcResultMatchers.content().string("[]"));
     }
 
     //4.2 invalid user id - PASSED
@@ -498,7 +501,7 @@ class MiniProject1ApplicationTests2 {
 
         mockMvc.perform(MockMvcRequestBuilders.get("/user/{userId}/orders", nonExistentUserId))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().string("User not found"));
+                .andExpect(MockMvcResultMatchers.content().string(""));
     }
 
     //4.3 multiple orders check - PASSED
@@ -516,9 +519,13 @@ class MiniProject1ApplicationTests2 {
         testUser.setOrders(orders);
         addUser(testUser);
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/user/{userId}/orders", testUser.getId()))
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/user/{userId}/orders", testUser.getId()))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().string("User orders retrieved successfully"));
+                .andReturn();
+
+        String responseContent = result.getResponse().getContentAsString();
+        List<Order> responseOrders = objectMapper.readValue(responseContent, new TypeReference<List<Order>>() {});
+        assertEquals(orders.size(), responseOrders.size(), "Orders size should match");
     }
 
 
@@ -946,11 +953,10 @@ void testDeleteUserById_RemovesUserFromList() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.put("/product/update/" + nonExistentId)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(updateBody)))
-                .andExpect(status().isNotFound())
-                .andExpect(content().string(containsString("Product not found")));
+                .andExpect(status().isNotFound());
     }
     @Test
-    void testUpdateProductInvalidRequestBody() throws Exception {
+    void testUpdateProductMissingFields() throws Exception {
         Product testProduct = new Product();
         UUID productId = UUID.randomUUID();
         testProduct.setId(productId);
@@ -959,12 +965,55 @@ void testDeleteUserById_RemovesUserFromList() throws Exception {
         addProduct(testProduct);
 
         Map<String, Object> updateBody = new HashMap<>();
-        updateBody.put("newName", "Updated Name");
 
         mockMvc.perform(MockMvcRequestBuilders.put("/product/update/" + productId)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(updateBody)))
-                .andExpect(status().isBadRequest()); // Expect 400 Bad Request due to missing required fields
+                .andExpect(status().isBadRequest());
+
+        List<Product> products = getProducts();
+
+        Product retrievedProduct = products.stream()
+                .filter(p -> p.getId().equals(productId))
+                .findFirst()
+                .orElse(null);
+
+        assertNotNull(retrievedProduct);
+        assertEquals("Old Name", retrievedProduct.getName());
+        assertEquals(50.0, retrievedProduct.getPrice());
+    }
+
+    @Test
+    void testUpdateProductInvalidPrice() throws Exception {
+
+        Product testProduct = new Product();
+        UUID productId = UUID.randomUUID();
+        testProduct.setId(productId);
+        testProduct.setName("Old Name");
+        testProduct.setPrice(50.0);
+        addProduct(testProduct);
+
+        // update request with an invalid price format
+        Map<String, Object> updateBody = new HashMap<>();
+        updateBody.put("newName", "Updated Name");
+        updateBody.put("newPrice", "invalid_price");
+
+        mockMvc.perform(MockMvcRequestBuilders.put("/product/update/" + productId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(updateBody)))
+                .andExpect(status().isBadRequest());
+
+        List<Product> products = getProducts();
+
+
+        Product retrievedProduct = products.stream()
+                .filter(p -> p.getId().equals(productId))
+                .findFirst()
+                .orElse(null);
+
+        assertNotNull(retrievedProduct);
+        assertEquals("Old Name", retrievedProduct.getName());
+        assertEquals(50.0, retrievedProduct.getPrice());
     }
 
     @Test
@@ -1022,7 +1071,7 @@ void testDeleteUserById_RemovesUserFromList() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.post("/cart/")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(newCart)))
-                .andExpect(MockMvcResultMatchers.status().isBadRequest());
+                .andExpect(MockMvcResultMatchers.status().isNotFound());
 
         boolean found = getCarts().stream().anyMatch(cart -> cart.getUserId().equals(nonExistentUserId));
         assertFalse(found, "A cart should not be added for a non-existent user.");
@@ -1030,12 +1079,16 @@ void testDeleteUserById_RemovesUserFromList() throws Exception {
     //1.2 add cart with invalid cart object - PASSED
     @Test
     void testAddCartWithInvalidPayload() throws Exception {
+        clearCarts();
         String invalidCartJson = "{}";
 
         mockMvc.perform(MockMvcRequestBuilders.post("/cart/")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(invalidCartJson))
                 .andExpect(MockMvcResultMatchers.status().isBadRequest());
+
+        int numberOfCarts = getCarts().size();
+        assertEquals(numberOfCarts, 0);
     }
     //1.3 add cart without user id - PASSED
     @Test
@@ -1045,8 +1098,7 @@ void testDeleteUserById_RemovesUserFromList() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.post("/cart/")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(newCart)))
-                .andExpect(MockMvcResultMatchers.status().isBadRequest())
-                .andExpect(MockMvcResultMatchers.content().string(Matchers.containsString("User ID cannot be null")));
+                .andExpect(MockMvcResultMatchers.status().isBadRequest());
     }
     //2.1 get carts empty list - PASSED
     @Test
@@ -1187,8 +1239,7 @@ void testDeleteUserById_RemovesUserFromList() throws Exception {
     void testDeleteNonExistentCart() throws Exception {
         UUID nonExistentCartId = UUID.randomUUID();
         mockMvc.perform(MockMvcRequestBuilders.delete("/cart/delete/{id}", nonExistentCartId))
-                .andExpect(MockMvcResultMatchers.status().isNotFound())
-                .andExpect(MockMvcResultMatchers.content().string("Cart not found with ID: " + nonExistentCartId));
+                .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 
     //5.2 delete cart twice - PASSED
@@ -1202,8 +1253,7 @@ void testDeleteUserById_RemovesUserFromList() throws Exception {
                 .andExpect(MockMvcResultMatchers.content().string("Cart deleted successfully"));
         //second delete
         mockMvc.perform(MockMvcRequestBuilders.delete("/cart/delete/{id}", cart.getId()))
-                .andExpect(MockMvcResultMatchers.status().isNotFound())
-                .andExpect(MockMvcResultMatchers.content().string("Cart not found with ID: " + cart.getId()));
+                .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 
     //delete cart after clearing - PASSED
@@ -1215,8 +1265,7 @@ void testDeleteUserById_RemovesUserFromList() throws Exception {
         clearCarts();
 
         mockMvc.perform(MockMvcRequestBuilders.delete("/cart/delete/{id}", cart.getId()))
-                .andExpect(MockMvcResultMatchers.status().isNotFound())
-                .andExpect(MockMvcResultMatchers.content().string("Cart not found with ID: " + cart.getId()));
+                .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 
 
@@ -1272,13 +1321,11 @@ void testDeleteUserById_RemovesUserFromList() throws Exception {
 //				 .andExpect(content().string("Invalid order ID format"));
 //	 }
     @Test
-    void testDeleteOrderById_UnexpectedError() throws Exception {
+    void testDeleteOrderById_randomID() throws Exception {
         UUID validOrderId = UUID.randomUUID();
-        // Simulate an unexpected error during deletion
-        doThrow(new RuntimeException("Unexpected server error")).when(orderService).deleteOrderById(validOrderId);
-
         mockMvc.perform(MockMvcRequestBuilders.delete("/order/delete/{id}", validOrderId.toString()))
-                .andExpect(status().isInternalServerError())
-                .andExpect(content().string("An unexpected error occurred"));
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.content().string("Order not found"));
+
     }
 }

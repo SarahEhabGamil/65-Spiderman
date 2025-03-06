@@ -40,16 +40,17 @@ public class OrderController {
         return orderService.getOrders();
     }
 
+    //TODO change signature
     @DeleteMapping("/delete/{orderId}")
-    public ResponseEntity<String> deleteOrderById(@PathVariable UUID orderId) {
+    public String deleteOrderById(@PathVariable UUID orderId) {
         try {
             orderService.deleteOrderById(orderId);
-            return ResponseEntity.ok("Order deleted successfully");
+            return "Order deleted successfully";
         } catch (RuntimeException e) {
             if ("Order not found".equals(e.getMessage())) {
-                return ResponseEntity.ok("Order not found");
+                return "Order not found";
             }
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An unexpected error occurred");
+           throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
         }
     }
 
