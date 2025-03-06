@@ -5,10 +5,12 @@ WORKDIR /app
 
 COPY target/mini1.jar /app/mini1.jar
 
-COPY src/main/java/com/example/data/users.json /app/data/users.json
-COPY src/main/java/com/example/data/products.json /app/data/products.json
-COPY src/main/java/com/example/data/carts.json /app/data/carts.json
-COPY src/main/java/com/example/data/orders.json /app/data/orders.json
+COPY src/ /app/src/
+
+ENV USERS_FILE_PATH=/app/src/main/java/com/example/data/users.json
+ENV PRODUCTS_FILE_PATH=/app/src/main/java/com/example/data/products.json
+ENV CARTS_FILE_PATH=/app/src/main/java/com/example/data/carts.json
+ENV ORDERS_FILE_PATH=/app/src/main/java/com/example/data/orders.json
 
 EXPOSE 8080
 

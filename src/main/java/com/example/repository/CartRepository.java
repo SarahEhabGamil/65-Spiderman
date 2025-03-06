@@ -14,8 +14,8 @@ import java.util.UUID;
 
 @Repository
 public class CartRepository extends MainRepository<Cart> {
-    private static final String CART_PATH = "src/main/java/com/example/data/carts.json";
-
+//    private static final String CART_PATH = "src/main/java/com/example/data/carts.json";
+private static final String CART_PATH = System.getenv("CARTS_FILE_PATH");
     public CartRepository(){}
 
     @Override
@@ -32,22 +32,17 @@ public class CartRepository extends MainRepository<Cart> {
         if (cart == null) {
             throw new IllegalArgumentException("Cart cannot be null");
         }
-
         ArrayList<Cart> carts = findAll();
-
         if (cart.getId() == null) {
             cart.setId(UUID.randomUUID());
         }
-
         for (Cart existingCart : carts) {
             if (existingCart.getUserId().equals(cart.getUserId())) {
                 throw new RuntimeException("Cart already exists for user with ID: " + cart.getUserId());
             }
         }
-
         carts.add(cart);
         saveAll(carts);
-
         return cart;
     }
 
@@ -76,9 +71,7 @@ public class CartRepository extends MainRepository<Cart> {
         if (product == null) {
             throw new IllegalArgumentException("Product cannot be null");
         }
-
         ArrayList<Cart> carts = findAll();
-
         Cart cartToUpdate = null;
         for (Cart cart : carts) {
             if (cart.getId().equals(cartId)) {
@@ -86,11 +79,9 @@ public class CartRepository extends MainRepository<Cart> {
                 break;
             }
         }
-
         if (cartToUpdate == null) {
             throw new RuntimeException("Cart not found with ID: " + cartId);
         }
-
         cartToUpdate.getProducts().add(product);
         saveAll(carts);
     }
@@ -99,10 +90,8 @@ public class CartRepository extends MainRepository<Cart> {
         if (product == null) {
             throw new IllegalArgumentException("Product cannot be null");
         }
-
         ArrayList<Cart> carts = findAll();
         Cart cartToUpdate = null;
-
         for (Cart cart : carts) {
             if (cart.getId().equals(cartId)) {
                 cartToUpdate = cart;
@@ -112,10 +101,8 @@ public class CartRepository extends MainRepository<Cart> {
 //        if (cartToUpdate == null) {
 //            throw new RuntimeException("Cart is empty");
 //        }
-
         boolean removed = false;
         List<Product> products = cartToUpdate.getProducts();
-
         for (Product p : products) {
             if (p.getId().equals(product.getId())) {
                 products.remove(p);
@@ -126,18 +113,12 @@ public class CartRepository extends MainRepository<Cart> {
         if (!removed) {
             throw new RuntimeException("Product not found in cart with ID: " + product.getId());
         }
-
-//        if (products.isEmpty()) {
-//            throw new RuntimeException("Cart got empty");
-//        }
-
         saveAll(carts);
     }
 
     public void clearCartAfterCheckout(UUID cartId) {
         ArrayList<Cart> carts = findAll();
         Cart cartToUpdate = null;
-
         for (Cart cart : carts) {
             if (cart.getId().equals(cartId)) {
                 cartToUpdate = cart;
@@ -149,14 +130,13 @@ public class CartRepository extends MainRepository<Cart> {
         }
 
         List<Product> products = cartToUpdate.getProducts();
-        Iterator<Product> iterator = products.iterator();
-
-        while (iterator.hasNext()) {
-            iterator.next();
-            iterator.remove();
-        }
+        products.clear();
+//        Iterator<Product> iterator = products.iterator();
+//        while (iterator.hasNext()) {
+//            iterator.next();
+//            iterator.remove();
+//        }
         cartToUpdate.setTotalPrice(0);
-
         saveAll(carts);
     }
 
