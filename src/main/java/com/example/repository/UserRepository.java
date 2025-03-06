@@ -11,9 +11,8 @@ import java.util.UUID;
 
 @Repository
 public class UserRepository extends MainRepository<User>{
-//    private static final String USER_PATH = "src/main/java/com/example/data/users.json";
+    private static final String USER_PATH = "src/main/java/com/example/data/users.json";
 
-    private static final String USER_PATH = System.getenv("USERS_FILE_PATH"); //
     public UserRepository() {
     }
 
@@ -76,6 +75,7 @@ public class UserRepository extends MainRepository<User>{
         if (order == null) {
             throw new IllegalArgumentException("Order cannot be null");
         }
+
         User user = getUserById(userId);
         if (user == null) {
             throw new RuntimeException("User not found with ID: " + userId);
@@ -90,9 +90,11 @@ public class UserRepository extends MainRepository<User>{
                 break;
             }
         }
+
         if (!userUpdated) {
             throw new RuntimeException("Failed to update user data");
         }
+
         saveAll(users);
     }
 
@@ -101,18 +103,23 @@ public class UserRepository extends MainRepository<User>{
         if (user == null) {
             throw new RuntimeException("User not found with ID: " + userId);
         }
+
         List<Order> orders = user.getOrders();
         Order orderToRemove = null;
+
         for (Order order : orders) {
             if (order.getId().equals(orderId)) {
                 orderToRemove = order;
                 break;
             }
         }
+
         if (orderToRemove == null) {
             throw new RuntimeException("Order not found with ID: " + orderId);
         }
+
         orders.remove(orderToRemove);
+
         ArrayList<User> users = findAll();
         for (int i = 0; i < users.size(); i++) {
             if (users.get(i).getId().equals(userId)) {
@@ -120,10 +127,12 @@ public class UserRepository extends MainRepository<User>{
                 break;
             }
         }
+
         saveAll(users);
     }
     public void deleteUserById(UUID userId) {
         ArrayList<User> users = findAll();
+
         User userToDelete = null;
         for (User user : users) {
             if (user.getId().equals(userId)) {
@@ -135,7 +144,9 @@ public class UserRepository extends MainRepository<User>{
         if (userToDelete == null) {
             throw new RuntimeException("User not found with ID: " + userId);
         }
+
         users.remove(userToDelete);
+
         saveAll(users);
     }
 

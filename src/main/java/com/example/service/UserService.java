@@ -16,10 +16,12 @@ public class UserService extends MainService{
 
     private final CartService cartService;
     private final UserRepository userRepository;
+
     public UserService(UserRepository userRepository, CartService cartService) {
         this.userRepository = userRepository;
         this.cartService = cartService;
     }
+
     public User addUser(User user) {
         return userRepository.addUser(user);
     }

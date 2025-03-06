@@ -14,6 +14,7 @@ public class OrderService extends MainService {
 
     private final OrderRepository orderRepository;
 
+
     public OrderService(OrderRepository orderRepository, CartService cartService, UserService userService) {
         this.orderRepository = orderRepository;
     }
@@ -21,6 +22,7 @@ public class OrderService extends MainService {
     public void addOrder(Order order)  {
         orderRepository.addOrder(order);
     }
+
     public ArrayList<Order> getOrders(){
         return orderRepository.getOrders();
     }
@@ -28,6 +30,7 @@ public class OrderService extends MainService {
         return orderRepository.getOrderById(orderId);
     }
     public void deleteOrderById(UUID orderId) throws IllegalArgumentException {
+
         orderRepository.deleteOrderById(orderId);
     }
 }

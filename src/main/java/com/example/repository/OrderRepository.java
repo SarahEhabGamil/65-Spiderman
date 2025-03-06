@@ -12,8 +12,7 @@ import java.util.UUID;
 
 @Repository
 public class OrderRepository extends MainRepository<Order>{
-//    private static final String ORDER_PATH = "src/main/java/com/example/data/orders.json";
-    private static final String ORDER_PATH = System.getenv("ORDERS_FILE_PATH");
+    private static final String ORDER_PATH = "src/main/java/com/example/data/orders.json";
 
     public OrderRepository() {}
     @Override
@@ -30,7 +29,9 @@ public class OrderRepository extends MainRepository<Order>{
         if (order == null) {
             throw new IllegalArgumentException("Order cannot be null");
         }
+
         ArrayList<Order> orders = findAll();
+
         if (order.getId() == null) {
             order.setId(UUID.randomUUID());
         }
@@ -41,6 +42,7 @@ public class OrderRepository extends MainRepository<Order>{
     public ArrayList<Order> getOrders() {
         return findAll();
     }
+
     public Order getOrderById(UUID orderId) {
         for (Order order : findAll()) {
             if (order.getId().equals(orderId)) {
@@ -53,6 +55,7 @@ public class OrderRepository extends MainRepository<Order>{
 
     public void deleteOrderById(UUID orderId) {
         ArrayList<Order> orders = findAll();
+
         Order orderToDelete = null;
         for (Order order : orders) {
             if (order.getId().equals(orderId)) {
@@ -70,11 +73,10 @@ public class OrderRepository extends MainRepository<Order>{
 
     public void clearOrders() {
         ArrayList<Order> orders = findAll();
-        orders.clear();
-//        Iterator<Order> iterator = orders.iterator();
-//        while (iterator.hasNext()) {
-//            iterator.next();
-//            iterator.remove();
-//        }
+        Iterator<Order> iterator = orders.iterator();
+        while (iterator.hasNext()) {
+            iterator.next();
+            iterator.remove();
+        }
     }
 }
