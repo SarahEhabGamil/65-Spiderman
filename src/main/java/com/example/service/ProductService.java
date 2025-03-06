@@ -15,16 +15,12 @@ public class ProductService extends MainService {
     private final ProductRepository productRepository;
 
     public ProductService(ProductRepository productRepository) {
-
         this.productRepository = productRepository;
     }
-
     public Product addProduct(Product product)  {
-
         return productRepository.addProduct(product);
     }
     public ArrayList<Product> getProducts(){
-
         return productRepository.getProducts();
     }
     public Product getProductById(UUID productId){

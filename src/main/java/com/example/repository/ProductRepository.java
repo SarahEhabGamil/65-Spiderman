@@ -8,8 +8,8 @@ import java.util.UUID;
 
 @Repository
 public class ProductRepository extends MainRepository<Product>{
-    private static final String PRODUCT_PATH = "src/main/java/com/example/data/products.json";
-
+//    private static final String PRODUCT_PATH = "src/main/java/com/example/data/products.json";
+private static final String PRODUCT_PATH = System.getenv("PRODUCTS_FILE_PATH"); //
     public ProductRepository() {}
 
     @Override
@@ -27,9 +27,7 @@ public class ProductRepository extends MainRepository<Product>{
         if (product == null || product.getName() == null || product.getPrice()==0) {
             throw new IllegalArgumentException("Product cannot be null");
         }
-
         ArrayList<Product> products = findAll();
-
         for (Product existingProduct : products) {
             if (existingProduct.getName().equalsIgnoreCase(product.getName())) {
                 throw new RuntimeException("Product with name '" + product.getName() + "' already exists.");
@@ -60,7 +58,6 @@ public class ProductRepository extends MainRepository<Product>{
 
     public Product updateProduct(UUID productId, String newName, double newPrice) {
         ArrayList<Product> products = findAll();
-
         Product productToUpdate = null;
         for (Product product : products) {
             if (product.getId().equals(productId)) {
@@ -72,9 +69,9 @@ public class ProductRepository extends MainRepository<Product>{
         if (productToUpdate == null) {
             throw new RuntimeException("Product not found");
         }else{
+
             productToUpdate.setName(newName);
             productToUpdate.setPrice(newPrice);
-
             saveAll(products);
             return productToUpdate;
         }
@@ -89,7 +86,6 @@ public class ProductRepository extends MainRepository<Product>{
 
         ArrayList<Product> products = findAll();
         boolean updated = false;
-
         for (Product product : products) {
             if (productIds.contains(product.getId())) {
                 double discountedPrice = product.getPrice() - (product.getPrice() * discount / 100);
@@ -100,14 +96,12 @@ public class ProductRepository extends MainRepository<Product>{
         if (!updated) {
             throw new RuntimeException("No matching products found for the given IDs");
         }
-
         saveAll(products);
     }
 
 
     public void deleteProductById(UUID productId)throws Exception {
         ArrayList<Product> products = findAll();
-
         Product productToDelete = null;
         for (Product product : products) {
             if (product.getId().equals(productId)) {
@@ -119,10 +113,8 @@ public class ProductRepository extends MainRepository<Product>{
         if (productToDelete == null) {
             throw new RuntimeException("Product not found");
         }
-
         products.remove(productToDelete);
         saveAll(products);
     }
-
 
 }
