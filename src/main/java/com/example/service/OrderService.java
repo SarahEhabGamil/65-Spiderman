@@ -2,10 +2,12 @@ package com.example.service;
 
 
 import com.example.model.Order;
+import com.example.model.Product;
 import com.example.repository.OrderRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -13,12 +15,21 @@ import java.util.UUID;
 public class OrderService extends MainService {
 
     private final OrderRepository orderRepository;
+    private final ProductService productService;
 
-    public OrderService(OrderRepository orderRepository, CartService cartService, UserService userService) {
+    public OrderService(OrderRepository orderRepository, CartService cartService, UserService userService, ProductService productService) {
         this.orderRepository = orderRepository;
+        this.productService = productService;
     }
 
     public void addOrder(Order order)  {
+        List<Product> products = order.getProducts();
+        for (Product product : products) {
+            Product productToCheck= productService.getProductById(product.getId());
+            if(productToCheck==null) {
+                throw new IllegalArgumentException("Product not found");
+            }
+        }
         orderRepository.addOrder(order);
     }
     public ArrayList<Order> getOrders(){

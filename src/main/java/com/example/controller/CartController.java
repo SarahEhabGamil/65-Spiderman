@@ -4,6 +4,7 @@ import com.example.model.Cart;
 import com.example.model.Product;
 import com.example.model.User;
 import com.example.service.CartService;
+import com.example.service.ProductService;
 import com.example.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,8 +23,13 @@ public class CartController {
     @Autowired
     private UserService userService;
     @Autowired
-    public CartController(CartService cartService) {
+    private ProductService productService;
+
+    @Autowired
+    public CartController(CartService cartService,UserService userService,ProductService productService) {
         this.cartService = cartService;
+        this.userService = userService;
+        this.productService = productService;
     }
 
     @PostMapping("/")
@@ -44,16 +50,6 @@ public class CartController {
         }
 
     }
-//    @PostMapping("/")
-//    public ResponseEntity<?> addCart(@RequestBody Cart cart) throws Exception {
-//        try {
-//            Cart addedCart = cartService.addCart(cart);
-//            return ResponseEntity.ok(addedCart);
-//        } catch (Exception e) {
-//            return ResponseEntity.badRequest().body(e.getMessage());
-//        }
-//    }
-
 
     @GetMapping("/")
     public ArrayList<Cart> getCarts(){
@@ -68,6 +64,11 @@ public class CartController {
 
     @PutMapping("/addProduct/{cartId}")
     public String addProductToCart(@PathVariable UUID cartId, @RequestBody Product product) {
+        UUID checkProductId = product.getId();
+        Product checkProduct = productService.getProductById(checkProductId);
+        if(checkProduct == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found");
+        }
         String productName = product.getName();
         Double productPrice = product.getPrice();
         if(productPrice == null || productName == null) {
@@ -83,7 +84,6 @@ public class CartController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Failed to add cart`");
         }
     }
-    //TODO change signature
     @DeleteMapping("/delete/{cartId}")
     public String deleteCartById(@PathVariable UUID cartId) {
         try {
