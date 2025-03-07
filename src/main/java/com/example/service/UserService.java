@@ -3,6 +3,8 @@ package com.example.service;
 import com.example.model.Cart;
 import com.example.model.Order;
 import com.example.model.User;
+import com.example.repository.CartRepository;
+import com.example.repository.OrderRepository;
 import com.example.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
@@ -16,9 +18,14 @@ public class UserService extends MainService{
 
     private final CartService cartService;
     private final UserRepository userRepository;
-    public UserService(UserRepository userRepository, CartService cartService) {
+    private final CartRepository cartRepository;
+    private final OrderRepository orderRepository;
+
+    public UserService(UserRepository userRepository, CartService cartService, CartRepository cartRepository,OrderRepository orderRepository) {
         this.userRepository = userRepository;
         this.cartService = cartService;
+        this.cartRepository = cartRepository;
+        this.orderRepository = orderRepository ;
     }
     public User addUser(User user) {
         return userRepository.addUser(user);
@@ -57,6 +64,7 @@ public class UserService extends MainService{
     }
     public void removeOrderFromUser(UUID userId, UUID orderId){
         userRepository.removeOrderFromUser(userId, orderId);
+        orderRepository.deleteOrderById(orderId);
     }
     public void deleteUserById(UUID userId){
         userRepository.deleteUserById(userId);

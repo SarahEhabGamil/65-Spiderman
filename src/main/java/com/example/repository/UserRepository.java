@@ -3,6 +3,7 @@ package com.example.repository;
 import com.example.model.Cart;
 import com.example.model.Order;
 import com.example.model.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -11,8 +12,8 @@ import java.util.UUID;
 
 @Repository
 public class UserRepository extends MainRepository<User>{
-    private static final String USER_PATH = "src/main/java/com/example/data/users.json";
-//    private static final String USER_PATH = System.getenv("USERS_FILE_PATH");
+//    private static final String USER_PATH = "src/main/java/com/example/data/users.json";
+    private static final String USER_PATH = System.getenv("USERS_FILE_PATH");
 
 
     public UserRepository() {

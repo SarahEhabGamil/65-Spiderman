@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import com.example.service.OrderService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,12 +34,14 @@ public class UserController {
     private final CartService cartService;
     private final User user;
     private final ProductService productService;
+    private final OrderService orderService;
 
-    public UserController(UserService userService, CartService cartService, User user, ProductService productService) {
+    public UserController(UserService userService, CartService cartService, User user, ProductService productService, OrderService orderService) {
         this.userService = userService;
         this.cartService = cartService;
         this.user = user;
         this.productService = productService;
+        this.orderService = orderService;
     }
 
     //1
@@ -103,6 +106,7 @@ public class UserController {
         order.setUserId(userId);
         order.setProducts(cart.getProducts());
         userService.addOrderToUser(userId, order);
+        orderService.addOrder(order);
         return "Order added successfully";
     }
 
