@@ -38,10 +38,6 @@ public class Order {
         return userId;
     }
 
-    public double getTotalPrice() {
-        return totalPrice;
-    }
-
     public List<Product> getProducts() {
         return products;
     }
@@ -85,5 +81,13 @@ public class Order {
             total += product.getPrice();
         }
         this.totalPrice = total;
+    }
+
+    public double getTotalPrice() {
+        double total = 0;
+        for (Product product : products) {
+            total += product.getPrice();
+        }
+        return total;
     }
 }

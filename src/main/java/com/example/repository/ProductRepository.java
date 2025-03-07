@@ -9,7 +9,7 @@ import java.util.UUID;
 @Repository
 public class ProductRepository extends MainRepository<Product>{
     private static final String PRODUCT_PATH = "src/main/java/com/example/data/products.json";
-//private static final String PRODUCT_PATH = System.getenv("PRODUCTS_FILE_PATH"); //
+//    private static final String PRODUCT_PATH = System.getenv("PRODUCTS_FILE_PATH");
     public ProductRepository() {}
 
     @Override
@@ -69,7 +69,6 @@ public class ProductRepository extends MainRepository<Product>{
         if (productToUpdate == null) {
             throw new RuntimeException("Product not found");
         }else{
-
             productToUpdate.setName(newName);
             productToUpdate.setPrice(newPrice);
             saveAll(products);

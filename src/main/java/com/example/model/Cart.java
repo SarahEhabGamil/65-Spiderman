@@ -78,15 +78,12 @@ public class Cart {
         this.totalPrice = totalPrice;
     }
 
-//    public double getTotalPrice() {
-//        double total = 0;
-//        for (Product product : products) {
-//            total += product.getPrice();
-//        }
-//        return total;
-//    }
-
-    public double getTotalPrice(){
-        return totalPrice;
+    public double getTotalPrice() {
+        double total = 0;
+        for (Product product : products) {
+            total += product.getPrice();
+        }
+        return total;
     }
+
 }

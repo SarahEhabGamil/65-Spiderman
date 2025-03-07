@@ -12,8 +12,9 @@ import java.util.UUID;
 @Repository
 public class UserRepository extends MainRepository<User>{
     private static final String USER_PATH = "src/main/java/com/example/data/users.json";
+//    private static final String USER_PATH = System.getenv("USERS_FILE_PATH");
 
-//    private static final String USER_PATH = System.getenv("USERS_FILE_PATH"); //
+
     public UserRepository() {
     }
 
@@ -138,5 +139,4 @@ public class UserRepository extends MainRepository<User>{
         users.remove(userToDelete);
         saveAll(users);
     }
-
 }

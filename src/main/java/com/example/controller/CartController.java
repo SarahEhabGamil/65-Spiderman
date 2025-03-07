@@ -83,7 +83,6 @@ public class CartController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Failed to add cart`");
         }
     }
-
     //TODO change signature
     @DeleteMapping("/delete/{cartId}")
     public String deleteCartById(@PathVariable UUID cartId) {
@@ -94,5 +93,4 @@ public class CartController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Cart not found`");
         }
     }
-
 }

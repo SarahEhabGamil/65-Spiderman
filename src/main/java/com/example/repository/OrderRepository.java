@@ -35,6 +35,7 @@ public class OrderRepository extends MainRepository<Order>{
             order.setId(UUID.randomUUID());
         }
         orders.add(order);
+        order.setTotalPrice(order.getTotalPrice());
         saveAll(orders);
     }
 
@@ -49,7 +50,6 @@ public class OrderRepository extends MainRepository<Order>{
         }
         return null;
     }
-
 
     public void deleteOrderById(UUID orderId) {
         ArrayList<Order> orders = findAll();
@@ -71,10 +71,5 @@ public class OrderRepository extends MainRepository<Order>{
     public void clearOrders() {
         ArrayList<Order> orders = findAll();
         orders.clear();
-//        Iterator<Order> iterator = orders.iterator();
-//        while (iterator.hasNext()) {
-//            iterator.next();
-//            iterator.remove();
-//        }
     }
 }

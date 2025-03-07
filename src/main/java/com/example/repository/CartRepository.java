@@ -15,7 +15,9 @@ import java.util.UUID;
 @Repository
 public class CartRepository extends MainRepository<Cart> {
     private static final String CART_PATH = "src/main/java/com/example/data/carts.json";
-//private static final String CART_PATH = System.getenv("CARTS_FILE_PATH");
+//    private static final String CART_PATH = System.getenv("CARTS_FILE_PATH");
+
+
     public CartRepository(){}
 
     @Override
@@ -83,6 +85,8 @@ public class CartRepository extends MainRepository<Cart> {
             throw new RuntimeException("Cart not found with ID: " + cartId);
         }
         cartToUpdate.getProducts().add(product);
+        double totalPrice = cartToUpdate.getTotalPrice();
+        cartToUpdate.setTotalPrice(totalPrice);
         saveAll(carts);
     }
 
@@ -156,10 +160,4 @@ public class CartRepository extends MainRepository<Cart> {
         carts.remove(cartToDelete);
         saveAll(carts);
     }
-
-
-
-
-
-
 }
