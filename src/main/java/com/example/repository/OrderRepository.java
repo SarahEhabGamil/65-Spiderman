@@ -12,8 +12,8 @@ import java.util.UUID;
 
 @Repository
 public class OrderRepository extends MainRepository<Order>{
-//    private static final String ORDER_PATH = "src/main/java/com/example/data/orders.json";
-    private static final String ORDER_PATH = System.getenv("ORDERS_FILE_PATH");
+    private static final String ORDER_PATH = "src/main/java/com/example/data/orders.json";
+//    private static final String ORDER_PATH = System.getenv("ORDERS_FILE_PATH");
 
     public OrderRepository() {}
     @Override

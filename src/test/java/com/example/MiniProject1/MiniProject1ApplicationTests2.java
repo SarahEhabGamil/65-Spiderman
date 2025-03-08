@@ -13,6 +13,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import org.hamcrest.Matchers;
+import org.junit.jupiter.api.Assertions;
 import org.springframework.http.MediaType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -272,6 +273,17 @@ class MiniProject1ApplicationTests2 {
             throw new RuntimeException("Failed to clear cart data", e);
         }
     }
+    public void clearProducts() {
+        try {
+            File file = new File("src/main/java/com/example/data/products.json");
+            if (file.exists()) {
+                objectMapper.writeValue(file, new ArrayList<Cart>());
+            }
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to clear cart data", e);
+        }
+    }
+
 
     public void removeCart(UUID cartId) {
         try {
@@ -661,67 +673,67 @@ class MiniProject1ApplicationTests2 {
     }
 
 
-    //8.1 addProductToCart user doesnt exist - PASSED
-    @Test
-    void testAddProductToCart_UserNotFound() throws Exception {
+//8.1 addProductToCart user doesnt exist - PASSED
+@Test
+void testAddProductToCart_UserNotFound() throws Exception {
 
-        Product testProduct = new Product(UUID.randomUUID(), "Test Product", 10.0);
-        addProduct(testProduct);
+    Product testProduct = new Product(UUID.randomUUID(), "Test Product", 10.0);
+    addProduct(testProduct);
 
-        UUID nonExistentUserId = UUID.randomUUID();
+    UUID nonExistentUserId = UUID.randomUUID();
 
-        mockMvc.perform(MockMvcRequestBuilders.put("/user/addProductToCart")
-                        .param("userId", nonExistentUserId.toString())
-                        .param("productId", testProduct.getId().toString()))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().string("User not found"));
-    }
+    mockMvc.perform(MockMvcRequestBuilders.put("/user/addProductToCart")
+                    .param("userId", nonExistentUserId.toString())
+                    .param("productId", testProduct.getId().toString()))
+            .andExpect(MockMvcResultMatchers.status().isOk())
+            .andExpect(MockMvcResultMatchers.content().string("User not found"));
+}
 
-    //8.2 addProductToCart product doesn't exist - PASSED
-    @Test
-    void testAddProductToCart_ProductNotFound() throws Exception {
+//8.2 addProductToCart product doesn't exist - PASSED
+@Test
+void testAddProductToCart_ProductNotFound() throws Exception {
 
-        User testUser = new User();
-        testUser.setId(UUID.randomUUID());
-        testUser.setName("Test User15");
-        addUser(testUser);
+    User testUser = new User();
+    testUser.setId(UUID.randomUUID());
+    testUser.setName("Test User15");
+    addUser(testUser);
 
 
-        UUID nonExistentProductId = UUID.randomUUID();
+    UUID nonExistentProductId = UUID.randomUUID();
 
-        mockMvc.perform(MockMvcRequestBuilders.put("/user/addProductToCart")
-                        .param("userId", testUser.getId().toString())
-                        .param("productId", nonExistentProductId.toString()))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().string("Product not found"));
-    }
+    mockMvc.perform(MockMvcRequestBuilders.put("/user/addProductToCart")
+                    .param("userId", testUser.getId().toString())
+                    .param("productId", nonExistentProductId.toString()))
+            .andExpect(MockMvcResultMatchers.status().isOk())
+            .andExpect(MockMvcResultMatchers.content().string("Product not found"));
+}
 
-    //8.3 addProductToCart adding a second product to cart with product - PASSED
-    @Test
-    void testAddProductToCart_ExistingCart_AddSecondProduct() throws Exception {
-        User testUser = new User();
-        testUser.setId(UUID.randomUUID());
-        testUser.setName("Test User16");
-        addUser(testUser);
+//8.3 addProductToCart adding a second product to cart with product - PASSED
+@Test
+void testAddProductToCart_ExistingCart_AddSecondProduct() throws Exception {
+    User testUser = new User();
+    testUser.setId(UUID.randomUUID());
+    testUser.setName("Test User16");
+    addUser(testUser);
 
-        Product firstProduct = new Product(UUID.randomUUID(), "First Product", 15.0);
-        addProduct(firstProduct);
+    Product firstProduct = new Product(UUID.randomUUID(), "First Product", 15.0);
+    addProduct(firstProduct);
 
-        Cart cart = new Cart(UUID.randomUUID(), testUser.getId(), new ArrayList<>(List.of(firstProduct)));
-        addCart(cart);
+    Cart cart = new Cart(UUID.randomUUID(), testUser.getId(), new ArrayList<>(List.of(firstProduct)));
+    addCart(cart);
 
-        Product secondProduct = new Product(UUID.randomUUID(), "Second Product", 20.0);
-        addProduct(secondProduct);
+    Product secondProduct = new Product(UUID.randomUUID(), "Second Product", 20.0);
+    addProduct(secondProduct);
 
-        mockMvc.perform(MockMvcRequestBuilders.put("/user/addProductToCart")
-                        .param("userId", testUser.getId().toString())
-                        .param("productId", secondProduct.getId().toString()))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().string("Product added to cart"));
+    mockMvc.perform(MockMvcRequestBuilders.put("/user/addProductToCart")
+                    .param("userId", testUser.getId().toString())
+                    .param("productId", secondProduct.getId().toString()))
+            .andExpect(MockMvcResultMatchers.status().isOk())
+            .andExpect(MockMvcResultMatchers.content().string("Product added to cart"));
 
-        Cart updatedCart = cartService.getCartByUserId(testUser.getId());
-        assertEquals(2, updatedCart.getProducts().size(), "Cart should have 2 products after adding the second product");
-    }
+    Cart updatedCart = cartService.getCartByUserId(testUser.getId());
+    assertEquals(2, updatedCart.getProducts().size(), "Cart should have 2 products after adding the second product");
+}
 
 //9.2 deleteProductFromCart non existent user - PASSED
 @Test
@@ -863,6 +875,43 @@ void testDeleteUserById_RemovesUserFromList() throws Exception {
     }
 
     @Test
+    void testAddProductMissingFields() throws Exception {
+        clearProducts();
+        Product testProduct=new Product();
+        UUID id1 = UUID.randomUUID();
+        testProduct.setId(id1);
+        testProduct.setPrice(10.0);
+        mockMvc.perform(MockMvcRequestBuilders.post("/product/")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(testProduct)))
+                .andExpect(status().isBadRequest());
+        Assertions.assertEquals(getProducts().size(), 0);
+
+        Product testProduct2=new Product();
+        testProduct2.setId(UUID.randomUUID());
+        testProduct2.setName("Test Product2");
+        mockMvc.perform(MockMvcRequestBuilders.post("/product/")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(testProduct2)))
+                .andExpect(status().isBadRequest());
+        Assertions.assertEquals(getProducts().size(), 0);
+    }
+
+    @Test
+    void testAddProductNegativePrice() throws Exception {
+        clearProducts();
+        Product testProduct=new Product();
+        testProduct.setId(UUID.randomUUID());
+        testProduct.setPrice(-10.0);
+        mockMvc.perform(MockMvcRequestBuilders.post("/product/")
+                    .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(testProduct)))
+                    .andExpect(status().isBadRequest());
+        Assertions.assertEquals(getProducts().size(), 0);
+    }
+
+
+    @Test
     void testGetProductsEmptyList() throws Exception {
         List<Product> initialProducts = productService.getProducts();
         assertEquals(0, initialProducts.size(), "Database should be empty before test");
@@ -879,7 +928,25 @@ void testDeleteUserById_RemovesUserFromList() throws Exception {
     }
 
     @Test
-    void testGetProductsWithProducts() throws Exception {
+    void testGetProductsWithOneProduct() throws Exception {
+        Product testProduct1 = new Product();
+        testProduct1.setId(UUID.randomUUID());
+        testProduct1.setName("Product A");
+        testProduct1.setPrice(15.0);
+        addProduct(testProduct1);
+
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/product/")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        String responseContent = result.getResponse().getContentAsString();
+        List<Product> responseProducts = objectMapper.readValue(responseContent, new TypeReference<List<Product>>() {});
+
+        assertEquals(1, responseProducts.size(), "Products should be returned correctly from endpoint");
+    }
+    @Test
+    void testGetProductsWithMultipleProducts() throws Exception {
         Product testProduct1 = new Product();
         testProduct1.setId(UUID.randomUUID());
         testProduct1.setName("Product A");
@@ -900,8 +967,9 @@ void testDeleteUserById_RemovesUserFromList() throws Exception {
         String responseContent = result.getResponse().getContentAsString();
         List<Product> responseProducts = objectMapper.readValue(responseContent, new TypeReference<List<Product>>() {});
 
-        assertEquals(getProducts().size(), responseProducts.size(), "Products should be returned correctly from endpoint");
+        assertEquals(2, responseProducts.size(), "Products should be returned correctly from endpoint");
     }
+
 
     @Test
     void testGetProductByIdExistingProduct() throws Exception {
@@ -1046,6 +1114,25 @@ void testDeleteUserById_RemovesUserFromList() throws Exception {
                 .andExpect(status().isOk())
                 .andExpect(content().string("No matching products found for the given ID"));
     }
+
+    @Test
+    void testApplyDiscountSomeProductsNotFound() throws Exception {
+
+        Product existingProduct = new Product(UUID.randomUUID(), "Laptop", 1500.0);
+        productRepository.save(existingProduct);
+
+        UUID nonExistingProductId = UUID.randomUUID();
+        List<UUID> productIds = List.of(existingProduct.getId(), nonExistingProductId);
+        double discount = 10.0;
+
+        mockMvc.perform(MockMvcRequestBuilders.put("/product/applyDiscount")
+                        .param("discount", String.valueOf(discount))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(productIds)))
+                .andExpect(status().isOk())
+                .andExpect(content().string("One or more product IDs do not exist"));
+    }
+
     @Test
     void testDeleteProductByIdInvalidUUID() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.delete("/product/delete/invalid-uuid"))
@@ -1059,6 +1146,21 @@ void testDeleteUserById_RemovesUserFromList() throws Exception {
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().string("Product not found"));
     }
+
+    @Test
+    void testDeleteProductTwice() throws Exception {
+        Product existingProduct = new Product(UUID.randomUUID(), "Tablet", 500.0);
+        productRepository.save(existingProduct);
+
+        mockMvc.perform(MockMvcRequestBuilders.delete("/product/delete/" + existingProduct.getId()))
+                .andExpect(status().isOk())
+                .andExpect(content().string("Product deleted successfully"));
+
+        mockMvc.perform(MockMvcRequestBuilders.delete("/product/delete/" + existingProduct.getId()))
+                .andExpect(status().isOk())
+                .andExpect(content().string("Product not found"));
+    }
+
 
     // --------------------------------- Cart Tests -------------------------
     //1.1 Add cart to non existing user - PASSED
@@ -1278,6 +1380,7 @@ void testDeleteUserById_RemovesUserFromList() throws Exception {
                         .content(""))
                 .andExpect(MockMvcResultMatchers.status().isBadRequest());
     }
+
     @Test
     void testAddOrderGenerateId() throws Exception {
         Order testOrder = new Order();
@@ -1286,6 +1389,21 @@ void testDeleteUserById_RemovesUserFromList() throws Exception {
                         .content(objectMapper.writeValueAsString(testOrder)))
                 .andExpect(MockMvcResultMatchers.status().isOk());
         assertNotNull(testOrder.getId(), "Order ID should be generated if not provided.");
+    }
+
+    @Test
+    void testAddOrderNegativeTotalPrice() throws Exception {
+        Order testOrder = new Order();
+        testOrder.setTotalPrice(-1.0);
+        System.out.println("Test Order: "+ testOrder.getTotalPrice());
+        testOrder.setId(UUID.randomUUID());
+        testOrder.setProducts(new ArrayList<>());
+
+        System.out.println("Test Order: "+ testOrder.getTotalPrice());
+        mockMvc.perform(MockMvcRequestBuilders.post("/order/")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(testOrder)))
+                .andExpect(status().isBadRequest());
     }
     /// Third test lesa
 
@@ -1328,4 +1446,6 @@ void testDeleteUserById_RemovesUserFromList() throws Exception {
                 .andExpect(MockMvcResultMatchers.content().string("Order not found"));
 
     }
+
+
 }

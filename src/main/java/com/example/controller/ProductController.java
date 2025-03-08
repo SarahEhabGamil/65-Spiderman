@@ -1,8 +1,7 @@
 package com.example.controller;
 
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -34,6 +33,16 @@ public class ProductController {
 
     @PostMapping("/")
     public Product addProduct(@RequestBody Product product) {
+        if (product.getName() == null || product.getName().trim().isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Product name cannot be empty");
+        }
+        if (Objects.isNull(product.getPrice())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Price must be specified");
+        }
+        if (product.getPrice() <= 0) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Price must be greater than zero");
+        }
+
             return productService.addProduct(product);
     }
 
@@ -82,14 +91,32 @@ public class ProductController {
     @PutMapping("/applyDiscount")
     public String applyDiscount(@RequestParam double discount, @RequestBody ArrayList<UUID> productIds) {
         try {
+
+            List<Product> products = productService.getProducts();
+            Set<UUID> availableProductIds = products.stream()
+                    .map(Product::getId)
+                    .collect(Collectors.toSet());
+
+            // ✅ Ensure all provided product IDs exist
+            if (!availableProductIds.containsAll(productIds)) {
+                throw new IllegalArgumentException("One or more product IDs do not exist");
+            }
+
+            if (products.isEmpty()) {
+                throw new IllegalArgumentException("No matching products found for the given IDs");
+            }
             productService.applyDiscount(discount, productIds);
             return "Discount applied successfully";
+
+
         } catch (Exception e) {
             String errorMessage = e.getMessage();
             if ("Discount must be between 1 and 100".equals(errorMessage)) {
                 return "Discount must be between 1 and 100";
             } else if ("No matching products found for the given IDs".equals(errorMessage)) {
                 return "No matching products found for the given ID";
+            }else if("One or more product IDs do not exist".equals(errorMessage)) {
+                return "One or more product IDs do not exist";
             }
         }
         return "An unexpected error occurred";

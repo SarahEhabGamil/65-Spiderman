@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.UUID;
 
 @RestController
@@ -24,6 +25,9 @@ public class OrderController {
 
     @PostMapping("/")
     public void addOrder(@RequestBody Order order) {
+        if (Objects.isNull(order.getTotalPrice()) || order.getTotalPrice() < 0) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
         orderService.addOrder(order);
     }
     @GetMapping("/{orderId}")
