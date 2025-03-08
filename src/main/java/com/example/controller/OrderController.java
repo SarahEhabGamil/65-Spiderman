@@ -44,7 +44,7 @@ public class OrderController {
         return orderService.getOrders();
     }
 
-    //TODO change signature
+
     @DeleteMapping("/delete/{orderId}")
     public String deleteOrderById(@PathVariable UUID orderId) {
         try {

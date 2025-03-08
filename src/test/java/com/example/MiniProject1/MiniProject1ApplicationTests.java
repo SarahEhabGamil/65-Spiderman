@@ -348,6 +348,8 @@
  		cart.setId(UUID.randomUUID());
  		cart.setUserId(testUser11.getId());
  		Product tesProduct=new Product(UUID.randomUUID(), "Test Product", 10.0);
+		 /// //GAD3ANA MEN 3andena
+//		 addProduct(tesProduct);
  		cart.setProducts(List.of(tesProduct));
  		addCart(cart);
  		addUser(testUser11);

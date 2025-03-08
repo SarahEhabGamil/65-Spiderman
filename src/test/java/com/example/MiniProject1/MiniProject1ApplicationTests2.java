@@ -578,9 +578,11 @@ class MiniProject1ApplicationTests2 {
         addUser(testUser);
 
         Cart cart = new Cart();
+        Product product = new Product(UUID.randomUUID(), "Product A", 15.0);
+        addProduct(product);
         cart.setId(UUID.randomUUID());
         cart.setUserId(testUser.getId());
-        cart.setProducts(List.of(new Product(UUID.randomUUID(), "New Product", 20.0)));
+        cart.setProducts(List.of(product));
         addCart(cart);
 
         mockMvc.perform(MockMvcRequestBuilders.post("/user/{userId}/checkout", testUser.getId()))
@@ -1295,6 +1297,7 @@ void testDeleteUserById_RemovesUserFromList() throws Exception {
         addCart(cart);
 
         Product product = new Product(UUID.randomUUID(), "Test Product", 10.99);
+        addProduct(product);
 
         mockMvc.perform(MockMvcRequestBuilders.put("/cart/addProduct/{cartId}", cart.getId())
                         .contentType(MediaType.APPLICATION_JSON)
@@ -1407,6 +1410,7 @@ void testDeleteUserById_RemovesUserFromList() throws Exception {
     }
     /// Third test lesa
 
+
     @Test
     void testGetOrdersEmptyList() throws Exception {
         orderRepository.clearOrders();
@@ -1432,12 +1436,6 @@ void testDeleteUserById_RemovesUserFromList() throws Exception {
                 .andExpect(MockMvcResultMatchers.status().isBadRequest());
     }
 
-    //	 @Test
-//	 void testDeleteOrderById_InvalidId() throws Exception {
-//		 mockMvc.perform(MockMvcRequestBuilders.delete("/order/delete/{id}", 123))
-//				 .andExpect(status().isBadRequest())
-//				 .andExpect(content().string("Invalid order ID format"));
-//	 }
     @Test
     void testDeleteOrderById_randomID() throws Exception {
         UUID validOrderId = UUID.randomUUID();
