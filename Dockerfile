@@ -18,4 +18,4 @@ EXPOSE 8080
 #CMD ["java", "-jar", "/app/target/mini1.jar"]
 
  #test before run
-CMD ["sh", "-c", "mvn clean package && mvn test && java -jar /app/target/mini1.jar"]]
+CMD ["sh", "-c", "mvn test && mvn clean package && java -jar /app/target/mini1.jar"]
