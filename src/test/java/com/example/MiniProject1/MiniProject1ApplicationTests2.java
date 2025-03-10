@@ -1376,6 +1376,7 @@ void testDeleteUserById_RemovesUserFromList() throws Exception {
 
     // --------------------------------- Order Tests -------------------------
 
+    //1.1 - null order - PASSED
     @Test
     void testAddOrderNullOrder() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.post("/order/")
@@ -1384,6 +1385,7 @@ void testDeleteUserById_RemovesUserFromList() throws Exception {
                 .andExpect(MockMvcResultMatchers.status().isBadRequest());
     }
 
+    // 1.1 - Automatically Generates Random ID - PASSED
     @Test
     void testAddOrderGenerateId() throws Exception {
         Order testOrder = new Order();
@@ -1394,6 +1396,7 @@ void testDeleteUserById_RemovesUserFromList() throws Exception {
         assertNotNull(testOrder.getId(), "Order ID should be generated if not provided.");
     }
 
+    // 1.3 - Negative Price - PASSED
     @Test
     void testAddOrderNegativeTotalPrice() throws Exception {
         Order testOrder = new Order();
@@ -1408,9 +1411,8 @@ void testDeleteUserById_RemovesUserFromList() throws Exception {
                         .content(objectMapper.writeValueAsString(testOrder)))
                 .andExpect(status().isBadRequest());
     }
-    /// Third test lesa
 
-
+    // 2.1 - No Orders - PASSED
     @Test
     void testGetOrdersEmptyList() throws Exception {
         orderRepository.clearOrders();
@@ -1420,6 +1422,118 @@ void testDeleteUserById_RemovesUserFromList() throws Exception {
                 .andExpect(MockMvcResultMatchers.content().json("[]"));
     }
 
+    // 2.2 - Gets all Orders - PASSED
+    @Test
+    void testGetOrdersAllOrders() throws Exception {
+        orderRepository.clearOrders();
+        Order testOrder1 = new Order();
+        testOrder1.setUserId(UUID.randomUUID());
+        testOrder1.setTotalPrice(20.0);
+        testOrder1.setProducts(new ArrayList<>());
+        addOrder(testOrder1);
+
+        Order testOrder2 = new Order();
+        testOrder2.setUserId(UUID.randomUUID());
+        testOrder2.setTotalPrice(10.0);
+        testOrder2.setProducts(new ArrayList<>());
+        addOrder(testOrder2);
+
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/order/")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andReturn();
+
+        List<Order> responseOrders = objectMapper.readValue(result.getResponse().getContentAsString(), new TypeReference<>() {});
+        assertEquals(2, responseOrders.size(), "Order List should return exactly 2 orders");
+
+    }
+
+    // 2.3 - Gets Updated List After Deletion - PASSED
+    @Test
+    void testGetOrdersAfterDeletion() throws Exception {
+        orderRepository.clearOrders();
+        Order testOrder1 = new Order();
+        testOrder1.setUserId(UUID.randomUUID());
+        testOrder1.setTotalPrice(20.0);
+        testOrder1.setProducts(new ArrayList<>());
+        addOrder(testOrder1);
+
+        Order testOrder2 = new Order();
+        testOrder2.setUserId(UUID.randomUUID());
+        testOrder2.setTotalPrice(10.0);
+        testOrder2.setProducts(new ArrayList<>());
+        addOrder(testOrder2);
+
+        // get list of orders before deletion
+        MvcResult resultBefore = mockMvc.perform(MockMvcRequestBuilders.get("/order/")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andReturn();
+
+        String responseContentBefore = resultBefore.getResponse().getContentAsString();
+        List<Order> responseOrdersBefore = objectMapper.readValue(responseContentBefore, new TypeReference<List<Order>>() {});
+
+        // delete test order 1
+        mockMvc.perform(MockMvcRequestBuilders.delete("/order/delete/{orderId}", testOrder1.getId()))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().string("Order deleted successfully"));
+
+
+        // get list of orders after deletion
+        MvcResult resultAfter = mockMvc.perform(MockMvcRequestBuilders.get("/order/")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andReturn();
+
+        String responseContentAfter = resultAfter.getResponse().getContentAsString();
+        List<Order> responseOrdersAfter = objectMapper.readValue(responseContentAfter, new TypeReference<List<Order>>() {});
+
+        assertEquals(responseOrdersBefore.size()-1, responseOrdersAfter.size(), "Updated List after deletion should have exactly one less order");
+    }
+
+    // 2.4 - Gets Updated List After Addition - PASSED
+    @Test
+    void testGetOrdersAfterAddition() throws Exception {
+        orderRepository.clearOrders();
+        Order testOrder1 = new Order();
+        testOrder1.setUserId(UUID.randomUUID());
+        testOrder1.setTotalPrice(20.0);
+        testOrder1.setProducts(new ArrayList<>());
+        addOrder(testOrder1);
+
+        // get list of orders before addition
+        MvcResult resultBefore = mockMvc.perform(MockMvcRequestBuilders.get("/order/")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andReturn();
+
+        String responseContentBefore = resultBefore.getResponse().getContentAsString();
+        List<Order> responseOrdersBefore = objectMapper.readValue(responseContentBefore, new TypeReference<List<Order>>() {});
+
+        Order testOrder2 = new Order();
+        testOrder2.setUserId(UUID.randomUUID());
+        testOrder2.setTotalPrice(10.0);
+        testOrder2.setProducts(new ArrayList<>());
+
+        // add test order 2
+        mockMvc.perform(MockMvcRequestBuilders.post("/order/")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(testOrder2)))
+                .andExpect(MockMvcResultMatchers.status().isOk());
+
+        // get list of orders after addition
+        MvcResult resultAfter = mockMvc.perform(MockMvcRequestBuilders.get("/order/")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andReturn();
+
+        String responseContentAfter = resultAfter.getResponse().getContentAsString();
+        List<Order> responseOrdersAfter = objectMapper.readValue(responseContentAfter, new TypeReference<List<Order>>() {});
+
+        assertEquals(responseOrdersBefore.size()+1, responseOrdersAfter.size(), "Updated List after addition should have exactly one more order");
+    }
+
+    //3.1 - Not found - PASSED
     @Test
     void testGetOrderByIdNotFound() throws Exception {
         UUID nonExistentOrderId = UUID.randomUUID();
@@ -1428,6 +1542,7 @@ void testDeleteUserById_RemovesUserFromList() throws Exception {
                 .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 
+    //3.2 - invalid id - PASSED
     @Test
     void testGetOrderByIdInvalidUUID() throws Exception {
         String invalidUUID = "invalidId";
@@ -1436,14 +1551,78 @@ void testDeleteUserById_RemovesUserFromList() throws Exception {
                 .andExpect(MockMvcResultMatchers.status().isBadRequest());
     }
 
+    // 3.3 - valid id - PASSED
     @Test
-    void testDeleteOrderById_randomID() throws Exception {
+    void testGetOrderByIdSuccess() throws Exception {
+        Order testOrder = new Order();
+        testOrder.setUserId(UUID.randomUUID());
+        testOrder.setTotalPrice(20.0);
+        testOrder.setProducts(new ArrayList<>());
+        addOrder(testOrder);
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/order/{orderId}", testOrder.getId()))
+                .andExpect(MockMvcResultMatchers.status().isOk());
+
+    }
+
+    // 3.4 - correct data - PASSED
+    @Test
+    void testGetOrderById_CorrectData() throws Exception {
+        Order testOrder = new Order();
+        testOrder.setUserId(UUID.randomUUID());
+        testOrder.setTotalPrice(20.0);
+        testOrder.setProducts(new ArrayList<>());
+        addOrder(testOrder);
+
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/order/{orderId}", testOrder.getId()))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andReturn();
+
+        String responseContent = result.getResponse().getContentAsString();
+        Order responseOrder =  objectMapper.readValue(responseContent, new TypeReference<>() {});
+
+        assertEquals(testOrder.getId(), responseOrder.getId(), "Returned order should have the correct ID");
+        assertEquals(testOrder.getUserId(), responseOrder.getUserId(), "Returned order should have the correct user ID");
+        assertEquals(testOrder.getTotalPrice(), responseOrder.getTotalPrice(), "Returned order should have the correct total price");
+        assertEquals(testOrder.getProducts(), responseOrder.getProducts(), "Returned order should have the correct products list");
+    }
+
+    //4.1 - Non-Existent Order - PASSED
+    @Test
+    void testDeleteOrderById_NotFound() throws Exception {
         UUID validOrderId = UUID.randomUUID();
         mockMvc.perform(MockMvcRequestBuilders.delete("/order/delete/{id}", validOrderId.toString()))
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.content().string("Order not found"));
-
     }
 
+    //4.2 - invalid id - PASSED
+    @Test
+    void testDeleteOrderById_InvalidUUID() throws Exception {
+        String invalidUUID = "invalidId";
+        mockMvc.perform(MockMvcRequestBuilders.delete("/order/delete/" + invalidUUID)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest());
+    }
+
+    //4.3 - Valid Order removed from order list - PASSED
+    @Test
+    void testDeleteOrderById_ValidOrder() throws Exception {
+        Order validOrder = new Order();
+        validOrder.setUserId(UUID.randomUUID());
+        validOrder.setTotalPrice(20.0);
+        validOrder.setProducts(new ArrayList<>());
+        addOrder(validOrder);
+
+        mockMvc.perform(MockMvcRequestBuilders.delete("/order/delete/{orderId}", validOrder.getId()))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().string("Order deleted successfully"));
+
+
+        //check that order with tested id no longer exists
+        mockMvc.perform(MockMvcRequestBuilders.get("/order/{orderId}", validOrder.getId() )
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isNotFound());
+    }
 
 }
