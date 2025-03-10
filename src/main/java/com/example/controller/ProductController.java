@@ -97,14 +97,14 @@ public class ProductController {
                     .map(Product::getId)
                     .collect(Collectors.toSet());
 
-            // ✅ Ensure all provided product IDs exist
+            if (products.isEmpty()) {
+                throw new IllegalArgumentException("No matching products found for the given IDs");
+            }
+
             if (!availableProductIds.containsAll(productIds)) {
                 throw new IllegalArgumentException("One or more product IDs do not exist");
             }
 
-            if (products.isEmpty()) {
-                throw new IllegalArgumentException("No matching products found for the given IDs");
-            }
             productService.applyDiscount(discount, productIds);
             return "Discount applied successfully";
 

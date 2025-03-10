@@ -83,11 +83,18 @@ public class Order {
         this.totalPrice = total;
     }
 
-    public double getTotalPrice() {
+    public double calculateTotalPrice() {
         double total = 0;
         for (Product product : products) {
             total += product.getPrice();
         }
         return total;
     }
+    public  double getTotalPrice() {
+        return totalPrice;
+    }
+
+//    public double totalPriceGetter(){
+//        return totalPrice;
+//    }
 }

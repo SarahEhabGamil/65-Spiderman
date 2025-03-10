@@ -85,7 +85,7 @@ public class CartRepository extends MainRepository<Cart> {
             throw new RuntimeException("Cart not found with ID: " + cartId);
         }
         cartToUpdate.getProducts().add(product);
-        double totalPrice = cartToUpdate.getTotalPrice();
+        double totalPrice = cartToUpdate.calculateTotalPrice();
         cartToUpdate.setTotalPrice(totalPrice);
         saveAll(carts);
     }

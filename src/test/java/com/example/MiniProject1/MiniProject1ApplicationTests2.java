@@ -1401,6 +1401,7 @@ void testDeleteUserById_RemovesUserFromList() throws Exception {
     void testAddOrderNegativeTotalPrice() throws Exception {
         Order testOrder = new Order();
         testOrder.setTotalPrice(-1.0);
+        addOrder(testOrder);
         System.out.println("Test Order: "+ testOrder.getTotalPrice());
         testOrder.setId(UUID.randomUUID());
         testOrder.setProducts(new ArrayList<>());

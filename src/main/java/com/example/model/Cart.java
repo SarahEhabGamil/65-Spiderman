@@ -78,7 +78,7 @@ public class Cart {
         this.totalPrice = totalPrice;
     }
 
-    public double getTotalPrice() {
+    public double calculateTotalPrice() {
         double total = 0;
         for (Product product : products) {
             total += product.getPrice();
@@ -86,4 +86,7 @@ public class Cart {
         return total;
     }
 
+    public double getTotalPrice() {
+        return totalPrice;
+    }
 }

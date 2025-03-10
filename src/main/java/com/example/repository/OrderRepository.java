@@ -35,7 +35,7 @@ public class OrderRepository extends MainRepository<Order>{
             order.setId(UUID.randomUUID());
         }
         orders.add(order);
-        order.setTotalPrice(order.getTotalPrice());
+        order.setTotalPrice(order.calculateTotalPrice());
         saveAll(orders);
     }
 

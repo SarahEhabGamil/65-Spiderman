@@ -23,13 +23,13 @@ public class OrderService extends MainService {
     }
 
     public void addOrder(Order order)  {
-        List<Product> products = order.getProducts();
-        for (Product product : products) {
-            Product productToCheck= productService.getProductById(product.getId());
-            if(productToCheck==null) {
-                throw new IllegalArgumentException("Product not found");
-            }
-        }
+//        List<Product> products = order.getProducts();
+//        for (Product product : products) {
+//            Product productToCheck= productService.getProductById(product.getId());
+//            if(productToCheck==null) {
+//                throw new IllegalArgumentException("Product not found");
+//            }
+//        }
         orderRepository.addOrder(order);
     }
     public ArrayList<Order> getOrders(){
